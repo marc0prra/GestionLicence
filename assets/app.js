@@ -42,3 +42,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+const select = document.getElementById('intervenant-select');
+const container = document.getElementById('chips-container');
+
+select.addEventListener('change', function () {
+const option = select.options[select.selectedIndex];
+const id = option.value;
+const name = option.getAttribute('data-name');
+
+if (id) {
+addChip(id, name);
+option.disabled = true; // Empêche de choisir deux fois le même
+select.value = ""; // Reset le sélecteur
+}
+});
+
+function addChip(id, name) { // Création du jeton avec les classes Tailwind
+const chip = document.createElement('div');
+chip.id = `chip-${id}`;
+// Design : gris foncé (zinc-600), texte blanc, arrondi complet
+chip.className = "flex items-center gap-2 px-3 py-1 text-sm font-medium text-white transition-colors bg-zinc-600 rounded-full";
+
+chip.innerHTML = `
+            <span>${name}</span>
+            <button type="button" onclick="removeChip('${id}')" class="flex items-center justify-center w-4 h-4 text-white transition-colors hover:text-red-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        `;
+
+container.appendChild(chip);
+}
+
+window.removeChip = function (id) { // Supprimer le jeton visuellement
+const chip = document.getElementById (`chip-${id}`);
+if (chip) 
+chip.remove();
+
+
+
+// Réactiver l'option dans la liste
+const option = select.querySelector (`option[value="${id}"]`);
+if (option) 
+option.disabled = false;
+
+
+};
+});
