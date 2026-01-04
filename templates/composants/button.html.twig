@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{# 
+    Paramètres :
+    - label : Le texte du bouton
+    - type  : 'confirm', 'cancel', 'warning', 'danger' (Défaut: confirm)
+    - url   : (Optionnel) Si défini, devient un lien <a>, sinon <button>
+    - icon  : (Optionnel) Classe icône (ex: 'bi bi-check')
+#}
+
+{# 1. Définition des styles spécifiques pour chaque bouton (Couleur + Largeur + Couleur Texte) #}
+{% set styles = {
+    'confirm': 'bg-[#2C416E] text-white w-[122px]',
+    'cancel':  'bg-[#F0F0F0] text-black w-[103px]',
+    'warning': 'bg-[#FFBD01] text-black w-[122px]',
+    'danger':  'bg-[#FF0004] text-white w-[122px]'
+} %}
+
+{# 2. Sélection du style (par défaut 'confirm' si le type est inconnu) #}
+{% set current_style = styles[type|default('confirm')] ?? styles['confirm'] %}
+
+{# 3. Les styles communs à TOUS les boutons (Padding, Hauteur, Arrondi, Flex) #}
+{% set common_classes = 'h-[44px] px-[20px] py-[14px] rounded-[8px] gap-[10px] inline-flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-90' %}
+
+{# 4. Le rendu HTML #}
+{% if url is defined %}
+    <a href="{{ url }}" class="{{ common_classes }} {{ current_style }}">
+        {% if icon is defined %}<i class="{{ icon }}"></i>{% endif %}
+        {{ label }}
+    </a>
+{% else %}
+    <button type="submit" class="{{ common_classes }} {{ current_style }}">
+        {% if icon is defined %}<i class="{{ icon }}"></i>{% endif %}
+        {{ label }}
+    </button>
+{% endif %}
+{% endblock %}
