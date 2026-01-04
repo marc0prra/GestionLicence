@@ -13,4 +13,18 @@ class UiController extends AbstractController
     {
         return $this->render('composants/button_period.html.twig');
     }
+
+    #[Route('/design/test', name: 'app_design_test')]
+    public function index(): Response
+    {
+        $projets = [
+            ['nom' => 'Refonte Site Web', 'client' => 'Acme Corp', 'statut' => 'Actif'],
+            ['nom' => 'App Mobile', 'client' => 'StartUp Inc', 'statut' => 'En pause'],
+            ['nom' => 'Audit SEO', 'client' => 'Google', 'statut' => 'Terminé'],
+        ];
+
+        return $this->render('testDesign/index.html.twig', [
+            'projets' => $projets,
+        ]);
+    }
 }
