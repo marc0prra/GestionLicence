@@ -14,6 +14,26 @@ class UiController extends AbstractController
         return $this->render('composants/button_period.html.twig');
     }
 
+    #[Route('/composants/sidebar', name: 'composants_sidebar', methods: ['GET'])]
+    public function sidebar(): Response
+    {
+        return $this->render('composants/sidebar.html.twig');
+    }
+
+    #[Route('/design/test', name: 'app_design_test')]
+    public function index(): Response
+    {
+        $projets = [
+            ['nom' => 'Refonte Site Web', 'client' => 'Acme Corp', 'statut' => 'Actif'],
+            ['nom' => 'App Mobile', 'client' => 'StartUp Inc', 'statut' => 'En pause'],
+            ['nom' => 'Audit SEO', 'client' => 'Google', 'statut' => 'Terminé'],
+        ];
+
+        return $this->render('testDesign/index.html.twig', [
+            'projets' => $projets,
+        ]);
+    }
+
     #[Route('/composants/multi-select', name: 'composants_multi_select', methods: ['GET'])]
     public function multiSelect(): Response
     {
@@ -30,7 +50,7 @@ class UiController extends AbstractController
     }
 
     #[Route('/formulaire-composant', name: 'formulaire_composant')]
-    public function index(): Response
+    public function formulaireComposant(): Response
     {
         return $this->render('composants/formulaire_composant.html.twig');
     }
