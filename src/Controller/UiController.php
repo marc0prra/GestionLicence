@@ -14,6 +14,12 @@ class UiController extends AbstractController
         return $this->render('composants/button_period.html.twig');
     }
 
+    #[Route('/composants/sidebar', name: 'composants_sidebar', methods: ['GET'])]
+    public function sidebar(): Response
+    {
+        return $this->render('composants/sidebar.html.twig');
+    }
+
     #[Route('/design/test', name: 'app_design_test')]
     public function index(): Response
     {
