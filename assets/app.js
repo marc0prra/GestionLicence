@@ -8,28 +8,37 @@ import './stimulus_bootstrap.js';
 import './styles/app.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-        // 1. On sélectionne tous les boutons qui ont la classe "js-period-btn"
-        const buttons = document.querySelectorAll('.js-period-btn');
+    
+    // GESTION DES BOUTONS PERIODES (Jour/Semaine/Mois)
+    const periodButtons = document.querySelectorAll('.js-period-btn');
+    const periodActive = ['bg-[#2E3B59]', 'text-white', 'shadow-sm'];
+    const periodInactive = ['text-gray-500', 'hover:text-gray-700', 'hover:bg-gray-100'];
 
-        // Classes pour l'état ACTIF (Bleu, texte blanc)
-        const activeClasses = ['bg-[#2E3B59]', 'text-white', 'shadow-sm'];
-        
-        // Classes pour l'état INACTIF (Gris, fond transparent ou gris clair au survol)
-        const inactiveClasses = ['text-gray-500', 'hover:text-gray-700', 'hover:bg-gray-100'];
-
-        // 2. On ajoute un écouteur d'événement sur CHAQUE bouton
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                
-                // A. On réinitialise TOUS les boutons (on les met en "inactif")
-                buttons.forEach(btn => {
-                    btn.classList.remove(...activeClasses); // Enlève le bleu
-                    btn.classList.add(...inactiveClasses);  // Remet le gris
-                });
-
-                // B. On active CELUI qu'on vient de cliquer
-                button.classList.remove(...inactiveClasses); // Enlève le gris
-                button.classList.add(...activeClasses);      // Met le bleu
+    periodButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            periodButtons.forEach(btn => {
+                btn.classList.remove(...periodActive);
+                btn.classList.add(...periodInactive);
             });
+            button.classList.remove(...periodInactive);
+            button.classList.add(...periodActive);
         });
     });
+
+    // GESTION DE LA SIDEBAR (Menu latéral)
+    const sidebarLinks = document.querySelectorAll('.js-sidebar-link');
+    const sidebarActive = ['bg-[#2E3B59]', 'text-white', 'shadow-sm'];
+    // Ces classes correspondent exactement à ton design HTML précédent
+    const sidebarInactive = ['text-[#718096]', 'hover:bg-[#2E3B59]', 'hover:text-white', 'hover:shadow-sm'];
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            sidebarLinks.forEach(l => {
+                l.classList.remove(...sidebarActive);
+                l.classList.add(...sidebarInactive);
+            });
+            link.classList.remove(...sidebarInactive);
+            link.classList.add(...sidebarActive);
+        });
+    });
+});
