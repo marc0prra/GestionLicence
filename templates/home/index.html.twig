@@ -1,0 +1,21 @@
+{# templates/home/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Lycée Saint-Vincent{% endblock %}
+
+{% block body %}
+    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+        <h1 class="text-2xl font-bold text-[#1F2D5C] mb-4">Tableau de bord</h1>
+        <p class="text-gray-600">
+            Bienvenue Stella ! Voici l'interface visualisée.
+            La sidebar est à gauche, et ce contenu est injecté dynamiquement.
+        </p>
+        
+        <div class="mt-8 grid grid-cols-3 gap-4">
+            <div class="h-32 bg-blue-50 rounded border border-blue-100 flex items-center justify-center text-blue-800">Statistique 1</div>
+            <div class="h-32 bg-green-50 rounded border border-green-100 flex items-center justify-center text-green-800">Statistique 2</div>
+            <div class="h-32 bg-purple-50 rounded border border-purple-100 flex items-center justify-center text-purple-800">Statistique 3</div>
+        </div>
+    </div>
+{% endblock %}
