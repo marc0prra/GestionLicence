@@ -104,7 +104,6 @@ class User
 
     public function setInstructor(Instructor $instructor): static
     {
-        // set the owning side of the relation if necessary
         if ($instructor->getUser() !== $this) {
             $instructor->setUser($this);
         }
