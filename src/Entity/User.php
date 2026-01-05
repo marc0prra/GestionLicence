@@ -97,19 +97,19 @@ class User
         return $this;
     }
 
-    public function getInstructorModules(): ?Instructor
+    public function getInstructor(): ?Instructor
     {
-        return $this->instructorModules;
+        return $this->instructor;
     }
 
-    public function setInstructorModules(Instructor $instructorModules): static
+    public function setInstructor(Instructor $instructor): static
     {
         // set the owning side of the relation if necessary
-        if ($instructorModules->getUser() !== $this) {
-            $instructorModules->setUser($this);
+        if ($instructor->getUser() !== $this) {
+            $instructor->setUser($this);
         }
 
-        $this->instructorModules = $instructorModules;
+        $this->instructor = $instructor;
 
         return $this;
     }
