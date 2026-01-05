@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ModuleRepository;
+use Doctrine\Common\Collections\ArrayCollection; 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,8 +34,21 @@ class Module
     #[ORM\Column]
     private ?bool $capstone_project = null;
 
-    #[ORM\Column]
-    private ?int $teaching_block_id = null;
+    #[ORM\ManyToOne(targetEntity: TeachingBlock::class, inversedBy: 'modules')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TeachingBlock $teachingBlock = null;
+
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true)]
+    private ?self $parent = null;
+
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    private Collection $children;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -48,18 +63,6 @@ class Module
     public function setCode(string $code): static
     {
         $this->code = $code;
-
-        return $this;
-    }
-
-    public function getParentId(): ?int
-    {
-        return $this->parent_id;
-    }
-
-    public function setParentId(?int $parent_id): static
-    {
-        $this->parent_id = $parent_id;
 
         return $this;
     }
@@ -112,15 +115,32 @@ class Module
         return $this;
     }
 
-    public function getTeachingBlockId(): ?int
-    {
-        return $this->teaching_block_id;
+    public function getTeachingBlock() : ?TeachingBlock 
+    { 
+        return $this->teachingBlock; 
     }
 
-    public function setTeachingBlockId(int $teaching_block_id): static
+    public function setTeachingBlock(?TeachingBlock $teachingBlock): static
     {
-        $this->teaching_block_id = $teaching_block_id;
+        $this->teachingBlock = $teachingBlock;
 
         return $this;
+    }
+
+    public function getParent() : ?self 
+    { 
+        return $this->parent; 
+    }
+
+    public function setParent(?self $parent): static
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function getChildren() : Collection 
+    { 
+        return $this->children; 
     }
 }
