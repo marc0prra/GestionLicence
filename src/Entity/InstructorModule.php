@@ -17,6 +17,9 @@ class InstructorModule
     #[ORM\JoinColumn(nullable: false)]
     private ?Instructor $instructor_id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'relation')]
+    private ?Instructor $instructor = null;
+
     #[ORM\Column]
 
     #[ORM\Column]
@@ -34,6 +37,18 @@ class InstructorModule
     public function setInstructorId(?Instructor $instructor_id): static
     {
         $this->instructor_id = $instructor_id;
+
+        return $this;
+    }
+
+    public function getInstructor(): ?Instructor
+    {
+        return $this->instructor;
+    }
+
+    public function setInstructor(?Instructor $instructor): static
+    {
+        $this->instructor = $instructor;
 
         return $this;
     }
