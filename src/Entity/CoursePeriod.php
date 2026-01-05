@@ -14,8 +14,9 @@ class CoursePeriod
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SchoolYear $school_year_id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $start_date = null;
@@ -32,14 +33,14 @@ class CoursePeriod
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getSchoolYearId(): ?SchoolYear
     {
-        return $this->name;
+        return $this->school_year_id;
     }
 
-    public function setName(string $name): static
+    public function setSchoolYearId(?SchoolYear $school_year_id): static
     {
-        $this->name = $name;
+        $this->school_year_id = $school_year_id;
 
         return $this;
     }
