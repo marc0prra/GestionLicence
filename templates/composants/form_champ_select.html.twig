@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div>
+		<label for="module" class="block text-base font-normal text-black mb-2">
+			Module - champ obligatoire
+		</label>
+		<div class="relative">
+			<select id="module" name="module" required class=" w-[399px] h-[46px] px-4 bg-white border border-gray-200 rounded text-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 cursor-pointer">
+				<option selected disabled>Sélectionnez le module</option>
+				{% for module in modules %}
+					<option value="{{ module.id }}">{{ module.nom }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+{% endblock %}

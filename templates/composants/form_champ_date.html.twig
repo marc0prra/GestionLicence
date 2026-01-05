@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div>
+		<label for="date_debut" class="block text-base font-normal text-black mb-2">
+			Date de début - champ obligatoire
+		</label>
+		<input type="datetime-local" id="date_debut" name="date_debut" required class="w-[281px] h-[46px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" value="2025-11-25T08:30">
+	</div>
+{% endblock %}
