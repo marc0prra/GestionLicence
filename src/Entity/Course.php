@@ -31,6 +31,13 @@ class Course
     #[ORM\JoinColumn(nullable: false)]
     private ?Module $module_id = null;
 
+    #[ORM\Column]
+    private ?bool $remotely = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $title = null;
+
+    //Méthodes de classe
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +99,30 @@ class Course
     public function setModuleId(?Module $module_id): static
     {
         $this->module_id = $module_id;
+
+        return $this;
+    }
+
+    public function isRemotely(): ?bool
+    {
+        return $this->remotely;
+    }
+
+    public function setRemotely(bool $remotely): static
+    {
+        $this->remotely = $remotely;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }
