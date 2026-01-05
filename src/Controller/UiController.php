@@ -56,7 +56,7 @@ class UiController extends AbstractController
     }
 
     #[Route('/legende-calendar', name: 'legende_calendar', methods: ['GET'])]
-    public function légendeCalendar(): Response
+    public function legendeCalendar(): Response
     {
         return $this->render('composants/legende_calendar.html.twig');
     }
