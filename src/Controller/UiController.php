@@ -20,7 +20,7 @@ class UiController extends AbstractController
         return $this->render('composants/sidebar.html.twig');
     }
 
-    #[Route('/design/test', name: 'app_design_test')]
+    #[Route('/design/test', name: 'app_design_test', methods: ['GET'])]
     public function index(): Response
     {
         $projets = [
@@ -49,9 +49,15 @@ class UiController extends AbstractController
         ]);
     }
 
-    #[Route('/formulaire-composant', name: 'formulaire_composant')]
+    #[Route('/formulaire-composant', name: 'formulaire_composant', methods: ['GET'])]
     public function formulaireComposant(): Response
     {
         return $this->render('composants/formulaire_composant.html.twig');
+    }
+
+    #[Route('/legende-calendar', name: 'legende_calendar', methods: ['GET'])]
+    public function légendeCalendar(): Response
+    {
+        return $this->render('composants/legende_calendar.html.twig');
     }
 }
