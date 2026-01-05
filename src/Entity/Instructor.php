@@ -25,10 +25,6 @@ class Instructor
     #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: CourseInstructor::class, orphanRemoval: true)]
     private Collection $courseInstructors;
 
-    #[ORM\OneToOne(inversedBy: 'instructor', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
     public function __construct()
     {
         $this->instructorModules = new ArrayCollection();
@@ -102,18 +98,6 @@ class Instructor
                 $courseInstructor->setInstructor(null);
             }
         }
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): static
-    {
-        $this->user = $user;
-
         return $this;
     }
 }
