@@ -29,6 +29,9 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
+    private ?Instructor $instructorModules = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,23 @@ class User
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getInstructorModules(): ?Instructor
+    {
+        return $this->instructorModules;
+    }
+
+    public function setInstructorModules(Instructor $instructorModules): static
+    {
+        // set the owning side of the relation if necessary
+        if ($instructorModules->getUserId() !== $this) {
+            $instructorModules->setUserId($this);
+        }
+
+        $this->instructorModules = $instructorModules;
 
         return $this;
     }

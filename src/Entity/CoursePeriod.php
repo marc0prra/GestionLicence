@@ -23,6 +23,10 @@ class CoursePeriod
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $end_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'courseInstructors')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Instructor $instructor = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,18 @@ class CoursePeriod
     public function setEndDate(\DateTime $end_date): static
     {
         $this->end_date = $end_date;
+
+        return $this;
+    }
+
+    public function getInstructor(): ?Instructor
+    {
+        return $this->instructor;
+    }
+
+    public function setInstructor(?Instructor $instructor): static
+    {
+        $this->instructor = $instructor;
 
         return $this;
     }
