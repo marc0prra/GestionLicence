@@ -1,0 +1,28 @@
+{# 
+    Fichier : templates/components/table.html.twig
+    Paramètres :
+    - headers : Liste des titres ['Nom', 'Statut', ...]
+#}
+
+<div class="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm bg-white mt-6">
+    <table class="min-w-full text-left text-sm whitespace-nowrap">
+        
+        {# EN-TÊTE (D'après vos specs : #F9FAFB, Hauteur 60px, Padding 20px/25px) #}
+        <thead class="bg-[#F9FAFB] text-gray-900 font-semibold border-b border-gray-200">
+            <tr class="h-[60px]">
+                {% for header in headers %}
+                    <th scope="col" class="px-[25px] py-[20px] font-bold text-[#2C416E]">
+                        {{ header }}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+
+        {# CORPS (Fond Blanc) #}
+        <tbody class="divide-y divide-gray-100 bg-white">
+            {% block body %}
+                {# Le contenu sera injecté ici #}
+            {% endblock %}
+        </tbody>
+    </table>
+</div>
