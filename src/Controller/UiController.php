@@ -49,15 +49,41 @@ class UiController extends AbstractController
         ]);
     }
 
-    #[Route('/formulaire-composant', name: 'formulaire_composant', methods: ['GET'])]
-    public function formulaireComposant(): Response
+    #[Route('/formulaire-composant-select', name: 'formulaire_composant_select', methods: ['GET'])]
+    public function formulaireComposantSelect(): Response
     {
-        return $this->render('composants/formulaire_composant.html.twig');
+        $modules = [
+            ['id' => 1, 'nom' => 'Module 1'],
+            ['id' => 2, 'nom' => 'Module 2'],
+            ['id' => 3, 'nom' => 'Module 3'],
+            ['id' => 4, 'nom' => 'Module 4'],
+        ];
+        return $this->render('composants/form_champ_select.html.twig', [
+            'modules' => $modules,
+        ]);
+    }
+
+    #[Route('/formulaire-composant-text', name: 'formulaire_composant_text', methods: ['GET'])]
+    public function formulaireComposantText(): Response
+    {
+        return $this->render('composants/form_champ_text.html.twig');
+    }
+
+    #[Route('/formulaire-composant-date', name: 'formulaire_composant_date', methods: ['GET'])]
+    public function formulaireComposantDate(): Response
+    {
+        return $this->render('composants/form_champ_date.html.twig');
     }
 
     #[Route('/legende-calendar', name: 'legende_calendar', methods: ['GET'])]
-    public function légendeCalendar(): Response
+    public function legendeCalendar(): Response
     {
         return $this->render('composants/legende_calendar.html.twig');
+    }
+
+    #[Route('/test-composants', name: 'app_test_composants')]
+    public function test(): Response
+    {
+        return $this->render('components_test.html.twig');
     }
 }
