@@ -60,4 +60,10 @@ class UiController extends AbstractController
     {
         return $this->render('composants/legende_calendar.html.twig');
     }
+
+    #[Route('/test-composants', name: 'app_test_composants')]
+    public function test(): Response
+    {
+        return $this->render('components_test.html.twig');
+    }
 }
