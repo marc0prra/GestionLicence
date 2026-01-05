@@ -1,17 +1,81 @@
+{# templates/task/index.html.twig #}
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Arbre Symfony</title>
+    {# C'est cette ligne qui manquait ou qui était bloquée : #}
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-10 min-h-screen flex items-start justify-center">
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {# --- DÉBUT MACRO --- #}
+    {% macro render_tree(item, is_last) %}
+        {% import _self as macros %}
+        
+        <li class="relative pl-6">
+            {# Ligne verticale (sauf pour le dernier) #}
+            {% if not is_last %}
+                <span class="absolute left-0 top-0 bottom-0 w-px bg-gray-300"></span>
+            {% endif %}
+
+            {# Ligne courbe (le virage) #}
+            <span class="absolute left-0 top-0 h-6 w-6 border-b border-l border-gray-300 rounded-bl-xl"></span>
+
+            {# Contenu #}
+            <div class="relative flex items-center gap-3 py-2 group cursor-pointer hover:bg-white hover:shadow-sm rounded-r px-2 transition-all">
+                
+                {# Chevron / Point #}
+                <span class="w-4 h-4 flex items-center justify-center text-gray-400">
+                    {% if item.children is defined and item.children is not empty %}
+                        {# Flèche si enfants #}
+                        <svg class="w-3 h-3 transition-transform group-hover:rotate-90" fill="currentColor" viewBox="0 0 20 20"><path d="M5 8l5 5 5-5z"/></svg>
+                    {% else %}
+                        {# Point si feuille #}
+                        <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                    {% endif %}
+                </span>
+
+                {# Dossier / Fichier #}
+                <span class="text-blue-500">
+                     {% if item.children is defined and item.children is not empty %}
+                        {# Icône Dossier #}
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                     {% else %}
+                        {# Icône Fichier #}
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                     {% endif %}
+                </span>
+
+                {# Titre #}
+                <span class="text-sm font-medium text-gray-700">
+                    {{ item.title }}
+                </span>
+            </div>
+
+            {# Enfants (Récursion) #}
+            {% if item.children is defined and item.children is not empty %}
+                <ul class="list-none m-0 p-0 ml-2">
+                    {% for child in item.children %}
+                        {{ macros.render_tree(child, loop.last) }}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endmacro %}
+    {# --- FIN MACRO --- #}
+
+    {# --- AFFICHAGE --- #}
+    {% import _self as macros %}
+
+    <div class="w-full max-w-md bg-white p-6 rounded-xl shadow-xl border border-gray-100">
+        <h2 class="text-xl font-bold mb-6 text-gray-800 border-b pb-2">Mon Projet</h2>
+        <ul class="list-none m-0 p-0">
+            {% for rootItem in treeData %}
+                {{ macros.render_tree(rootItem, true) }}
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
 </html>

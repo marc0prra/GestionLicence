@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Arborescence Interactive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        /* Petite classe utilitaire pour la rotation fluide */
+        .rotate-270 { transform: rotate(-90deg); }
+    </style>
+</head>
+<body class="bg-white p-10">
+
+    {# --- MACRO --- #}
+    {% macro render_tree(item, is_last, depth) %}
+        {% import _self as macros %}
+        
+        <li class="relative select-none"> {# select-none empêche de surligner le texte quand on clique vite #}
+            <div class="flex flex-col">
+                
+                {# LIGNE DU DOSSIER / FICHIER #}
+                <div class="flex items-center py-1 relative z-10 group">
+                    
+                    {# DESSIN DES LIGNES (Sauf racine) #}
+                    {% if depth > 0 %}
+                        <div class="absolute -left-[19px] -top-[14px] w-[19px] h-[28px] border-b border-l border-gray-200 rounded-bl-lg pointer-events-none"></div>
+                        {% if not is_last %}
+                             <div class="absolute -left-[19px] top-0 bottom-0 w-px bg-gray-200 pointer-events-none"></div>
+                        {% endif %}
+                    {% endif %}
+
+                    {# ICONE CHEVRON (Le bouton déclencheur) #}
+                    {# On ajoute la classe 'js-toggle' pour que le JS la reconnaisse #}
+                    <div class="w-5 h-5 flex items-center justify-center mr-1 cursor-pointer hover:bg-gray-100 rounded js-toggle transition-colors">
+                        {% if item.children is defined and item.children is not empty %}
+                            {# La flèche (SVG) a une transition pour tourner #}
+                            <svg class="w-2.5 h-2.5 text-gray-500 fill-current transform transition-transform duration-200" viewBox="0 0 20 20">
+                                <path d="M5 8l5 5 5-5z"/> 
+                            </svg>
+                        {% else %}
+                            <span class="w-2.5 h-2.5"></span>
+                        {% endif %}
+                    </div>
+
+                    {# TEXTE #}
+                    {# On peut aussi cliquer sur le texte pour ouvrir/fermer si on veut (j'ai mis js-toggle ici aussi) #}
+                    <span class="text-gray-600 text-sm font-normal cursor-pointer hover:text-blue-500 js-toggle">
+                        {{ item.title }}
+                    </span>
+                </div>
+
+                {# LES ENFANTS (Conteneur cachable) #}
+                {% if item.children is defined and item.children is not empty %}
+                    {# On ajoute un ID ou une structure facile à trouver pour le JS #}
+                    <ul class="pl-[19px] m-0 list-none relative transition-all duration-300 overflow-hidden js-submenu">
+                        
+                        {# Ligne verticale du parent #}
+                        {% if not is_last and depth > 0 %}
+                            <div class="absolute left-0 top-0 bottom-0 w-px bg-gray-200 -ml-[19px]"></div>
+                        {% endif %}
+
+                        {% for child in item.children %}
+                            {{ macros.render_tree(child, loop.last, depth + 1) }}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </li>
+    {% endmacro %}
+
+
+    {# --- AFFICHAGE --- #}
+    {% import _self as macros %}
+
+    <div class="w-full max-w-lg mx-auto mt-10">
+        <h2 class="text-lg font-bold mb-4 text-gray-700">Explorateur de fichiers</h2>
+        <ul class="list-none m-0 p-0">
+            {% for rootItem in treeData %}
+                {{ macros.render_tree(rootItem, loop.last, 0) }}
+            {% endfor %}
+        </ul>
+    </div>
+
+
+    {# --- LE SCRIPT JAVASCRIPT (C'est lui qui fait le travail) --- #}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // On sélectionne tous les éléments qu'on a marqués avec la classe 'js-toggle'
+            const toggles = document.querySelectorAll('.js-toggle');
+
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    // 1. Trouver le conteneur parent (le <li> ou le div flex)
+                    const container = this.closest('.flex-col');
+                    
+                    // 2. Trouver la liste des enfants (<ul>) juste en dessous
+                    const submenu = container.querySelector('.js-submenu');
+                    
+                    // Si pas d'enfants, on ne fait rien (c'est un fichier)
+                    if (!submenu) return;
+
+                    // 3. Masquer / Afficher le sous-menu
+                    submenu.classList.toggle('hidden');
+
+                    // 4. Faire tourner la flèche
+                    // On cherche l'image SVG près de l'endroit cliqué
+                    const chevron = container.querySelector('svg');
+                    if (chevron) {
+                        // toggle la rotation (-90 degrés)
+                        chevron.classList.toggle('rotate-270');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
