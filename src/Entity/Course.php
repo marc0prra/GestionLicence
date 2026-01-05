@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CourseRepository;
+use Doctrine\Common\Collections\ArrayCollection; 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
@@ -25,10 +27,6 @@ class Course
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?InterventionType $intervention_type_id = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Module $module_id = null;
 
     #[ORM\Column]
@@ -36,6 +34,18 @@ class Course
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?InterventionType $intervention_type_id = null;
+
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: CourseInstructor::class, cascade: ['persist', 'remove'])]
+    private Collection $instructorLinks;
+
+    public function __construct()
+    {
+        $this->instructorLinks = new ArrayCollection();
+    }
 
     //Méthodes de classe
     public function getId(): ?int
@@ -124,6 +134,31 @@ class Course
     {
         $this->title = $title;
 
+        return $this;
+    }
+
+    public function getInstructorLinks(): Collection
+    {
+        return $this->instructorLinks;
+    }
+
+    public function addInstructorLink(CourseInstructor $link): self
+    {
+        if (!$this->instructorLinks->contains($link)) {
+            $this->instructorLinks->add($link);
+            $link->setCourse($this);
+        }
+        return $this;
+    }
+
+    public function removeInstructorLink(CourseInstructor $link): self
+    {
+        if ($this->instructorLinks->removeElement($link)) {
+            // set the owning side to null (unless already changed)
+            if ($link->getCourse() === $this) {
+                $link->setCourse(null);
+            }
+        }
         return $this;
     }
 }

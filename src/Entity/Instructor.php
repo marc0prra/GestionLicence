@@ -21,12 +21,16 @@ class Instructor
     /**
      * @var Collection<int, InstructorModule>
      */
-    #[ORM\OneToMany(targetEntity: InstructorModule::class, mappedBy: 'instructor_id', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: InstructorModule::class, mappedBy: 'instructor', orphanRemoval: true)]
     private Collection $module_id;
+
+    #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: CourseInstructor::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $courseLinks;
 
     public function __construct()
     {
         $this->module_id = new ArrayCollection();
+        $this->courseLinks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,7 +62,7 @@ class Instructor
     {
         if (!$this->module_id->contains($moduleId)) {
             $this->module_id->add($moduleId);
-            $moduleId->setInstructorId($this);
+            $moduleId->setInstructor($this);
         }
 
         return $this;
@@ -68,8 +72,35 @@ class Instructor
     {
         if ($this->module_id->removeElement($moduleId)) {
             // set the owning side to null (unless already changed)
-            if ($moduleId->getInstructorId() === $this) {
-                $moduleId->setInstructorId(null);
+            if ($moduleId->getInstructor() === $this) {
+                $moduleId->setInstructor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCourseLinks(): Collection
+    {
+        return $this->courseLinks;
+    }
+
+    public function addCourseLink(CourseInstructor $link): static
+    {
+        if (!$this->courseLinks->contains($link)) {
+            $this->courseLinks->add($link);
+            $link->setInstructor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourseLink(CourseInstructor $link): static
+    {
+        if ($this->courseLinks->removeElement($link)) {
+            // set the owning side to null (unless already changed)
+            if ($link->getInstructor() === $this) {
+                $link->setInstructor(null);
             }
         }
 
