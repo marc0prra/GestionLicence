@@ -105,8 +105,8 @@ class User
     public function setInstructorModules(Instructor $instructorModules): static
     {
         // set the owning side of the relation if necessary
-        if ($instructorModules->getUserId() !== $this) {
-            $instructorModules->setUserId($this);
+        if ($instructorModules->getUser() !== $this) {
+            $instructorModules->setUser($this);
         }
 
         $this->instructorModules = $instructorModules;
