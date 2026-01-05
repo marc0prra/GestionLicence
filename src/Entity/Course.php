@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CourseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 class Course
