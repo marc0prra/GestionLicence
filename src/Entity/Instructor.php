@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\InstructorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InstructorRepository::class)]
@@ -15,6 +17,17 @@ class Instructor
 
     #[ORM\Column]
     private ?int $user_id = null;
+
+    /**
+     * @var Collection<int, InstructorModule>
+     */
+    #[ORM\OneToMany(targetEntity: InstructorModule::class, mappedBy: 'instructor_id', orphanRemoval: true)]
+    private Collection $module_id;
+
+    public function __construct()
+    {
+        $this->module_id = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -29,6 +42,36 @@ class Instructor
     public function setUserId(int $user_id): static
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InstructorModule>
+     */
+    public function getModuleId(): Collection
+    {
+        return $this->module_id;
+    }
+
+    public function addModuleId(InstructorModule $moduleId): static
+    {
+        if (!$this->module_id->contains($moduleId)) {
+            $this->module_id->add($moduleId);
+            $moduleId->setInstructorId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModuleId(InstructorModule $moduleId): static
+    {
+        if ($this->module_id->removeElement($moduleId)) {
+            // set the owning side to null (unless already changed)
+            if ($moduleId->getInstructorId() === $this) {
+                $moduleId->setInstructorId(null);
+            }
+        }
 
         return $this;
     }

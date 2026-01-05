@@ -13,38 +13,30 @@ class InstructorModule
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $instructor_id = null;
+    #[ORM\ManyToOne(inversedBy: 'module_id')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Instructor $instructor_id = null;
 
     #[ORM\Column]
-    private ?int $module_id = null;
+
+    #[ORM\Column]
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getInstructorId(): ?int
+    public function getInstructorId(): ?Instructor
     {
         return $this->instructor_id;
     }
 
-    public function setInstructorId(int $instructor_id): static
+    public function setInstructorId(?Instructor $instructor_id): static
     {
         $this->instructor_id = $instructor_id;
 
         return $this;
     }
 
-    public function getModuleId(): ?int
-    {
-        return $this->module_id;
-    }
-
-    public function setModuleId(int $module_id): static
-    {
-        $this->module_id = $module_id;
-
-        return $this;
-    }
+    
 }
