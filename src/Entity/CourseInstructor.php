@@ -2,18 +2,19 @@
 
 namespace App\Entity;
 
+use App\Repository\CourseInstructorRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CourseInstructorRepository::class)]
 class CourseInstructor
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'instructorLinks')]
+    #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'courseInstructors')]
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'id', nullable: false)]
     private ?Course $course = null;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Instructor::class, inversedBy: 'courseLinks')]
+    #[ORM\ManyToOne(targetEntity: Instructor::class, inversedBy: 'courseInstructors')]
     #[ORM\JoinColumn(name: 'instructor_id', referencedColumnName: 'id', nullable: false)]
     private ?Instructor $instructor = null;
 

@@ -22,7 +22,7 @@ class Instructor
     #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: InstructorModule::class, orphanRemoval: true)]
     private Collection $instructorModules;
 
-    #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: CoursePeriod::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: CourseInstructor::class, orphanRemoval: true)]
     private Collection $courseInstructors;
 
     public function __construct()
@@ -82,7 +82,7 @@ class Instructor
         return $this->courseInstructors;
     }
 
-    public function addCourseInstructor(CoursePeriod $courseInstructor): static
+    public function addCourseInstructor(CourseInstructor $courseInstructor): static
     {
         if (!$this->courseInstructors->contains($courseInstructor)) {
             $this->courseInstructors->add($courseInstructor);
@@ -91,7 +91,7 @@ class Instructor
         return $this;
     }
 
-    public function removeCourseInstructor(CoursePeriod $courseInstructor): static
+    public function removeCourseInstructor(CourseInstructor $courseInstructor): static
     {
         if ($this->courseInstructors->removeElement($courseInstructor)) {
             if ($courseInstructor->getInstructor() === $this) {

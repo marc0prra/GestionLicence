@@ -45,8 +45,12 @@ class Module
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     private Collection $children;
 
+    #[ORM\OneToMany(mappedBy: 'module', targetEntity: InstructorModule::class, cascade: ['persist', 'remove'])]
+    private Collection $instructorModules;
+
     public function __construct()
     {
+        $this->instructorModules = new ArrayCollection();
         $this->children = new ArrayCollection();
     }
 
@@ -142,5 +146,31 @@ class Module
     public function getChildren() : Collection 
     { 
         return $this->children; 
+    }
+
+    public function getInstructorModules(): Collection
+    {
+        return $this->instructorModules;
+    }
+
+    public function addInstructorModule(InstructorModule $instructorModule): static
+    {
+        if (!$this->instructorModules->contains($instructorModule)) {
+            $this->instructorModules->add($instructorModule);
+            $instructorModule->setModule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInstructorModule(InstructorModule $instructorModule): static
+    {
+        if ($this->instructorModules->removeElement($instructorModule)) {
+            if ($instructorModule->getModule() === $this) {
+                $instructorModule->setModule(null);
+            }
+        }
+
+        return $this;
     }
 }
