@@ -15,14 +15,15 @@ class Instructor
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
+    #[ORM\OneToOne(inversedBy: 'instructor', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-    /**
-     * @var Collection<int, InstructorModule>
-     */
-    #[ORM\OneToMany(targetEntity: InstructorModule::class, mappedBy: 'instructor_id', orphanRemoval: true)]
-    private Collection $module_id;
+    #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: InstructorModule::class, orphanRemoval: true)]
+    private Collection $instructorModules;
+
+    #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: CourseInstructor::class, orphanRemoval: true)]
+    private Collection $courseInstructors;
 
     #[ORM\OneToOne(inversedBy: 'instructor', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,7 +31,8 @@ class Instructor
 
     public function __construct()
     {
-        $this->module_id = new ArrayCollection();
+        $this->instructorModules = new ArrayCollection();
+        $this->courseInstructors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -38,45 +40,68 @@ class Instructor
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(int $user_id): static
+    public function setUser(User $user): static
     {
-        $this->user_id = $user_id;
-
+        $this->user = $user;
         return $this;
     }
 
     /**
      * @return Collection<int, InstructorModule>
      */
-    public function getModuleId(): Collection
+    public function getInstructorModules(): Collection
     {
-        return $this->module_id;
+        return $this->instructorModules;
     }
 
-    public function addModuleId(InstructorModule $moduleId): static
+    public function addInstructorModule(InstructorModule $instructorModule): static
     {
-        if (!$this->module_id->contains($moduleId)) {
-            $this->module_id->add($moduleId);
-            $moduleId->setInstructorId($this);
+        if (!$this->instructorModules->contains($instructorModule)) {
+            $this->instructorModules->add($instructorModule);
+            $instructorModule->setInstructor($this);
         }
-
         return $this;
     }
 
-    public function removeModuleId(InstructorModule $moduleId): static
+    public function removeInstructorModule(InstructorModule $instructorModule): static
     {
-        if ($this->module_id->removeElement($moduleId)) {
-            // set the owning side to null (unless already changed)
-            if ($moduleId->getInstructorId() === $this) {
-                $moduleId->setInstructorId(null);
+        if ($this->instructorModules->removeElement($instructorModule)) {
+            if ($instructorModule->getInstructor() === $this) {
+                $instructorModule->setInstructor(null);
             }
         }
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, CourseInstructor>
+     */
+    public function getCourseInstructors(): Collection
+    {
+        return $this->courseInstructors;
+    }
+
+    public function addCourseInstructor(CourseInstructor $courseInstructor): static
+    {
+        if (!$this->courseInstructors->contains($courseInstructor)) {
+            $this->courseInstructors->add($courseInstructor);
+            $courseInstructor->setInstructor($this);
+        }
+        return $this;
+    }
+
+    public function removeCourseInstructor(CourseInstructor $courseInstructor): static
+    {
+        if ($this->courseInstructors->removeElement($courseInstructor)) {
+            if ($courseInstructor->getInstructor() === $this) {
+                $courseInstructor->setInstructor(null);
+            }
+        }
         return $this;
     }
 

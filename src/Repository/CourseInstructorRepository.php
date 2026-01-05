@@ -7,17 +7,17 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<CourseIntructor>
+ * @extends ServiceEntityRepository<CourseInstructor>
  */
-class CourseIntructorRepository extends ServiceEntityRepository
+class CourseInstructorRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CourseIntructor::class);
+        parent::__construct($registry, CourseInstructor::class);
     }
 
 //    /**
-//     * @return CourseIntructor[] Returns an array of CourseIntructor objects
+//     * @return CourseInstructor[] Returns an array of CourseInstructor objects
 //     */
 //    public function findByExampleField($value): array
 //    {

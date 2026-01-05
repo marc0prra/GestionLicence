@@ -9,34 +9,34 @@ use Doctrine\ORM\Mapping as ORM;
 class InstructorModule
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\ManyToOne(targetEntity: Instructor::class, inversedBy: 'instructorModules')]
+    #[ORM\JoinColumn(name: 'instructor_id', referencedColumnName: 'id', nullable: false)]
+    private ?Instructor $instructor = null;
 
-    #[ORM\ManyToOne(inversedBy: 'module_id')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Instructor $instructor_id = null;
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: 'instructorModules')]
+    #[ORM\JoinColumn(name: 'module_id', referencedColumnName: 'id', nullable: false)]
+    private ?Module $module = null;
 
-    #[ORM\Column]
-
-    #[ORM\Column]
-
-    public function getId(): ?int
+    public function getInstructor(): ?Instructor
     {
-        return $this->id;
+        return $this->instructor;
     }
 
-    public function getInstructorId(): ?Instructor
+    public function setInstructor(?Instructor $instructor): static
     {
-        return $this->instructor_id;
-    }
-
-    public function setInstructorId(?Instructor $instructor_id): static
-    {
-        $this->instructor_id = $instructor_id;
-
+        $this->instructor = $instructor;
         return $this;
     }
 
-    
+    public function getModule(): ?Module
+    {
+        return $this->module;
+    }
+
+    public function setModule(?Module $module): static
+    {
+        $this->module = $module;
+        return $this;
+    }
 }

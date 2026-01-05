@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CourseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 class Course
@@ -19,6 +21,12 @@ class Course
     #[ORM\Column]
     private ?\DateTime $end_date = null;
 
+    #[ORM\Column]
+    private ?bool $remotely = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $title = null;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?CoursePeriod $course_period_id = null;
@@ -31,11 +39,13 @@ class Course
     #[ORM\JoinColumn(nullable: false)]
     private ?Module $module_id = null;
 
-    #[ORM\Column]
-    private ?bool $remotely = null;
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: CourseInstructor::class, cascade: ['persist', 'remove'])]
+    private Collection $courseInstructors;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $title = null;
+    public function __construct()
+    {
+        $this->courseInstructors = new ArrayCollection();
+    }
 
     //Méthodes de classe
     public function getId(): ?int
@@ -123,6 +133,32 @@ class Course
     public function setTitle(?string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getCourseInstructors(): Collection
+    {
+        return $this->courseInstructors;
+    }
+
+    public function addCourseInstructor(CourseInstructor $courseInstructor): static
+    {
+        if (!$this->courseInstructors->contains($courseInstructor)) {
+            $this->courseInstructors->add($courseInstructor);
+            $courseInstructor->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourseInstructor(CourseInstructor $courseInstructor): static
+    {
+        if ($this->courseInstructors->removeElement($courseInstructor)) {
+            if ($courseInstructor->getCourse() === $this) {
+                $courseInstructor->setCourse(null);
+            }
+        }
 
         return $this;
     }
