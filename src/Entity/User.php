@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,7 +19,7 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)] 
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -32,6 +34,26 @@ class User
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Instructor $instructor = null;
 
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = [];
+        if ($this->role) {
+            $roles[] = $this->role;
+        }
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,7 +67,6 @@ class User
     public function setRole(string $role): static
     {
         $this->role = $role;
-
         return $this;
     }
 
@@ -57,7 +78,6 @@ class User
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -69,7 +89,6 @@ class User
     public function setLastName(?string $last_name): static
     {
         $this->last_name = $last_name;
-
         return $this;
     }
 
@@ -81,7 +100,6 @@ class User
     public function setFirstName(?string $first_name): static
     {
         $this->first_name = $first_name;
-
         return $this;
     }
 
@@ -93,7 +111,6 @@ class User
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -104,13 +121,10 @@ class User
 
     public function setInstructor(Instructor $instructor): static
     {
-        // set the owning side of the relation if necessary
         if ($instructor->getUser() !== $this) {
             $instructor->setUser($this);
         }
-
         $this->instructor = $instructor;
-
         return $this;
     }
 }
