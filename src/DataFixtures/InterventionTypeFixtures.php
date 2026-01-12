@@ -12,29 +12,29 @@ class InterventionTypeFixtures extends Fixture
     {
         return [
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Autonomie',
+                'description' => 'Elèves en autonomie',
+                'color' => '#6750A4'
             ],
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Conférence',
+                'description' => 'Conférence effectuée par un ou plusieurs intervenants',
+                'color' => '#458525'
             ],
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Cours',
+                'description' => 'Cours dispensé par un ou plusieurs intervenants',
+                'color' => '#415263'
             ],
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Évaluation',
+                'description' => 'Evaluation sous forme de POC ou d’écrit',
+                'color' => '#120252'
             ],
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Soutenance',
+                'description' => 'Soutenance de fin de projet',
+                'color' => '#412365'
             ],
         ];
     }
@@ -49,7 +49,7 @@ class InterventionTypeFixtures extends Fixture
             $interventionType->setDescription(self::data()[$i]['description']);
             $interventionType->setColor(self::data()[$i]['color']);
 
-            $this->addReference('interventionType' . $i, $interventionType);
+            $this->addReference('interventionType-' . $i + 1, $interventionType);
             $manager->persist($interventionType);
         }
         $manager->flush();
