@@ -1,0 +1,23 @@
+{# composants/form_switch.html.twig #}
+<div class="flex items-center gap-3 mb-4">
+	<label
+		class="relative inline-flex items-center cursor-pointer">
+		{# La checkbox réelle est cachée mais fonctionnelle pour Symfony #}
+		<input
+		type="checkbox" id="{{ field.vars.id }}" name="{{ field.vars.full_name }}" class="sr-only peer" {% if field.vars.checked %} checked {% endif %} value="1">
+
+		{# La piste du switch (le fond bleu/gris) #}
+		<div class="w-11 h-6 bg-gray-300 rounded-full peer
+						                    peer-checked:bg-[#004962]
+						                    after:content-['']
+						                    after:absolute after:top-[2px] after:left-[2px]
+						                    after:bg-white after:rounded-full after:h-5 after:w-5
+						                    after:transition-all
+						                    peer-checked:after:translate-x-full"></div>
+	</label>
+
+	{# Le texte à droite #}
+	<span class="text-base font-normal text-[#1a202c]">
+		{{ label|default('Intervention effectuée en visio') }}
+	</span>
+</div>
