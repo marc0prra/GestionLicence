@@ -50,17 +50,18 @@ class CourseFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
         for ($i = 0; $i < count(self::data()); $i++) {
             $course = new Course();
             $course->setStartDate(new \DateTime(self::data()[$i]['date_début']));
             $course->setEndDate(new \DateTime(self::data()[$i]['date_fin']));
             $course->setRemotely(self::data()[$i]['remotely']);
             $course->setTitle(self::data()[$i]['title']);
+
             $course->setInterventionTypeId($this->getReference('interventionType-' . rand(1, 5), InterventionType::class));
             $course->setModuleId($this->getReference('module-' . rand(1, 5), Module::class));
             $course->setCoursePeriodId($this->getReference('coursePeriod-' . rand(1, 5), CoursePeriod::class));
+
+
             $manager->persist($course);
         }
         $manager->flush();

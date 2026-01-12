@@ -41,8 +41,6 @@ class InterventionTypeFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
         for ($i = 0; $i < count(self::data()); $i++) {
             $interventionType = new InterventionType();
             $interventionType->setName(self::data()[$i]['name']);
