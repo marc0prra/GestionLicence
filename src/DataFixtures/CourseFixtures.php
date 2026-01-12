@@ -61,7 +61,6 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
             $course->setModuleId($this->getReference('module-' . rand(1, 5), Module::class));
             $course->setCoursePeriodId($this->getReference('coursePeriod-' . rand(1, 5), CoursePeriod::class));
 
-
             $manager->persist($course);
         }
         $manager->flush();
