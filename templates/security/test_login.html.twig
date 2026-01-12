@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - Lycée Saint-Vincent{% endblock %}
+
+{% block body %}
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body { font-family: 'Poppins', sans-serif; }
+</style>
+
+<div class="flex h-screen w-full bg-white">
+
+    {{ include('composants/sidebar_login.html.twig') }}
+
+    <div class="flex-1 flex flex-col justify-center px-10 md:px-32">
+        
+        <div class="max-w-2xl w-full">
+            <h1 class="text-3xl font-bold text-black mb-16 tracking-tight">
+                Gestion du supérieur
+            </h1>
+
+            <div class="space-y-8">
+                <h2 class="text-xl font-bold text-[#2A3B69] mb-6">
+                    Connexion au portail
+                </h2>
+
+                <form method="post" class="space-y-6">
+                    {% if error %}
+                        <div class="p-4 text-sm text-red-600 bg-red-50 rounded-lg border border-red-100">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    <div class="flex flex-col space-y-2">
+                        <label for="inputEmail" class="text-[14px] font-normal text-gray-700">
+                            Email - champ obligatoire
+                        </label>
+                        <input type="email" value="{{ last_username }}" name="_username" id="inputEmail" 
+                               class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2e4474] focus:border-transparent bg-white shadow-sm"
+                               placeholder="j.martins@mentalworks.fr" required autofocus>
+                    </div>
+
+                    <div class="flex flex-col space-y-2">
+                        <label for="inputPassword" class="text-[14px] font-normal text-gray-700">
+                            Mot de passe - champ obligatoire
+                        </label>
+                        <input type="password" name="_password" id="inputPassword" 
+                               class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2e4474] focus:border-transparent bg-white shadow-sm"
+                               placeholder="**********" required>
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="pt-12">
+                        {{ include('composants/button.html.twig', { 
+                            label: 'Accéder au portail', 
+                            type: 'confirm' 
+                        }) }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
