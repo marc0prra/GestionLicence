@@ -20,7 +20,7 @@ class InstructorModuleFixtures extends Fixture implements DependentFixtureInterf
             $instructorRef = $this->getReference('instructor-' . ($i+1), Instructor::class);
             $instructorModule->setInstructor($instructorRef);
 
-            $moduleRef = $this->getReference('module-' . ($i+1), Module::class);
+            $moduleRef = $this->getReference('module-' . rand(1, 4), Module::class);
             $instructorModule->setModule($moduleRef);
 
             $manager->persist($instructorModule);

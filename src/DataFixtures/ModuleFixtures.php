@@ -143,7 +143,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
             $module->setHoursCount(self::data()[$i]['hours_count']);
             $module->setCapstoneProject(self::data()[$i]['capstone_project']);
 
-            $module->setTeachingBlock($this->getReference(self::data()[$i]['teaching_block']));
+            $module->setTeachingBlock($this->getReference(self::data()[$i]['teaching_block'], TeachingBlock::class));
             
             $this->addReference('module-'. ($i+1), $module);       
             
@@ -157,11 +157,13 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                     $subModule->setCapstoneProject($child['capstone_project']);
                     $subModule->setTeachingBlock($module->getTeachingBlock());
                     $subModule->setParent($module);
+
                     $this->addReference('subModule-'.($i+1).'-'.($j+1), $subModule);
+
                     $manager->persist($subModule);
                 }
             }     
-            
+
             $manager->persist($module);       
         }
 

@@ -12,6 +12,8 @@ use App\Entity\CoursePeriod;
 
 class CourseFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const COURSE_1 = 'course-';
+
     public static function data(): array
     {
         return [
@@ -19,6 +21,7 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
                 'date_début' => '2026-01-01 08:40:00',
                 'date_fin' => '2026-01-01 17:25:00',
                 'remotely' => true,
+
                 'title' => 'php objet'
             ],
             [
@@ -58,9 +61,10 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
             $course->setRemotely(self::data()[$i]['remotely']);
             $course->setTitle(self::data()[$i]['title']);
             $course->setInterventionTypeId($this->getReference('interventionType-' . rand(1, count(InterventionTypeFixtures::data())), InterventionType::class));
-            $course->setModuleId($this->getReference('module-' . rand(1, 5), Module::class));
+            $course->setModuleId($this->getReference('module-' . rand(1, 4), Module::class));
             $course->setCoursePeriodId($this->getReference('coursePeriod-' . rand(1, 5), CoursePeriod::class));
 
+            $this->addReference(self::COURSE_1 .($i+1), $course);
 
             $manager->persist($course);
         }
@@ -70,7 +74,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            InterventionTypeFixtures::class
+            InterventionTypeFixtures::class,
+            ModuleFixtures::class,
         ];
     }
 }
