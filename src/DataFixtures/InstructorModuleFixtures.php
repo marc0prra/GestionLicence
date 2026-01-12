@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\InstructorModule;
 use App\Entity\Instructor;
-use App\Entity\Module; // Assure-toi du bon namespace
+use App\Entity\Module; 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -17,10 +17,10 @@ class InstructorModuleFixtures extends Fixture implements DependentFixtureInterf
         for ($i = 0; $i < 5; $i++) {
             $instructorModule = new InstructorModule();
 
-            $instructorRef = $this->getReference(InstructorFixtures::INSTRUCTOR_REFERENCE . $i, Instructor::class);
+            $instructorRef = $this->getReference('instructor-' . ($i+1), Instructor::class);
             $instructorModule->setInstructor($instructorRef);
 
-            $moduleRef = $this->getReference(ModuleFixtures::MODULE_REFERENCE . $i, Module::class);
+            $moduleRef = $this->getReference('module-' . ($i+1), Module::class);
             $instructorModule->setModule($moduleRef);
 
             $manager->persist($instructorModule);
