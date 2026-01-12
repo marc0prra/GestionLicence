@@ -18,12 +18,15 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // Création de l'utilisateur de la maquette
         $user = new User();
-        $user->setEmail('j.martins@mentalworks.fr');
-        $user->setRoles(['ROLE_USER']);
         
-        // Le mot de passe est haché
+        $user->setEmail('j.martins@mentalworks.fr');
+
+        $user->setRole('ROLE_USER'); 
+        
+        $user->setFirstName('J.');
+        $user->setLastName('Martins');
+
         $password = $this->hasher->hashPassword($user, 'password123');
         $user->setPassword($password);
 
