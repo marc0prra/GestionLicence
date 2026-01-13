@@ -142,9 +142,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
             $module->setDescription(self::data()[$i]['description']);
             $module->setHoursCount(self::data()[$i]['hours_count']);
             $module->setCapstoneProject(self::data()[$i]['capstone_project']);
-
             $module->setTeachingBlock($this->getReference(self::data()[$i]['teaching_block'], TeachingBlock::class));
-            
             $this->addReference('module-'. ($i+1), $module);       
             
             if (isset(self::data()[$i]['children'])) {
