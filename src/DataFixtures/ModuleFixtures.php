@@ -10,6 +10,18 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class ModuleFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const MODULE_RGP = 'module-rgpd';
+    public const MODULE_IP = 'module-ip';
+    public const MODULE_A11Y = 'module-accessibility';
+    public const MODULE_DOCKER = 'module-docker';
+    public const MODULE_GIT = 'module-git';
+    public const MODULE_CICD = 'module-cicd';
+    public const MODULE_MCD = 'module-mcd';
+    public const MODULE_SQL = 'module-sql';
+    public const MODULE_TAILWIND = 'module-tailwind';
+    public const MODULE_REACT = 'module-react';
+    public const MODULE_NEXT = 'module-next';
+
     public static function data(): array
     {
         return [
@@ -26,21 +38,24 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'code' => 'LEGAL_RGPD',
                         'description' => 'Règlementation données',
                         'hours_count' => 7,
-                        'capstone_project' => false
+                        'capstone_project' => false,
+                        'reference_module' => self::MODULE_RGP,
                     ],
                     [
                         'name' => 'Propriété intellectuelle',
                         'code' => 'LEGAL_IP',
                         'description' => 'Droits d\'auteur',
                         'hours_count' => 7,
-                        'capstone_project' => false
+                        'capstone_project' => false,
+                        'reference_module' => self::MODULE_IP,
                     ],
                     [
                         'name' => 'Accessibilité',
-                        'code' => 'LEGAL_A11Y',
+                        'code' => 'LEGAL_ACCS',
                         'description' => 'Normes RGAA',
                         'hours_count' => 7,
-                        'capstone_project' => false
+                        'capstone_project' => false,
+                        'reference_module' => self::MODULE_A11Y,
                     ],
                 ]
             ],
@@ -57,21 +72,24 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'code' => 'DEVOPS_DOCKER',
                         'description' => 'Conteneurisation',
                         'hours_count' => 14,
-                        'capstone_project' => false
+                        'capstone_project' => false,
+                        'reference_module' => self::MODULE_DOCKER,
                     ],
                     [
                         'name' => 'Git',
                         'code' => 'DEVOPS_GIT',
                         'description' => 'Gestion de versions',
                         'hours_count' => 7,
-                        'capstone_project' => false
+                        'capstone_project' => false,
+                        'reference_module' => self::MODULE_GIT,
                     ],
                     [
                         'name' => 'CI/CD',
                         'code' => 'DEVOPS_CICD',
                         'description' => 'Intégration continue',
                         'hours_count' => 21,
-                        'capstone_project' => true
+                        'capstone_project' => true,
+                        'reference_module' => self::MODULE_CICD,
                     ]
                 ]
             ],
@@ -88,14 +106,16 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'code' => 'DATA_MCD',
                         'description' => 'MCD et MLD',
                         'hours_count' => 7,
-                        'capstone_project' => false
+                        'capstone_project' => false,
+                        'reference_module' => self::MODULE_MCD,
                     ],
                     [
                         'name' => 'Monitoring BDD',
                         'code' => 'DATA_SQL',
                         'description' => 'Optimisation SQL',
                         'hours_count' => 3,
-                        'capstone_project' => false
+                        'capstone_project' => false,
+                        'reference_module' => self::MODULE_SQL,
                     ]
                 ]
             ],
@@ -113,6 +133,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'description' => 'Framework CSS',
                         'hours_count' => 14,
                         'capstone_project' => false,
+                        'reference_module' => self::MODULE_TAILWIND,
                     ],
                     [
                         'code' => 'REACT',
@@ -120,6 +141,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'description' => 'Librairie JS',
                         'hours_count' => 49,
                         'capstone_project' => true,
+                        'reference_module' => self::MODULE_REACT,
                     ],
                     [
                         'code' => 'NEXT',
@@ -127,6 +149,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'description' => 'Framework React',
                         'hours_count' => 28,
                         'capstone_project' => true,
+                        'reference_module' => self::MODULE_NEXT,
                     ],
                 ],
             ],
@@ -142,21 +165,21 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
             $module->setDescription(self::data()[$i]['description']);
             $module->setHoursCount(self::data()[$i]['hours_count']);
             $module->setCapstoneProject(self::data()[$i]['capstone_project']);
-            $module->setTeachingBlock($this->getReference(self::data()[$i]['teaching_block'], TeachingBlock::class));
-            $this->addReference('module-'. ($i+1), $module);       
+
+            $module->setTeachingBlock($this->getReference(self::data()[$i]['teaching_block'], TeachingBlock::class));     
             
             if (isset(self::data()[$i]['children'])) {
-                foreach (self::data()[$i]['children'] as $j => $child) {
+                for ($j = 0; $j < count(self::data()[$i]['children']); $j++) {
                     $subModule = new Module();
-                    $subModule->setCode($child['code']);
-                    $subModule->setName($child['name']);
-                    $subModule->setDescription($child['description']);
-                    $subModule->setHoursCount($child['hours_count']);
-                    $subModule->setCapstoneProject($child['capstone_project']);
+                    $subModule->setCode(self::data()[$i]['children'][$j]['code']);
+                    $subModule->setName(self::data()[$i]['children'][$j]['name']);
+                    $subModule->setDescription(self::data()[$i]['children'][$j]['description']);
+                    $subModule->setHoursCount(self::data()[$i]['children'][$j]['hours_count']);
+                    $subModule->setCapstoneProject(self::data()[$i]['children'][$j]['capstone_project']);
                     $subModule->setTeachingBlock($module->getTeachingBlock());
                     $subModule->setParent($module);
 
-                    $this->addReference('subModule-'.($i+1).'-'.($j+1), $subModule);
+                    $this->addReference(self::data()[$i]['children'][$j]['reference_module'], $subModule);
 
                     $manager->persist($subModule);
                 }

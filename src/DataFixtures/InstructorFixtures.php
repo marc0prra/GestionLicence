@@ -12,15 +12,15 @@ class InstructorFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 1; $i < count(UserFixtures::data()); $i++) {
             $instructor = new Instructor();
 
-            $user = $this->getReference('user-' . ($i+1), User::class); 
+            $user = $this->getReference('user-instructor-' . $i, User::class); 
             $instructor->setUser($user);
 
             $manager->persist($instructor);
 
-            $this->addReference('instructor-' . ($i+1), $instructor);
+            $this->addReference('instructor-' . $i, $instructor);
         }
 
         $manager->flush();

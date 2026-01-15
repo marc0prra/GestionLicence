@@ -15,35 +15,46 @@ class CoursePeriodFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             [
-                'name' => 'Semestre 1',
-                'code' => 'S1',
                 'start_date' => '2024-09-02',
                 'end_date' => '2025-01-24',
-                'school_year' => 'school_year_2024',
+                'school_year' => SchoolYearFixtures::SCHOOL_YEAR_2024,
             ],
             [
-                'name' => 'Semestre 2',
-                'code' => 'S2',
                 'start_date' => '2025-02-03',
                 'end_date' => '2025-07-06',
-                'school_year' => 'school_year_2024',
+                'school_year' => SchoolYearFixtures::SCHOOL_YEAR_2025,
+            ],
+            [
+                'start_date' => '2026-02-02',
+                'end_date' => '2026-07-05',
+                'school_year' => SchoolYearFixtures::SCHOOL_YEAR_2026,
             ],
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::data() as $periodData) {
+        for ($i = 0; $i < count(self::data()); $i++) {
             $period = new CoursePeriod();
-            $period->setName($periodData['name']);
-            $period->setCode($periodData['code']);
-            $period->setStartDate(new \DateTime($periodData['start_date']));
-            $period->setEndDate(new \DateTime($periodData['end_date']));
-            $schoolYear = $this->getReference($periodData['school_year']);
-            $period->setSchoolYear($schoolYear);
+            $period->setStartDate(new \DateTime(self::data()[$i]['start_date']));
+            $period->setEndDate(new \DateTime(self::data()[$i]['end_date']));
+
+            $period->setSchoolYearId($this->getReference(self::data()[$i]['school_year'], SchoolYear::class));
+
+            $this->addReference('coursePeriod-' . ($i + 1), $period);
+
             $manager->persist($period);
         }
 
         $manager->flush();
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            SchoolYearFixtures::class,
+        ];
+    }
 }
+
+
