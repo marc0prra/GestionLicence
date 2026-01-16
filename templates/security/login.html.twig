@@ -5,9 +5,9 @@
 {% block body %}
 <div class="flex min-h-screen w-full">
 
+    {# --- Sidebar Gauche --- #}
     <div class="flex flex-col p-8" style="width: 320px; background-color: #F3F5F8; flex-shrink: 0;">
         <div class="mb-10">
-
              <div class="flex items-center gap-3 text-[#2C416E] font-bold">
                 <i class="fas fa-shield-alt text-2xl"></i>
                 <div>
@@ -18,9 +18,9 @@
         </div>
     </div>
 
+    {# --- Contenu Principal --- #}
     <div class="flex-1 bg-white" style="padding-top: 60px; padding-left: 80px;">
         
-        {# Titre principal H1 #}
         <h1 class="text-3xl font-bold text-black mb-10">
             Gestion du supérieur
         </h1>
@@ -33,6 +33,7 @@
 
             <form method="post" class="space-y-6">
                 {% if error %}
+                    {# Message d'erreur Symfony #}
                     <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                         {{ error.messageKey|trans(error.messageData, 'security') }}
                     </div>
@@ -45,31 +46,32 @@
                     </div>
                 {% else %}
                     
-                    <div class="mb-4">
-                        <label for="inputEmail" class="block mb-2 text-base font-normal text-black">
+                    {# Champ Email #}
+                    {# Styles repris de form_champ_text.html.twig : w-[399px] h-[46px] focus:purple #}
+                    <div>
+                        <label for="inputEmail" class="block text-base font-normal text-black mb-2">
                             Email - champ obligatoire
                         </label>
                         <input type="email" 
                                value="{{ last_username|default('j.martins@mentalworks.fr') }}" 
                                name="email" 
                                id="inputEmail" 
-                               style="height: 50px;"
-                               class="bg-white border border-gray-200 text-black text-base rounded-md focus:ring-blue-900 focus:border-blue-900 block w-full px-4 shadow-sm placeholder-gray-500" 
+                               class="w-[399px] h-[46px] px-4 border border-gray-200 rounded placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                                placeholder="j.martins@mentalworks.fr"
                                autocomplete="email" 
                                required 
                                autofocus>
                     </div>
 
-                    <div class="mb-6">
-                        <label for="inputPassword" class="block mb-2 text-base font-normal text-black">
+                    {# Champ Mot de passe #}
+                    <div>
+                        <label for="inputPassword" class="block text-base font-normal text-black mb-2">
                             Mot de passe - champ obligatoire
                         </label>
                         <input type="password" 
                                name="password" 
                                id="inputPassword" 
-                               style="height: 50px;"
-                               class="bg-white border border-gray-200 text-black text-base rounded-md focus:ring-blue-900 focus:border-blue-900 block w-full px-4 shadow-sm placeholder-gray-500" 
+                               class="w-[399px] h-[46px] px-4 border border-gray-200 rounded placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                                placeholder="••••••••••••"
                                autocomplete="current-password" 
                                required>
@@ -78,16 +80,15 @@
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                     <div class="pt-2">
-                        <button type="submit" 
-                                style="background-color: #2C416E; height: 50px;"
-                                class="text-white hover:opacity-90 font-medium rounded-md text-base px-6 w-auto flex items-center justify-center">
-                            Accèder au portail
-                        </button>
+                        {# Inclusion du composant Bouton depuis le dossier 'composants' #}
+                        {% include 'composants/button.html.twig' with {
+                            'label': 'Accéder au portail',
+                            'type': 'confirm'
+                        } %}
                     </div>
                 {% endif %}
             </form>
         </div>
-    </div>
-
+    </div> 
 </div>
 {% endblock %}
