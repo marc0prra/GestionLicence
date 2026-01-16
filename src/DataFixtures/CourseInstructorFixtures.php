@@ -13,14 +13,26 @@ class CourseInstructorFixtures extends Fixture implements DependentFixtureInterf
 {
     public function load(ObjectManager $manager): void
     {
-        $instructor = $this->getReference('instructor-' . $i+1, Instructor::class);
-        $course = $this->getReference('course-' . $i+1, Course::class);
+        // Permet de définir quel enseignant appartient à quel cours
+        $assignments = [
+            'course-1' => 'instructor-1',
+            'course-2' => 'instructor-2',
+            'course-3' => 'instructor-3',
+            'course-4' => 'instructor-4',
+        ];
 
-        $courseInstructor = new CourseInstructor();
-        $courseInstructor->setInstructor($instructor);
-        $courseInstructor->setCourse($course);
+        // On parcout le tableau des assignations et on prend leurs références
+        foreach ($assignments as $courseRef => $instructorRef) {
+            $course = $this->getReference($courseRef, Course::class);
+            $instructor = $this->getReference($instructorRef, Instructor::class);
 
-        $manager->persist($courseInstructor);
+            $courseInstructor = new CourseInstructor();
+            $courseInstructor->setCourse($course);
+            $courseInstructor->setInstructor($instructor);
+
+            $manager->persist($courseInstructor);
+        }
+
         $manager->flush();
     }
 
