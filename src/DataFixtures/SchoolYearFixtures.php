@@ -8,6 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class SchoolYearFixtures extends Fixture
 {
+    // Constantes pour les années d'écoles (utilisées comme références dans les fixtures)
     public const SCHOOL_YEAR_2024 = 'school_year_2024';
     public const SCHOOL_YEAR_2025 = 'school_year_2025';
     public const SCHOOL_YEAR_2026 = 'school_year_2026';

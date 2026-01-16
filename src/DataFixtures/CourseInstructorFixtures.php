@@ -5,14 +5,16 @@ namespace App\DataFixtures;
 use App\Entity\CourseInstructor;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\Entity\Course;
 use App\Entity\Instructor;
 
-class CourseInstructorFixtures extends Fixture
+class CourseInstructorFixtures extends Fixture implements DependentFixtureInterface
 {
 
     public function load(ObjectManager $manager): void
     {
+        // Tableau qui assigne un enseignant à un cours
         $assignments = [
             'course-1' => 'instructor-1',
             'course-2' => 'instructor-2',
@@ -20,6 +22,7 @@ class CourseInstructorFixtures extends Fixture
             'course-4' => 'instructor-4',
         ];
 
+        // On parcourt les assignements pour récupérer les cours et les enseignants
         foreach ($assignments as $courseRef => $instructorRef) {
             $course = $this->getReference($courseRef, Course::class);
             $instructor = $this->getReference($instructorRef, Instructor::class);
@@ -32,5 +35,13 @@ class CourseInstructorFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            CourseFixtures::class,
+            InstructorFixtures::class,
+        ];
     }
 }

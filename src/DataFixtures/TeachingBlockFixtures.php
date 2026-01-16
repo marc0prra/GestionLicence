@@ -8,6 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class TeachingBlockFixtures extends Fixture
 {
+    // Constantes pour les blocs d'enseignement (utilisées comme références dans les fixtures)
     public const TEACHING_BLOCK_B1 = 'teaching-block-1';
     public const TEACHING_BLOCK_B2 = 'teaching-block-2';
     public const TEACHING_BLOCK_B3 = 'teaching-block-3';
@@ -20,26 +21,30 @@ class TeachingBlockFixtures extends Fixture
                 'code' => 'B1',
                 'name' => 'Piloter',
                 'description' => 'Piloter un projet informatique',
-                'hours_count' => 87.5
+                'hours_count' => 85.5,
+                'reference' => self::TEACHING_BLOCK_B1
             ],
             [
                 'code' => 'B2',
                 'name' => 'Coordonner',
                 'description' => 'Coordonner une equipe projet',
-                'hours_count' => 105
+                'hours_count' => 105,
+                'reference' => self::TEACHING_BLOCK_B2
 
             ],
             [
                 'code' => 'B3',
                 'name' => 'Superviser',
                 'description' => 'Superviser la mise en oeuvre d\'un projet informatique',
-                'hours_count' => 14
+                'hours_count' => 14,
+                'reference' => self::TEACHING_BLOCK_B3
             ],
             [
                 'code' => 'B4',
                 'name' => 'Coordonner',
                 'description' => 'Coordonner le cycle de vide des applications',
-                'hours_count' => 297.5
+                'hours_count' => 297.5,
+                'reference' => self::TEACHING_BLOCK_B4
             ],
         ];
     }
