@@ -13,7 +13,7 @@ class InstructorModuleFixtures extends Fixture implements DependentFixtureInterf
 {
     public function load(ObjectManager $manager): void
     {
-        // Permet de définir quel enseignant appartient à un sous-module
+        // Définir quelle instructeur va sur quel sous-module
         $assignments = [
             'instructor-1' => ModuleFixtures::MODULE_RGP,
             'instructor-2' => ModuleFixtures::MODULE_DOCKER,
@@ -26,12 +26,8 @@ class InstructorModuleFixtures extends Fixture implements DependentFixtureInterf
             $subModule = $this->getReference($subModuleRef, Module::class);
 
             $instructorModule = new InstructorModule();
-
-            $instructorRef = $this->getReference(InstructorFixtures::INSTRUCTOR_REFERENCE . $i, Instructor::class);
-            $instructorModule->setInstructor($instructorRef);
-
-            $moduleRef = $this->getReference(ModuleFixtures::MODULE_REFERENCE . $i, Module::class);
-            $instructorModule->setModule($moduleRef);
+            $instructorModule->setInstructor($instructor);
+            $instructorModule->setModule($subModule);
 
             $manager->persist($instructorModule);
         }

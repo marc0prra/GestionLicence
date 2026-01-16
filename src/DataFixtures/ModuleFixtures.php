@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Module;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class ModuleFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -24,10 +25,96 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             [
-                'code' => 'Tailwind_CSS',
+                'name' => 'test',
+                'code' => 'LEGAL_RGPD',
+                'description' => 'Règlementation données',
+                'hours_count' => 7,
+                'capstone_project' => false,
+                'reference_module' => self::MODULE_RGP,
+            ],
+            [
+                'name' => 'Propriété intellectuelle',
+                'code' => 'LEGAL_IP',
+                'description' => 'Droits d\'auteur',
+                'hours_count' => 7,
+                'capstone_project' => false,
+                'reference_module' => self::MODULE_IP,
+            ],
 
+            [
+                'name' => 'Accessibilité',
+                'code' => 'LEGAL_ACCS',
+                'description' => 'Normes RGAA',
+                'hours_count' => 7,
+                'capstone_project' => false,
+                'reference_module' => self::MODULE_A11Y,
+            ],
+            [
+                'name' => 'test',
+                'code' => 'DEVOPS_DOCKER',
+                'description' => 'Conteneurisation',
+                'hours_count' => 14,
+                'capstone_project' => false,
+                'reference_module' => self::MODULE_DOCKER,
+            ],
+            [
+                'name' => 'Git',
+                'code' => 'DEVOPS_GIT',
+                'description' => 'Gestion de versions',
+                'hours_count' => 7,
+                'capstone_project' => false,
+                'reference_module' => self::MODULE_GIT,
+            ],
+            [
+                'name' => 'CI/CD',
+                'code' => 'DEVOPS_CICD',
+                'description' => 'Intégration continue',
+                'hours_count' => 21,
+                'capstone_project' => true,
+                'reference_module' => self::MODULE_CICD,
+            ],
 
-            ]
+            [
+                'name' => 'test',
+                'code' => 'DATA_MCD',
+                'description' => 'MCD et MLD',
+                'hours_count' => 7,
+                'capstone_project' => false,
+                'reference_module' => self::MODULE_MCD,
+            ],
+            [
+                'name' => 'Monitoring BDD',
+                'code' => 'DATA_SQL',
+                'description' => 'Optimisation SQL',
+                'hours_count' => 3,
+                'capstone_project' => false,
+                'reference_module' => self::MODULE_SQL,
+            ],
+            [
+                'code' => 'test',
+                'name' => 'test',
+                'description' => 'Framework CSS',
+                'hours_count' => 14,
+                'capstone_project' => false,
+                'reference_module' => self::MODULE_TAILWIND,
+            ],
+            [
+                'code' => 'REACT',
+                'name' => 'React JS',
+                'description' => 'Librairie JS',
+                'hours_count' => 49,
+                'capstone_project' => true,
+                'reference_module' => self::MODULE_REACT,
+            ],
+            [
+                'code' => 'NEXT',
+                'name' => 'NextJS',
+                'description' => 'Framework React',
+                'hours_count' => 28,
+                'capstone_project' => true,
+                'reference_module' => self::MODULE_NEXT,
+            ],
+
         ];
     }
 
@@ -62,7 +149,13 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
 
             $manager->persist($module);
         }
-
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            TeachingBlockFixtures::class,
+        ];
     }
 }

@@ -5,6 +5,8 @@ namespace App\DataFixtures;
 use App\Entity\CourseInstructor;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Course;
+use App\Entity\Instructor;
 
 class CourseInstructorFixtures extends Fixture
 {
