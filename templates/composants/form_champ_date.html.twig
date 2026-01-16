@@ -1,12 +1,14 @@
-<label for="{{ field.vars.id }}" class="block text-base font-normal text-black mb-2">
-	{{ label|default('Date de début') }}
-	- champ obligatoire
-</label>
+<div>
+	<label for="{{ field.vars.id }}" class="block text-base font-normal text-black mb-2">
+		{{ label|default('Date de début') }}
+		- champ obligatoire
+	</label>
 
-{{ form_widget(field, {
+	{{ form_widget(field, {
         'attr': {
             'class': 'w-[281px] h-[46px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800'
         }
     }) }}
 
-{{ form_errors(field) }}
+	{{ form_errors(field) }}
+</div>

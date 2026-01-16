@@ -6,31 +6,24 @@
 {% block body %}
 	<div class="max-w-5xl mx-auto mt-10 p-6">
 		{{ form_start(form) }}
-		{% include "composants/form_champ_text.html.twig" with {
-				'label' : 'Titre',
-				'field' : form.title,
-				'placeholder' : 'Saisissez un titre'
-		} %}
 
-		<div class="flex flex-row gap-4">
-			<div>
-				{% include "composants/form_champ_date.html.twig" with {
+		{# Premier champ : Date de début #}
+		{% include "composants/form_champ_date.html.twig" with {
                 'field': form.start_date 
             } %}
-			</div>
 
-			<div class="mt-4">
-				{% include "composants/form_champ_date.html.twig" with {
+		<div class="mt-4"></div>
+		{# Espacement #}
+
+		{# Deuxième champ : Date de fin #}
+		{% include "composants/form_champ_date.html.twig" with {
                 'label': 'Date de fin',
                 'field': form.end_date
             } %}
-			</div>
-		</div>
 
-		{% include "composants/switch.html.twig" with {
-            'field': form.remotely,
-            'label': 'Intervention effectuée en visio'
-        } %}
+		<button type="submit" class="mt-6 bg-purple-600 text-white px-4 py-2 rounded">
+			Enregistrer
+		</button>
 
 		{{ form_end(form) }}
 	</div>

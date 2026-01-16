@@ -12,42 +12,44 @@ class InterventionTypeFixtures extends Fixture
     {
         return [
             [
-                'name' => 'Autonomie',
-                'description' => 'Elèves en autonomie',
-                'color' => '#6750A4'
+                'name' => 'Intervention',
+                'description' => 'Intervention',
+                'color' => 'Intervention'
             ],
             [
-                'name' => 'Conférence',
-                'description' => 'Conférence effectuée par un ou plusieurs intervenants',
-                'color' => '#458525'
+                'name' => 'Intervention',
+                'description' => 'Intervention',
+                'color' => 'Intervention'
             ],
             [
-                'name' => 'Cours',
-                'description' => 'Cours dispensé par un ou plusieurs intervenants',
-                'color' => '#415263'
+                'name' => 'Intervention',
+                'description' => 'Intervention',
+                'color' => 'Intervention'
             ],
             [
-                'name' => 'Évaluation',
-                'description' => 'Evaluation sous forme de POC ou d’écrit',
-                'color' => '#120252'
+                'name' => 'Intervention',
+                'description' => 'Intervention',
+                'color' => 'Intervention'
             ],
             [
-                'name' => 'Soutenance',
-                'description' => 'Soutenance de fin de projet',
-                'color' => '#412365'
+                'name' => 'Intervention',
+                'description' => 'Intervention',
+                'color' => 'Intervention'
             ],
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
+        // $product = new Product();
+        // $manager->persist($product);
         for ($i = 0; $i < count(self::data()); $i++) {
             $interventionType = new InterventionType();
             $interventionType->setName(self::data()[$i]['name']);
             $interventionType->setDescription(self::data()[$i]['description']);
             $interventionType->setColor(self::data()[$i]['color']);
 
-            $this->addReference('interventionType-' . $i + 1, $interventionType);
+            $this->addReference('interventionType' . $i, $interventionType);
             $manager->persist($interventionType);
         }
         $manager->flush();
