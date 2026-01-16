@@ -21,6 +21,7 @@ class InstructorModuleFixtures extends Fixture implements DependentFixtureInterf
             'instructor-4' => ModuleFixtures::MODULE_REACT,
         ];
 
+        // On parcout le tableau des assignations et on prend leurs références
         foreach ($assignments as $instructorRef => $subModuleRef) {
             $instructor = $this->getReference($instructorRef, Instructor::class);
             $subModule = $this->getReference($subModuleRef, Module::class);

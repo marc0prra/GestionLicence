@@ -12,6 +12,7 @@ use App\Entity\CoursePeriod;
 
 class CourseFixtures extends Fixture implements DependentFixtureInterface
 {
+    // On prend la référence des cours
     public const COURSE_1 = 'course-1';
     public const COURSE_2 = 'course-2';
     public const COURSE_3 = 'course-3';
@@ -79,6 +80,7 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
             $course->setRemotely(self::data()[$i]['remotely']);
             $course->setTitle(self::data()[$i]['title']);
             
+            // Lier le cours à son type d'intervention, module et période de cours
             $course->setInterventionTypeId($this->getReference(self::data()[$i]['interventionType'], InterventionType::class));
             $course->setModuleId($this->getReference(self::data()[$i]['module'], Module::class));
             $course->setCoursePeriodId($this->getReference('coursePeriod-' . rand(1, 3), CoursePeriod::class));

@@ -8,6 +8,7 @@ use App\Entity\InterventionType;
 
 class InterventionTypeFixtures extends Fixture
 {
+    // On prend la référence des types d'intervention
     public const INTERVENTION_AUTONOMIE = 'user-autonomie';
     public const INTERVENTION_CONFERENCE = 'user-conference';
     public const INTERVENTION_COURS = 'user-cours';
@@ -58,6 +59,7 @@ class InterventionTypeFixtures extends Fixture
             $interventionType->setDescription(self::data()[$i]['description']);
             $interventionType->setColor(self::data()[$i]['color']);
 
+            // Ajouter la référence pour que d'autres fixtures puissent y accéder
             $this->addReference(self::data()[$i]['reference'], $interventionType);
             $manager->persist($interventionType);
         }

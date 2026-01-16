@@ -10,6 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class ModuleFixtures extends Fixture implements DependentFixtureInterface
 {
+    // On prend la référence des modules
     public const MODULE_RGP = 'module-rgpd';
     public const MODULE_IP = 'module-ip';
     public const MODULE_A11Y = 'module-accessibility';
@@ -166,6 +167,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
             $module->setHoursCount(self::data()[$i]['hours_count']);
             $module->setCapstoneProject(self::data()[$i]['capstone_project']);
 
+            // Lier le module à son bloc d'enseignement
             $module->setTeachingBlock($this->getReference(self::data()[$i]['teaching_block'], TeachingBlock::class));     
             
             if (isset(self::data()[$i]['children'])) {
@@ -179,6 +181,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                     $subModule->setTeachingBlock($module->getTeachingBlock());
                     $subModule->setParent($module);
 
+                    // Ajouter la référence pour que d'autres fixtures puissent y accéder
                     $this->addReference(self::data()[$i]['children'][$j]['reference_module'], $subModule);
 
                     $manager->persist($subModule);

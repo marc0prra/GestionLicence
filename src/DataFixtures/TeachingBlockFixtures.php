@@ -8,6 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class TeachingBlockFixtures extends Fixture
 {
+    // On prend la référence des blocs d'enseignement 
     public const TEACHING_BLOCK_B1 = 'teaching-block-1';
     public const TEACHING_BLOCK_B2 = 'teaching-block-2';
     public const TEACHING_BLOCK_B3 = 'teaching-block-3';
@@ -57,6 +58,7 @@ class TeachingBlockFixtures extends Fixture
             $teachingBlock->setDescription(self::data()[$i]['description']);
             $teachingBlock->setHoursCount(self::data()[$i]['hours_count']);
 
+            // Ajouter la référence pour que d'autres fixtures puissent y accéder
             $this->addReference(self::data()[$i]['reference'], $teachingBlock);
 
             $manager->persist($teachingBlock);

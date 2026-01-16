@@ -8,6 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class SchoolYearFixtures extends Fixture
 {
+    // On prend la référence des années scolaires
     public const SCHOOL_YEAR_2024 = 'school_year_2024';
     public const SCHOOL_YEAR_2025 = 'school_year_2025';
     public const SCHOOL_YEAR_2026 = 'school_year_2026';
@@ -45,6 +46,7 @@ class SchoolYearFixtures extends Fixture
 
             $manager->persist($entity);
 
+            // Ajouter la référence pour que d'autres fixtures puissent y accéder
             $this->addReference(self::data()[$i]['reference_school'], $entity);
         }
         $manager->flush();

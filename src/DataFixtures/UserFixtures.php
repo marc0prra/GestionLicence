@@ -9,6 +9,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
+    // On prend la référence des instructeurs pour les lier aux utilisateurs
     public const USER_INSTRUCTOR_1 = 'user-instructor-1';
     public const USER_INSTRUCTOR_2 = 'user-instructor-2';
     public const USER_INSTRUCTOR_3 = 'user-instructor-3';
@@ -78,6 +79,7 @@ class UserFixtures extends Fixture
             
             $manager->persist($user);
 
+            // Ajouter la référence pour que InstructorFixtures puisse y accéder
             if (isset(self::data()[$i]['reference_instructor'])) {
                 $this->addReference(self::data()[$i]['reference_instructor'], $user);
             }
