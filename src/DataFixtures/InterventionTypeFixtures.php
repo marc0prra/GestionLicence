@@ -8,6 +8,7 @@ use App\Entity\InterventionType;
 
 class InterventionTypeFixtures extends Fixture
 {
+    // Constantes pour les types d'interventions (utilisées comme références dans les fixtures)
     public const INTERVENTION_AUTONOMIE = 'user-autonomie';
     public const INTERVENTION_CONFERENCE = 'user-conference';
     public const INTERVENTION_COURS = 'user-cours';
@@ -18,37 +19,40 @@ class InterventionTypeFixtures extends Fixture
     {
         return [
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Autonomie',
+                'description' => 'Travail en autonomie',
+                'color' => '#10b981',
+                'reference' => self::INTERVENTION_AUTONOMIE
             ],
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Conférence',
+                'description' => 'Conférence magistrale',
+                'color' => '#3b82f6',
+                'reference' => self::INTERVENTION_CONFERENCE
             ],
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Cours',
+                'description' => 'Cours théorique',
+                'color' => '#f59e0b',
+                'reference' => self::INTERVENTION_COURS
             ],
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Évaluation',
+                'description' => 'Contrôle des connaissances',
+                'color' => '#ef4444',
+                'reference' => self::INTERVENTION_EVALUATION
             ],
             [
-                'name' => 'Intervention',
-                'description' => 'Intervention',
-                'color' => 'Intervention'
+                'name' => 'Soutenance',
+                'description' => 'Présentation de projet',
+                'color' => '#8b5cf6',
+                'reference' => self::INTERVENTION_SOUTENANCE
             ],
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
         for ($i = 0; $i < count(self::data()); $i++) {
             $interventionType = new InterventionType();
             $interventionType->setName(self::data()[$i]['name']);
