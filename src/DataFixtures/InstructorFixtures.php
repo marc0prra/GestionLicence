@@ -17,12 +17,12 @@ class InstructorFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 5; $i++) {
             $instructor = new Instructor();
 
-            $userReference = $this->getReference(UserFixtures::USER_REFERENCE . $i, User::class);
-            $instructor->setUser($userReference);
+            $user = $this->getReference('user-instructor-' . $i, User::class);
+            $instructor->setUser($user);
 
             $manager->persist($instructor);
 
-            $this->addReference(self::INSTRUCTOR_REFERENCE . $i, $instructor);
+            $this->addReference('instructor-' . $i, $instructor);
         }
 
         $manager->flush();

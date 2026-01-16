@@ -8,7 +8,13 @@ use Doctrine\Persistence\ObjectManager;
 
 class TeachingBlockFixtures extends Fixture
 {
-    public function data() {
+    public const TEACHING_BLOCK_B1 = 'teaching-block-1';
+    public const TEACHING_BLOCK_B2 = 'teaching-block-2';
+    public const TEACHING_BLOCK_B3 = 'teaching-block-3';
+    public const TEACHING_BLOCK_B4 = 'teaching-block-4';
+
+    public static function data(): array
+    {
         return [
             [
                 'code' => 'B1',
@@ -42,15 +48,18 @@ class TeachingBlockFixtures extends Fixture
     {
         for ($i = 0; $i < count($this->data()); $i++) {
             $teachingBlock = new TeachingBlock();
-            $teachingBlock->setCode($this->data()[$i]['code']);
-            $teachingBlock->setName($this->data()[$i]['name']);
-            $teachingBlock->setDescription($this->data()[$i]['description']);
-            $teachingBlock->setHoursCount($this->data()[$i]['hours_count']);
+            $teachingBlock->setCode(self::data()[$i]['code']);
+            $teachingBlock->setName(self::data()[$i]['name']);
+            $teachingBlock->setDescription(self::data()[$i]['description']);
+            $teachingBlock->setHoursCount(self::data()[$i]['hours_count']);
+
+            $this->addReference(self::data()[$i]['reference'], $teachingBlock);
+
             $manager->persist($teachingBlock);
         }
 
         $manager->flush();
     }
-}    
+}
 
 

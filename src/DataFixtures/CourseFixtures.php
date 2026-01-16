@@ -11,6 +11,13 @@ use App\Entity\CoursePeriod;
 
 class CourseFixtures extends Fixture
 {
+    // On prend la référence des cours
+    public const COURSE_1 = 'course-1';
+    public const COURSE_2 = 'course-2';
+    public const COURSE_3 = 'course-3';
+    public const COURSE_4 = 'course-4';
+    public const COURSE_5 = 'course-5';
+
     public static function data(): array
     {
         return [
@@ -58,9 +65,13 @@ class CourseFixtures extends Fixture
             $course->setEndDate(new \DateTime(self::data()[$i]['date_fin']));
             $course->setRemotely(self::data()[$i]['remotely']);
             $course->setTitle(self::data()[$i]['title']);
-            $course->setInterventionTypeId($this->getReference('interventionType-' . rand(1, 5), InterventionType::class));
-            $course->setModuleId($this->getReference('module-' . rand(1, 5), Module::class));
-            $course->setCoursePeriodId($this->getReference('coursePeriod-' . rand(1, 5), CoursePeriod::class));
+
+            $course->setInterventionTypeId($this->getReference(self::data()[$i]['interventionType'], InterventionType::class));
+            $course->setModuleId($this->getReference(self::data()[$i]['module'], Module::class));
+            $course->setCoursePeriodId($this->getReference('coursePeriod-' . rand(1, 3), CoursePeriod::class));
+
+            $this->addReference(self::data()[$i]['course'], $course);
+
             $manager->persist($course);
         }
         $manager->flush();
