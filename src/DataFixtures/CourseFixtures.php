@@ -18,54 +18,113 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
     public const COURSE_3 = 'course-3';
     public const COURSE_4 = 'course-4';
     public const COURSE_5 = 'course-5';
+    public const COURSE_6 = 'course-6';
+    public const COURSE_7 = 'course-7';
+    public const COURSE_8 = 'course-8';
+    public const COURSE_9 = 'course-9';
+    public const COURSE_10 = 'course-10';
 
     public static function data(): array
     {
         return [
+            // Lundi 24 Novembre
             [
-                'date_début' => '2026-01-01 08:40:00',
-                'date_fin' => '2026-01-01 17:25:00',
-                'remotely' => true,
-                'title' => 'php objet',
+                'date_début' => '2025-11-24 08:30:00',
+                'date_fin' => '2025-11-24 12:00:00',
+                'remotely' => true, // Icône caméra présente
+                'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
-                'module' => ModuleFixtures::MODULE_REACT, 
+                'module' => ModuleFixtures::MODULE_JAVASCRIPT,
                 'course' => self::COURSE_1
             ],
             [
-                'date_début' => '2026-01-02 08:40:00',
-                'date_fin' => '2026-01-02 17:25:00',
+                'date_début' => '2025-11-24 13:30:00',
+                'date_fin' => '2025-11-24 17:00:00',
                 'remotely' => false,
-                'title' => 'autonomie',
-                'interventionType' => InterventionTypeFixtures::INTERVENTION_AUTONOMIE,
-                'module' => ModuleFixtures::MODULE_GIT, 
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
+                'module' => ModuleFixtures::MODULE_REACT,
                 'course' => self::COURSE_2
             ],
+
+            // Mardi 25 Novembre
             [
-                'date_début' => '2026-01-03 08:40:00',
-                'date_fin' => '2026-01-03 17:25:00',
-                'remotely' => true,
-                'title' => 'conference',
-                'interventionType' => InterventionTypeFixtures::INTERVENTION_CONFERENCE,
-                'module' => ModuleFixtures::MODULE_DOCKER, 
+                'date_début' => '2025-11-25 08:30:00',
+                'date_fin' => '2025-11-25 12:00:00',
+                'remotely' => false,
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_AUTONOMIE,
+                'module' => ModuleFixtures::MODULE_REACT,
                 'course' => self::COURSE_3
             ],
             [
-                'date_début' => '2026-01-04 08:40:00',
-                'date_fin' => '2026-01-04 17:25:00',
+                'date_début' => '2025-11-25 13:30:00',
+                'date_fin' => '2025-11-25 17:00:00',
                 'remotely' => false,
-                'title' => 'evaluation',
-                'interventionType' => InterventionTypeFixtures::INTERVENTION_EVALUATION,
-                'module' => ModuleFixtures::MODULE_ARCHI_BDD, 
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_SOUTENANCE,
+                'module' => ModuleFixtures::MODULE_DEVOPS,
                 'course' => self::COURSE_4
             ],
+
+            // Mercredi 26 Novembre
             [
-                'date_début' => '2026-01-05 08:40:00',
-                'date_fin' => '2026-01-05 17:25:00',
-                'remotely' => true,
-                'title' => 'soutenance',
-                'interventionType' => InterventionTypeFixtures::INTERVENTION_SOUTENANCE,
-                'module' => ModuleFixtures::MODULE_NEXT, 
+                'date_début' => '2025-11-26 08:30:00',
+                'date_fin' => '2025-11-26 12:00:00',
+                'remotely' => true, // Icône caméra présente
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
+                'module' => ModuleFixtures::MODULE_JAVASCRIPT,
                 'course' => self::COURSE_5
+            ],
+            [
+                'date_début' => '2025-11-26 13:30:00',
+                'date_fin' => '2025-11-26 17:00:00',
+                'remotely' => false,
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_AUTONOMIE,
+                'module' => ModuleFixtures::MODULE_JAVASCRIPT,
+                'course' => self::COURSE_6
+            ],
+
+            // Jeudi 27 Novembre
+            [
+                'date_début' => '2025-11-27 08:30:00',
+                'date_fin' => '2025-11-27 12:00:00',
+                'remotely' => false,
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
+                'module' => ModuleFixtures::MODULE_DOCKER,
+                'course' => self::COURSE_7
+            ],
+            [
+                'date_début' => '2025-11-27 13:30:00',
+                'date_fin' => '2025-11-27 17:00:00',
+                'remotely' => false,
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_EVALUATION,
+                'module' => ModuleFixtures::MODULE_ANGLAIS,
+                'course' => self::COURSE_8
+            ],
+
+            // Vendredi 28 Novembre
+            [
+                'date_début' => '2025-11-28 08:30:00',
+                'date_fin' => '2025-11-28 12:00:00',
+                'remotely' => false,
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_CONFERENCE,
+                'module' => ModuleFixtures::MODULE_REX,
+                'course' => self::COURSE_9
+            ],
+            [
+                'date_début' => '2025-11-28 13:30:00',
+                'date_fin' => '2025-11-28 17:00:00',
+                'remotely' => false,
+                'title' => '',
+                'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
+                'module' => ModuleFixtures::MODULE_COMMUNICATION,
+                'course' => self::COURSE_10
             ]
         ];
     }
