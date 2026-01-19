@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ModuleRepository;
-use Doctrine\Common\Collections\ArrayCollection; 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -119,9 +119,9 @@ class Module
         return $this;
     }
 
-    public function getTeachingBlock() : ?TeachingBlock 
-    { 
-        return $this->teachingBlock; 
+    public function getTeachingBlock(): ?TeachingBlock
+    {
+        return $this->teachingBlock;
     }
 
     public function setTeachingBlock(?TeachingBlock $teachingBlock): static
@@ -131,9 +131,9 @@ class Module
         return $this;
     }
 
-    public function getParent() : ?self 
-    { 
-        return $this->parent; 
+    public function getParent(): ?self
+    {
+        return $this->parent;
     }
 
     public function setParent(?self $parent): static
@@ -143,9 +143,9 @@ class Module
         return $this;
     }
 
-    public function getChildren() : Collection 
-    { 
-        return $this->children; 
+    public function getChildren(): Collection
+    {
+        return $this->children;
     }
 
     public function getInstructorModules(): Collection
@@ -172,5 +172,22 @@ class Module
         }
 
         return $this;
+    }
+
+    public function displayForSelect(?Module $parentModule = null): string
+    {
+        // displayname initialisé vide
+        $displayname = '';
+
+        // pas de parent ?
+
+        $module = null !== $parentModule ? $parentModule : $this;
+
+        if (null !== $module->parent) {
+            $displayname .= $module->displayForSelect($module->parent) . ' / ';
+        }
+
+        $displayname .= $module->name;
+        return $displayname;
     }
 }

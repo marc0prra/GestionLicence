@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Module>
@@ -16,7 +17,13 @@ class ModuleRepository extends ServiceEntityRepository
         parent::__construct($registry, Module::class);
     }
 
-//    /**
+    public function queryForSelect(): QueryBuilder
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.name', 'ASC');
+    }
+
+    //    /**
 //     * @return Module[] Returns an array of Module objects
 //     */
 //    public function findByExampleField($value): array
@@ -31,7 +38,7 @@ class ModuleRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Module
+    //    public function findOneBySomeField($value): ?Module
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')
