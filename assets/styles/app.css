@@ -2,4 +2,9 @@
 
 body {
     background-color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+aside {
+    font-family: 'Poppins', sans-serif;
 }
