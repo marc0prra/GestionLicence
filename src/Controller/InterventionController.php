@@ -15,12 +15,15 @@ class InterventionController extends AbstractController
     #[Route('/interventions', name: 'form_interventions')]
     public function index(EntityManagerInterface $em, Request $request): Response
     {
-        $form = $this->createForm(CourseType::class);
+        $course = new Course();
+        $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 try {
+                    $em->persist($course);
                     $em->flush();
+                    dd($form->getData());
                     $this->addFlash('success', 'Intervention ajoutée.');
                     return $this->redirectToRoute('form_interventions');
                 } catch (\Exception $e) {

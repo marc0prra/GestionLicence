@@ -4,27 +4,46 @@
 {% endblock %}
 
 {% block body %}
-	<div class="max-w-5xl mx-auto mt-10 p-6">
-		{{ form_start(form) }}
+<div class="max-w-5xl mx-auto mt-10 p-6">
+	{{ form_start(form) }}
+	{% include "composants/form_champ_text.html.twig" with {
+			'label' : 'Titre',
+			'field' : form.title
+		} %}
 
+	<div
+		class="flex">
 		{# Premier champ : Date de début #}
 		{% include "composants/form_champ_date.html.twig" with {
-                'field': form.start_date 
-            } %}
+            'field': form.start_date 
+        } %}
 
 		<div class="mt-4"></div>
 		{# Espacement #}
 
 		{# Deuxième champ : Date de fin #}
 		{% include "composants/form_champ_date.html.twig" with {
-                'label': 'Date de fin',
-                'field': form.end_date
-            } %}
-
-		<button type="submit" class="mt-6 bg-purple-600 text-white px-4 py-2 rounded">
-			Enregistrer
-		</button>
-
-		{{ form_end(form) }}
+            'label': 'Date de fin',
+            'field': form.end_date
+        } %}
 	</div>
+
+	<div class="flex">
+		{% include "composants/form_champ_select.html.twig" with {
+			'label' : 'Module',
+			'field' : form.module_id
+		} %}
+
+		{% include "composants/form_champ_select.html.twig" with {
+			'label' : 'Type d\'intervention',
+			'field' : form.intervention_type_id
+		} %}
+	</div>
+	
+	<button type="submit" class="mt-6 bg-purple-600 text-white px-4 py-2 rounded">
+		Enregistrer
+	</button>
+</div>
+
+{{ form_end(form) }}
 {% endblock %}

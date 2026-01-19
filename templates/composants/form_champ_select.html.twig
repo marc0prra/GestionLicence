@@ -2,16 +2,17 @@
 
 {% block body %}
 	<div>
-		<label for="module" class="block text-base font-normal text-black mb-2">
-			Module - champ obligatoire
+		<label for="{{ field.vars.id }}" class="block text-base font-normal text-black mb-2">
+			{{label|default("Module") }}
+			- champ obligatoire
 		</label>
-		<div class="relative">
-			<select id="module" name="module" required class=" w-[399px] h-[46px] px-4 bg-white border border-gray-200 rounded text-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 cursor-pointer">
-				<option selected disabled>Sélectionnez le module</option>
-				{% for module in modules %}
-					<option value="{{ module.id }}">{{ module.nom }}</option>
-				{% endfor %}
-			</select>
-		</div>
+
+		{{ form_widget(field, {
+			'attr': {
+				'class': 'w-[281px] h-[46px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800'
+			}
+		}) }}
+
+		{{ form_errors(field) }}
 	</div>
 {% endblock %}

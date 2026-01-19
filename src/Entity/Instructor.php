@@ -100,4 +100,12 @@ class Instructor
         }
         return $this;
     }
+
+    public function displayName(): string
+    {
+        $firstName = $this->user->getFirstName();
+        $lastName = $this->user->getLastName();
+
+        return $firstName . ' ' . $lastName;
+    }
 }
