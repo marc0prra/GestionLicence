@@ -16,28 +16,30 @@ class TeachingBlockRepository extends ServiceEntityRepository
         parent::__construct($registry, TeachingBlock::class);
     }
 
-//    /**
-//     * @return TeachingBlock[] Returns an array of TeachingBlock objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByFilters(?string $name, ?string $code): array
+    {
+        $filtre = $this->createQueryBuilder('t')
+            ->select('t.id', 't.name', 't.code', 't.description', 't.hours_count');
 
-//    public function findOneBySomeField($value): ?TeachingBlock
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($name) {
+            // LIKE permet de rechercher un nom qui contient le mot recherché
+            $filtre->andWhere('t.name LIKE :name')
+            ->setParameter('name', $name );
+        }
+
+        if ($code) {
+            $filtre->andWhere('t.code LIKE :code')
+            ->setParameter('code', $code );
+        }
+
+        return $filtre->getQuery()->getResult();
+    }
+
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.id', 't.name', 't.code', 't.description', 't.hours_count')
+            ->getQuery()
+            ->getResult();
+    }
 }
