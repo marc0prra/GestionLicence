@@ -49,12 +49,7 @@ class ModuleType extends AbstractType
                 'required' => false,
                 'placeholder' => 'Sélectionnez un parent (optionnel)',
                 'choice_label' => 'nom',
-                'query_builder' => function (EntityRepository $er) use ($bloc) {
-                    return $er->createQueryBuilder('m')
-                        ->where('m.bloc = :bloc')
-                        ->setParameter('bloc', $bloc)
-                        ->orderBy('m.nom', 'ASC');
-                },
+                'choices' => $bloc->getModules(),
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
