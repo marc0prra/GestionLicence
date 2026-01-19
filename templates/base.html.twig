@@ -25,11 +25,14 @@
 		{% endblock %}
 	</head>
 
-	<body class="flex h-screen bg-gray-50 overflow-hidden">
+	<body class="flex min-h-screen bg-gray-50">
 
 		{% include 'composants/sidebar.html.twig' %}
 
-		<main class="flex-1 p-0"> {% block header %}{% endblock %}{% block body %}{% endblock %}
+		<main class="flex-1 min-w-0 p-0 flex flex-col">
+			{% include 'composants/header.html.twig' %}
+			<div class="p-6"> {% block header %}{% endblock %}{% block body %}{% endblock %}
+				</div>
 			</main>
 
 		</body>

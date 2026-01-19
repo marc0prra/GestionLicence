@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Filter;
 
 use App\Entity\TeachingBlock;
 use Symfony\Component\Form\AbstractType;
@@ -16,12 +16,13 @@ class TeachingBlockFilterType extends AbstractType
         $builder
             ->add('code', TextType::class, [
                 'label' => 'Code',
+                'required' => false,
+                'attr' => ['placeholder' => 'Saisissez un code'],
             ])
             ->add('name', TextType::class, [
                 'label' => 'Nom du bloc',
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Filtrer',
+                'required' => false,
+                'attr' => ['placeholder' => 'Saisissez un nom'],
             ])
         ;
     }
@@ -30,6 +31,8 @@ class TeachingBlockFilterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => TeachingBlock::class,
+            'method' => 'GET',
+            'csrf_protection' => false,
         ]);
     }
 }

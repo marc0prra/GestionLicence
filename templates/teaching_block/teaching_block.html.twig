@@ -6,27 +6,73 @@
 
 {% block body %}
 
-	<section class="max-w-7xl mx-auto">
-		<div>
-			<h1 class="font-medium text-[#1F384C] text-[26px]">
-				Bloc d'enseignement
-			</h1>
-			<p class="font-medium font-[16px]">
-				Ces blocs sont les piliers du programme. Étant donné qu’ils sont similaires chaque année, ils ne sont pas modifiables (on peut simplement faire varier le nombre d’heure et leur description).
-			</p>
+<section class="max-w-5xl w-full mr-auto">
+	<div>
+		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+			Bloc d'enseignement
+		</h1>
+		<p class="font-medium font-[16px]">
+			Ces blocs sont les piliers du programme. Étant donné qu’ils sont similaires chaque année, ils ne sont pas modifiables (on peut simplement faire varier le nombre d’heure et leur description).
+		</p>
+	</div>
+
+	<div class="mt-[40px]">
+		<p class="text-[#FFBD01] font-medium text-[20px] pb-[10px]">
+			Filtres
+		</p>
+
+		{{ form_start(form, {'attr': {'class': 'flex flex-col lg:flex-row lg:items-end gap-3'}}) }}
+
+		<div class="flex flex-col w-full md:w-auto md:mr-4">
+			{{ form_label(form.code) }}
+			{{ form_widget(form.code) }}
 		</div>
 
-		<div class="mt-[20px]">
-			<p class="text-[#FFBD01] font-medium text-[20px]">
-				Filtres
-			</p>
+		<div class="flex flex-col w-full md:w-auto md:mr-4">
+			{{ form_label(form.name) }}
+			{{ form_widget(form.name) }}
+		</div>
 
-			<div class="">
-				{{ form_start(form) }}
-				{{ form_row(form.code) }}
-				{{ form_row(form.name) }}
-				{{ form_row(form.submit) }}
-			</div>
+		<div class="mt-2 md:mt-0">
+			{% include 'composants/button.html.twig' with {
+					label: 'Filtrer',
+					type: 'warning',
+				} %}
+		</div>
+		{{ form_end(form) }}
+
+	</div>
+
+	<hr class="mt-[20px] text-[#FFBD01]">
+
+	<div class="mt-[20px]">
+		<p class="font-medium text-[20px]">
+			{{ info|length }}
+			blocs
+		</p>
+
+		{% embed 'composants/table.html.twig' with {
+				headers: ['Code', 'Nom', 'Description', 'Nombre d\'heures', '']
+			} %}
+				{% block body %}
+					{% for item in info %}
+						<tr>
+							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.code }}</td>
+							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.name }}</td>
+							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.description }}</td>
+							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.hours_count }}</td>
+							<td class="px-[25px] py-[20px] flex items-center gap-2">
+								<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
+								<a href="#" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="3" class="px-[25px] py-[20px] text-[14px] text-center text-gray-500">Aucun résultat trouvé</td>
+						</tr>
+					{% endfor %}
+				{% endblock %}
+			{% endembed %}
 		</div>
 	</section>
 
