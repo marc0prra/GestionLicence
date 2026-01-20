@@ -9,8 +9,10 @@
             'class': field.vars.attr.class|default(default_class)
         }
     }) }}
-		<div class="text-red-500 text-sm mt-1">
-			{{ form_errors(field) }}
-		</div>
+		{% if field.vars.errors|length > 0 %}
+			<div class="text-red-500 text-sm mt-1">
+				{{ form_errors(field) }}
+			</div>
+		{% endif %}
 	</div>
 {% endblock %}
