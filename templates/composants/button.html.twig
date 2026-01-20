@@ -10,7 +10,7 @@
 {% set styles = {
     'confirm': 'bg-[#2C416E] text-white w-full max-w-[328px]',
     'cancel':  'bg-[#F0F0F0] text-black w-full max-w-[328px]',
-    'warning': 'bg-[#FFBD01] text-black w-full max-w-[153px]',
+    'warning': 'bg-[#FFBD01] text-black w-[153px]',
     'danger':  'bg-[#FF0004] text-white w-full max-w-[328px]'
 } %}
 
@@ -18,7 +18,7 @@
 {% set current_style = styles[type|default('confirm')]|default(styles.confirm) %}
 
 {# 3. Les styles communs à TOUS les boutons (Padding, Hauteur, Arrondi, Flex) #}
-{% set common_classes = 'h-[44px] text-[16px] rounded-[8px] inline-flex items-center justify-center text-center font-medium transition-opacity hover:opacity-90' %}
+{% set common_classes = 'h-[44px] text-[16px] rounded-[8px] inline-flex items-center justify-center text-center font-medium transition-opacity hover:opacity-90 cursor-pointer' %}
 
 {# 4. Le rendu HTML #}
 {% if url is defined %}

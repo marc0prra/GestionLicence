@@ -42,6 +42,9 @@ class TeachingBlock
         type : 'int',
         message : "Ce champ doit contenir un nombre"
     )]
+    #[Assert\Positive(
+        message : "Ce champ doit contenir un nombre positif"
+    )]
     #[ORM\Column()]
     private ?int $hours_count = null;
 

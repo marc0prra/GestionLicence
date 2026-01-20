@@ -14,7 +14,7 @@
 
 	{{form_start(form)}}
 
-	<div class="flex gap-3">
+	<div class="flex md:flex-row flex-col gap-3 mt-4">
 		{% include "composants/form_champ_text.html.twig" with {
             'label': 'Code du bloc - champ obligatoire',
             'field': form.code,
@@ -38,7 +38,7 @@
         } %}
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-2 items-center">
+    <div class="flex flex-col sm:flex-row gap-6 items-center pt-5">
         {% include 'composants/button.html.twig' with {
             label: 'Retour à la liste',
             type: 'cancel',
