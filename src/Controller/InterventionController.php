@@ -18,9 +18,11 @@ class InterventionController extends AbstractController
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
+
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 try {
+                    dd(($form)->getData());
                     $em->persist($course);
                     $em->flush();
                     dd($form->getData());

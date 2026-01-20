@@ -39,6 +39,10 @@
 			'field' : form.intervention_type_id
 		} %}
 	</div>
+
+		{% include "composants/multi_select.html.twig" with {
+			'field' : form.courseInstructors,
+		} %}
 	
 	<button type="submit" class="mt-6 bg-purple-600 text-white px-4 py-2 rounded">
 		Enregistrer

@@ -1,23 +1,84 @@
-{% block body %}
-	<div class="w-full max-w-md mx-auto mt-5">
-		<label class="block mb-2 text-sm font-medium text-gray-700">
-			Intervenants - champ obligatoire
-		</label>
+<div class="w-full max-w-md mt-5" id="instructor-container">
+	<label class="block mb-2 text-sm font-medium text-gray-700">
+		{{ form_label(field) }}
+	</label>
 
-		<div class="flex flex-wrap items-center gap-2 p-2 bg-white border border-gray-300 rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+	<div
+		class="flex flex-wrap items-center gap-2 p-2 bg-white border border-gray-300 rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
+		{# Conteneur des chips #}
+		<div id="chips-wrapper-{{ field.vars.id }}" class="flex flex-wrap gap-2"></div>
 
-			<div id="chips-container" class="flex flex-wrap gap-2"></div>
-
-			<select id="intervenant-select" class="flex-1 min-w-[150px] bg-transparent border-none outline-none text-sm cursor-pointer focus:ring-0">
-				<option value="" disabled selected>Choisir un intervenant...</option>
-				{% for intervenant in intervenants %}
-					<option value="{{ intervenant.id }}" data-name="{{ intervenant.nom }}">
-						{{ intervenant.nom }}
-					</option>
-				{% endfor %}
-			</select>
-		</div>
+		{# Widget Symfony #}
+		{{ form_widget(field, {
+            'attr': {
+                'class': 'flex-1 min-w-[150px] bg-transparent border-none outline-none text-sm cursor-pointer focus:ring-0 appearance-none'
+            }
+        }) }}
 	</div>
+</div>
 
-	{{ encore_entry_script_tags('app') }}
-{% endblock %}
+{# Bloc Script directement après le HTML pour tester #}
+<script>
+	(function () {
+console.log("Script d'intervenants chargé"); // Pour vérifier dans la console (F12)
+
+const initSelector = () => {
+const selectId = "{{ field.vars.id }}";
+const selectEl = document.getElementById(selectId);
+const chipsWrapper = document.getElementById('chips-wrapper-' + selectId);
+
+if (! selectEl || ! chipsWrapper) {
+console.error("Éléments introuvables : ", selectId);
+return;
+}
+
+// Fonction pour créer un chip
+const addChip = (value, text) => {
+const chip = document.createElement('div');
+chip.className = 'flex items-center gap-1 px-2 py-1 bg-blue-600 text-white text-xs font-medium rounded shadow-sm';
+chip.innerHTML = `
+                    <span>${text}</span>
+                    <button type="button" class="ml-1 hover:text-red-200 focus:outline-none" data-remove="${value}">&times;</button>
+                `;
+
+chip.querySelector('button').addEventListener('click', (e) => {
+e.stopPropagation();
+const opt = selectEl.querySelector(`option[value="${value}"]`);
+if (opt) 
+opt.selected = false;
+
+
+
+selectEl.dispatchEvent(new Event('change'));
+});
+
+chipsWrapper.appendChild(chip);
+};
+
+// Mise à jour de l'affichage
+const updateDisplay = () => {
+chipsWrapper.innerHTML = '';
+Array.from(selectEl.selectedOptions).forEach(option => {
+if (option.value) 
+addChip(option.value, option.text);
+
+
+
+});
+};
+
+// Événements
+selectEl.addEventListener('change', updateDisplay);
+
+// Initialisation au chargement (si données existantes)
+updateDisplay();
+};
+
+// Sécurité pour s'assurer que le DOM est prêt
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', initSelector);
+} else {
+initSelector();
+}
+})();
+</script>
