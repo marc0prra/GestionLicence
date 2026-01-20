@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 final class TeachingBlockController extends AbstractController
 {
     #[Route(path:'/teaching_block', name: 'teaching_block', methods: ['GET'])]
-    public function index(Request $request, TeachingBlockRepository $teachingBlockRepository): Response
+    public function teachingBlock(Request $request, TeachingBlockRepository $teachingBlockRepository): Response
     {
         $data = new TeachingBlock();
         $form = $this->createForm(TeachingBlockFilterType::class, $data);
@@ -31,5 +31,11 @@ final class TeachingBlockController extends AbstractController
             'info' => $info,
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route(path:'/teaching_block_fiche', name: 'teaching_block_fiche', methods: ['GET'])]
+    public function teachingBlockFiche(TeachingBlockRepository $teachingBlockRepository, Request $request) : Response 
+    {
+        return $this->render('teaching_block/teaching_block_fiche.html.twig');
     }
 }
