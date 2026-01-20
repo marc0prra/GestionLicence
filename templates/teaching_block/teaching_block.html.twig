@@ -68,7 +68,7 @@
 							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.hours_count }}</td>
 							<td class="px-[25px] py-[20px] flex items-center gap-2">
 								<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
-								<a href="" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
+								<a href="{{ path('teaching_block_edit', { id: item.id }) }}" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
 							</td>
 						</tr>
 					{% else %}
