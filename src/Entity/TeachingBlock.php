@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TeachingBlockRepository::class)]
 class TeachingBlock
@@ -16,16 +17,32 @@ class TeachingBlock
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank (
+        message : "Ce champ ne doit pas être vide"
+    )]
     #[ORM\Column(length: 50)]
     private ?string $code = null;
 
+    #[Assert\NotBlank (
+        message : "Ce champ ne doit pas être vide"
+    )]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\NotBlank(
+        message : "Ce champ ne doit pas être vide"
+    )]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(
+        message : "Ce champ ne doit pas être vide"
+    )]
+    #[Assert\Type(
+        type : 'int',
+        message : "Ce champ doit contenir un nombre"
+    )]
+    #[ORM\Column()]
     private ?int $hours_count = null;
 
     #[ORM\OneToMany(mappedBy: 'teachingBlock', targetEntity: Module::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
