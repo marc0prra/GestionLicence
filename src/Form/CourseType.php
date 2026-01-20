@@ -43,10 +43,6 @@ class CourseType extends AbstractType
                     'placeholder' => 'Saisissez un titre sur l\'intervention'
                 ]
             ])
-            ->add('course_period_id', EntityType::class, [
-                'class' => CoursePeriod::class,
-                'choice_label' => 'id',
-            ])
             ->add('intervention_type_id', EntityType::class, [
                 'class' => InterventionType::class,
                 'choice_label' => 'name',
@@ -63,11 +59,11 @@ class CourseType extends AbstractType
             ->add('courseInstructors', EntityType::class, [
                 'class' => Instructor::class,
                 'required' => true,
-                'multiple' => true, // Indispensable pour la sélection multiple
+                'multiple' => true,
+                'placeholder' => 'Choisir un intervenant...',
                 'choice_label' => 'displayName',
                 'attr' => [
                     'class' => 'flex-1 min-w-[150px] bg-transparent border-none outline-none text-sm cursor-pointer focus:ring-0 appearance-none',
-                    'data-placeholder' => 'Choisir un intervenant...',
                 ],
             ])
         ;
