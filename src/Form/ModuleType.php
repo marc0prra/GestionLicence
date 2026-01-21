@@ -12,51 +12,52 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM\EntityRepository;
 
 class ModuleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $bloc = $options['bloc_actuel'];
+        // Cette variable sert juste à filtrer la liste parente, on ne touche pas au nom de l'option
+        $blocActuel = $options['bloc_actuel'];
 
         $builder
-            ->add('bloc', EntityType::class, [
+            ->add('teachingBlock', EntityType::class, [ 
                 'class' => TeachingBlock::class,
-                'choice_label' => 'nom',
+                'choice_label' => function (TeachingBlock $bloc) {
+                    return $bloc->getCode() . ' - ' . $bloc->getDescription();
+                },
                 'label' => 'Bloc enseignement',
                 'disabled' => true,
-                'required' => true,
+                'required' => false,
             ])
             ->add('code', TextType::class, [
                 'label' => 'Code',
                 'required' => true,
                 'help' => 'Champ obligatoire, doit être unique.'
             ])
-
-            ->add('nom', TextType::class, [
+            ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'required' => true,
             ])
-            ->add('heures', IntegerType::class, [
+            ->add('hoursCount', IntegerType::class, [
                 'label' => 'Nombre d\'heures',
                 'required' => false,
             ])
-
             ->add('parent', EntityType::class, [
                 'class' => Module::class,
                 'label' => 'Parent',
                 'required' => false,
                 'placeholder' => 'Sélectionnez un parent (optionnel)',
-                'choice_label' => 'nom',
-                'choices' => $bloc->getModules(),
+                'choice_label' => 'name',
+                // On utilise la variable $blocActuel juste pour filtrer les choix
+                'choices' => $blocActuel ? $blocActuel->getModules() : [],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'required' => true,
+                'required' => false,
                 'attr' => ['rows' => 4],
             ])
-            ->add('projetFilRouge', CheckboxType::class, [
+            ->add('capstoneProject', CheckboxType::class, [
                 'label' => 'Module effectué sur le projet fil rouge',
                 'required' => false,
             ])
@@ -67,9 +68,8 @@ class ModuleType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Module::class,
-            'bloc_actuel' => null, 
+            'bloc_actuel' => null,
         ]);
-
         $resolver->setAllowedTypes('bloc_actuel', ['null', TeachingBlock::class]);
     }
 }
