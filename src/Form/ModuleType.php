@@ -17,7 +17,6 @@ class ModuleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Cette variable sert juste à filtrer la liste parente, on ne touche pas au nom de l'option
         $blocActuel = $options['bloc_actuel'];
 
         $builder
@@ -49,7 +48,6 @@ class ModuleType extends AbstractType
                 'required' => false,
                 'placeholder' => 'Sélectionnez un parent (optionnel)',
                 'choice_label' => 'name',
-                // On utilise la variable $blocActuel juste pour filtrer les choix
                 'choices' => $blocActuel ? $blocActuel->getModules() : [],
             ])
             ->add('description', TextareaType::class, [

@@ -14,7 +14,7 @@
 
     {{ form_start(form) }}
 
-    {# --- 1. BLOC ENSEIGNEMENT (Grisé) --- #}
+    {# --- 1. BLOC ENSEIGNEMENT --- #}
     <div class="mb-6">
         {{ form_label(form.teachingBlock, 'Bloc enseignement', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
         {{ form_widget(form.teachingBlock, {
@@ -90,13 +90,10 @@
     </div>
 
     {# --- 5. SWITCH (TOGGLE) --- #}
-    {# C'est ici qu'on transforme la checkbox moche en joli switch comme sur l'image #}
     <div class="mb-8">
         <label class="inline-flex items-center cursor-pointer">
-            {# On ajoute la classe 'peer' à la checkbox réelle (qui est cachée) #}
             {{ form_widget(form.capstoneProject, {'attr': {'class': 'sr-only peer'}}) }}
-            
-            {# Le design du switch #}
+
             <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0f3460]"></div>
             
             <span class="ms-3 text-sm font-medium text-gray-900">Module effectué sur le projet fil rouge</span>
