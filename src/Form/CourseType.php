@@ -57,6 +57,7 @@ class CourseType extends AbstractType
             ])
 
             ->add('courseInstructors', EntityType::class, [
+                'mapped' => false,
                 'class' => Instructor::class,
                 'required' => true,
                 'multiple' => true,

@@ -1,130 +1,47 @@
-<div class="w-full max-w-md mt-5">
-    <label class="block mb-2 text-sm font-medium text-gray-700">
-        {{ field.vars.label|default("Intervenants - champ obligatoire") }}
-    </label>
+<div class="w-full max-w-md mt-5" id="instructor-wrapper" data-field-id="{{ field.vars.id }}">
+	<label class="block mb-2 text-sm font-medium text-gray-700">
+		{{ field.vars.label|default("Intervenants - champ obligatoire") }}
+	</label>
 
-    <div id="modal-trigger" class="flex flex-wrap items-center gap-2 p-2 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer hover:border-zinc-400 min-h-[46px] relative transition-all">
-        <div id="chips-container" class="flex flex-wrap gap-2">
-            </div>
-        <span id="placeholder-text" class="text-zinc-400 text-sm ml-1">Cliquer pour sélectionner...</span>
-        
-        <div class="ml-auto pr-1">
-            <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </div>
-    </div>
+	<div id="modal-trigger" class="flex items-center justify-between p-2 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer hover:border-zinc-400 min-h-[46px] relative transition-all">
 
-    <div class="hidden">
-        {{ form_widget(field) }}
-    </div>
+		<div class="flex flex-wrap items-center gap-2 flex-1">
+			<div id="chips-container" class="flex flex-wrap gap-2"></div>
+			<span id="placeholder-text" class="text-zinc-400 text-sm ml-1">Cliquer pour sélectionner...</span>
+		</div>
+
+		<div class="flex-shrink-0 ml-2 pr-1">
+			<svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+			</svg>
+		</div>
+	</div>
+
+	<div class="hidden">
+		{{ form_widget(field) }}
+	</div>
 </div>
 
 <div id="instructor-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh]">
-        
-        <div class="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50">
-            <h3 class="font-bold text-zinc-800 text-lg">Choisir les intervenants</h3>
-            <button type="button" class="close-modal text-zinc-400 hover:text-zinc-800 text-2xl p-2">&times;</button>
-        </div>
-        
-        <div class="p-2 overflow-y-auto flex-1 bg-white">
-            {% for choice in field.vars.choices %}
-                <label class="flex items-center p-3 hover:bg-zinc-100 rounded-lg cursor-pointer transition-colors group">
-                    <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}" 
-                           class="instructor-checkbox w-5 h-5 text-zinc-800 border-zinc-300 rounded focus:ring-zinc-500 cursor-pointer">
-                    <span class="ml-3 text-zinc-700 group-hover:text-black font-medium text-sm">{{ choice.label }}</span>
-                </label>
-            {% endfor %}
-        </div>
+	<div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh]">
 
-        <div class="p-4 bg-zinc-50 border-t border-zinc-100 flex justify-end gap-3">
-            <button type="button" class="close-modal px-4 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-200 rounded-lg">Annuler</button>
-            <button type="button" id="confirm-selection" class="px-6 py-2 text-sm font-bold text-white bg-zinc-800 hover:bg-black rounded-lg shadow-md transition-all active:scale-95">Valider</button>
-        </div>
-    </div>
+		<div class="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50">
+			<h3 class="font-bold text-zinc-800 text-lg">Choisir les intervenants</h3>
+			<button type="button" class="close-modal text-zinc-400 hover:text-zinc-800 text-2xl p-2">&times;</button>
+		</div>
+
+		<div class="p-2 overflow-y-auto flex-1 bg-white">
+			{% for choice in field.vars.choices %}
+				<label class="flex items-center p-3 hover:bg-zinc-100 rounded-lg cursor-pointer transition-colors group">
+					<input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}" class="instructor-checkbox w-5 h-5 text-zinc-800 border-zinc-300 rounded focus:ring-zinc-500 cursor-pointer">
+					<span class="ml-3 text-zinc-700 group-hover:text-black font-medium text-sm">{{ choice.label }}</span>
+				</label>
+			{% endfor %}
+		</div>
+
+		<div class="p-4 bg-zinc-50 border-t border-zinc-100 flex justify-end gap-3">
+			<button type="button" class="close-modal px-4 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-200 rounded-lg">Annuler</button>
+			<button type="button" id="confirm-selection" class="px-6 py-2 text-sm font-bold text-white bg-zinc-800 hover:bg-black rounded-lg shadow-md transition-all active:scale-95">Valider</button>
+		</div>
+	</div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('instructor-modal');
-    const trigger = document.getElementById('modal-trigger');
-    const closeButtons = document.querySelectorAll('.close-modal');
-    const confirmBtn = document.getElementById('confirm-selection');
-    const chipsContainer = document.getElementById('chips-container');
-    const placeholder = document.getElementById('placeholder-text');
-    const checkboxes = document.querySelectorAll('.instructor-checkbox');
-    
-    // On cible le vrai select Symfony par son ID
-    const realSelect = document.getElementById('{{ field.vars.id }}');
-
-    // 1. Ouvrir la modale
-    trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Bloque le scroll derrière
-    });
-
-    // 2. Fermer la modale
-    const closeModal = () => {
-        modal.classList.add('hidden');
-        document.body.style.overflow = ''; // Réactive le scroll
-        syncCheckboxesFromRealSelect(); // Annule les changements non confirmés
-    };
-
-    closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
-
-    // 3. Valider la sélection
-    confirmBtn.addEventListener('click', () => {
-        updateEverything();
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
-    });
-
-    function updateEverything() {
-        chipsContainer.innerHTML = '';
-        const selectedValues = [];
-
-        checkboxes.forEach(cb => {
-            if (cb.checked) {
-                selectedValues.push(cb.value);
-                createChip(cb.value, cb.getAttribute('data-label'));
-            }
-        });
-
-        // Met à jour le vrai SELECT Symfony pour l'envoi du formulaire
-        Array.from(realSelect.options).forEach(opt => {
-            opt.selected = selectedValues.includes(opt.value);
-        });
-
-        // Affiche/Masque le texte "Cliquer pour sélectionner"
-        placeholder.style.display = selectedValues.length > 0 ? 'none' : 'block';
-    }
-
-    function createChip(id, name) {
-        const chip = document.createElement('div');
-        chip.className = "flex items-center gap-2 px-3 py-1 text-sm font-medium text-white bg-zinc-800 rounded-full shadow-sm";
-        chip.innerHTML = `
-            <span>${name}</span>
-            <button type="button" onclick="removeInstructorSelection('${id}')" class="hover:text-red-400 focus:outline-none leading-none text-lg">&times;</button>
-        `;
-        chipsContainer.appendChild(chip);
-    }
-
-    // Fonction pour retirer un élément via la croix (accessible globalement)
-    window.removeInstructorSelection = function(id) {
-        const cb = document.querySelector(`.instructor-checkbox[value="${id}"]`);
-        if (cb) cb.checked = false;
-        updateEverything();
-    };
-
-    function syncCheckboxesFromRealSelect() {
-        const currentValues = Array.from(realSelect.selectedOptions).map(o => o.value);
-        checkboxes.forEach(cb => {
-            cb.checked = currentValues.includes(cb.value);
-        });
-    }
-
-    // Initialisation au chargement (pour l'édition)
-    syncCheckboxesFromRealSelect();
-    updateEverything();
-});
-</script>

@@ -1,0 +1,26 @@
+<div class="mt-4">
+	<div class="flex items-center gap-3">
+		<label class="relative inline-flex items-center cursor-pointer">
+			{{ form_widget(field, {
+                'attr': { 'class': 'sr-only peer' }
+            }) }}
+
+			<div class="w-14 h-7 bg-zinc-300 peer-focus:outline-none rounded-full peer
+																                        peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+																                        after:content-[''] after:absolute after:top-[4px] after:start-[4px]
+																                        after:bg-white after:border-gray-300 after:border after:rounded-full
+																                        after:h-[20px] after:w-[20px] after:transition-all
+																                        peer-checked:bg-[#004a6d]"></div>
+		</label>
+
+		<span class="text-lg font-medium text-zinc-900">
+			{{ label|default(field.vars.label) }}
+		</span>
+	</div>
+
+	{% if form_errors(field) %}
+		<div class="mt-1 text-red-500 text-sm italic">
+			{{ form_errors(field) }}
+		</div>
+	{% endif %}
+</div>
