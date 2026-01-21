@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Course;
-use App\Entity\CoursePeriod;
 use App\Entity\InterventionType;
 use App\Entity\Module;
 use App\Entity\Instructor;
@@ -21,7 +20,6 @@ class CourseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            //type datetime
             ->add('start_date', DateTimeType::class, [
                 'label' => 'Date de début - champ obligatoire',
                 'required' => true,
