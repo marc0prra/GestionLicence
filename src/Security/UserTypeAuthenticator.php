@@ -48,9 +48,8 @@ class UserTypeAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        // Remplacez l'exception par ceci (redirection vers la page d'accueil) :
+        return new RedirectResponse($this->urlGenerator->generate('teaching_block')); 
     }
 
     protected function getLoginUrl(Request $request): string
