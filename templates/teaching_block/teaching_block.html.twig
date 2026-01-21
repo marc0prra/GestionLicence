@@ -60,6 +60,7 @@
 			headers: ['Code', 'Nom', 'Description', 'Nombre d\'heures', '']
 		} %}
 			{% block body %}
+			{# item devient un tableau donc il contient les valeurs de code, name, description et hours_count. Pour vérifier, faites un dump pour le tableau item #}
 				{% for item in info %}
 					<tr>
 						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.code }}</td>

@@ -24,6 +24,7 @@
 			headers: ['Année promotion', 'Saison', '']
 		} %}
 			{% block body %}
+			{# annees devient un tableau, donc il contient les valeurs name, start_date et end_date. Pour vérifier, faites un dump du tableau annees #}
 				{% for annees in dataAnneesScolaire %}
 					<tr>
 						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ annees.name }}</td>
