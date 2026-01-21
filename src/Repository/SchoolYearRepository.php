@@ -16,28 +16,12 @@ class SchoolYearRepository extends ServiceEntityRepository
         parent::__construct($registry, SchoolYear::class);
     }
 
-    //    /**
-    //     * @return SchoolYear[] Returns an array of SchoolYear objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?SchoolYear
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findAll() : array 
+    {
+        return $this->createQueryBuilder('s')
+        ->select('s.id', 's.name', 's.start_date', 's.end_date')
+        ->orderBy('s.name', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
 }
