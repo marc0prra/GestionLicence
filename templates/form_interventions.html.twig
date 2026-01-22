@@ -11,17 +11,14 @@
 			'field' : form.title
 		} %}
 
-	<div
-		class="flex">
-		{# Premier champ : Date de début #}
+	<div class="flex">
+
 		{% include "composants/form_champ_date.html.twig" with {
             'field': form.start_date 
         } %}
 
 		<div class="mt-4"></div>
-		{# Espacement #}
 
-		{# Deuxième champ : Date de fin #}
 		{% include "composants/form_champ_date.html.twig" with {
             'label': 'Date de fin',
             'field': form.end_date
