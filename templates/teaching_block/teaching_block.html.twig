@@ -57,28 +57,29 @@
 		</p>
 
 		{% embed 'composants/table.html.twig' with {
-				headers: ['Code', 'Nom', 'Description', 'Nombre d\'heures', '']
-			} %}
-				{% block body %}
-					{% for item in info %}
-						<tr>
-							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.code }}</td>
-							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.name }}</td>
-							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.description }}</td>
-							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.hours_count }}</td>
-							<td class="px-[25px] py-[20px] flex items-center gap-2">
-								<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
-								<a href="" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="3" class="px-[25px] py-[20px] text-[14px] text-center text-gray-500">Aucun résultat trouvé</td>
-						</tr>
-					{% endfor %}
-				{% endblock %}
-			{% endembed %}
-		</div>
-	</section>
+			headers: ['Code', 'Nom', 'Description', 'Nombre d\'heures', '']
+		} %}
+			{% block body %}
+			{# item devient un tableau donc il contient les valeurs de code, name, description et hours_count. Pour vérifier, faites un dump pour le tableau item #}
+				{% for item in info %}
+					<tr>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.code }}</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.name }}</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.description }}</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ item.hours_count }}</td>
+						<td class="px-[25px] py-[20px] flex items-center gap-2">
+							<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
+							<a href="{{ path('teaching_block_edit', { id: item.id }) }}" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="3" class="px-[25px] py-[20px] text-[14px] text-center text-gray-500">Aucun résultat trouvé</td>
+					</tr>
+				{% endfor %}
+			{% endblock %}
+		{% endembed %}
+	</div>
+</section>
 
 {% endblock %}

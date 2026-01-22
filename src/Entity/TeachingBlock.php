@@ -22,10 +22,10 @@ class TeachingBlock
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column()]
     private ?int $hours_count = null;
 
     #[ORM\OneToMany(mappedBy: 'teachingBlock', targetEntity: Module::class, cascade: ['persist', 'remove'], orphanRemoval: true)]

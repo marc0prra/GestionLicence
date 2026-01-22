@@ -8,17 +8,17 @@
 
 {# 1. Définition des styles spécifiques pour chaque bouton (Couleur + Largeur + Couleur Texte) #}
 {% set styles = {
-    'confirm': 'bg-[#2C416E] text-white w-[122px]',
-    'cancel':  'bg-[#F0F0F0] text-black w-[103px]',
-    'warning': 'bg-[#FFBD01] text-black w-[122px]',
-    'danger':  'bg-[#FF0004] text-white w-[122px]'
+    'confirm': 'bg-[#2C416E] text-white w-full max-w-[328px]',
+    'cancel':  'bg-[#F0F0F0] text-black w-full max-w-[328px]',
+    'warning': 'bg-[#FFBD01] text-black w-[153px]',
+    'danger':  'bg-[#FF0004] text-white w-full max-w-[328px]'
 } %}
 
 {# 2. Sélection du style (par défaut 'confirm' si le type est inconnu) #}
-{% set current_style = styles[type|default('confirm')] ?? styles['confirm'] %}
+{% set current_style = styles[type|default('confirm')]|default(styles.confirm) %}
 
 {# 3. Les styles communs à TOUS les boutons (Padding, Hauteur, Arrondi, Flex) #}
-{% set common_classes = 'h-[44px] px-[20px] py-[14px] rounded-[8px] gap-[10px] inline-flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-90' %}
+{% set common_classes = 'h-[44px] text-[16px] rounded-[8px] inline-flex items-center justify-center text-center font-medium transition-opacity hover:opacity-90 cursor-pointer' %}
 
 {# 4. Le rendu HTML #}
 {% if url is defined %}

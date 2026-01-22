@@ -3,19 +3,13 @@
 {% block title %}Connexion - Gestion du supérieur{% endblock %}
 
 {% block body %}
-{# On utilise min-h-screen pour prendre toute la hauteur #}
 <div class="bg-white min-h-screen w-full text-left" style="padding-top: 60px; padding-left: 80px;">
     
-    {# Titre principal H1 #}
     <h1 class="text-3xl font-bold text-black mb-10">
         Gestion du supérieur
     </h1>
 
-    {# Conteneur du formulaire avec largeur forcée à 600px #}
     <div style="width: 600px; max-width: 100%;">
-        
-        {# Sous-titre H2 (Bleu foncé) #}
-        {# La couleur #2C416E est reprise ici en style pour garantir l'affichage #}
         <h2 class="text-xl font-bold mb-6" style="color: #2C416E;">
             Connexion au portail
         </h2>
@@ -34,12 +28,10 @@
                 </div>
             {% else %}
                 
-                {# Champ Email #}
                 <div class="mb-4">
                     <label for="inputEmail" class="block mb-2 text-base font-normal text-black">
                         Email - champ obligatoire
                     </label>
-                    {# Input avec hauteur forcée à 50px #}
                     <input type="email" 
                            value="{{ last_username|default('j.martins@mentalworks.fr') }}" 
                            name="email" 
@@ -51,8 +43,6 @@
                            required 
                            autofocus>
                 </div>
-
-                {# Champ Mot de passe #}
                 <div class="mb-6">
                     <label for="inputPassword" class="block mb-2 text-base font-normal text-black">
                         Mot de passe - champ obligatoire
@@ -69,7 +59,6 @@
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                {# Bouton de soumission #}
                 <div class="pt-2">
                     <button type="submit" 
                             style="background-color: #2C416E; height: 50px;"

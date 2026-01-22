@@ -1,12 +1,18 @@
-<div>
-	<label for="{{ field.vars.id }}" class="block text-base font-normal text-black mb-2">
-		{{ label|default('Nom de famille') }}
-	</label>
-	{{ form_widget(field, {
+{% block body %}
+	<div>
+		<label for="{{ field.vars.id }}" class="block text-base font-normal text-black mb-2">
+			{{ label|default('Nom de famille') }}
+		</label>
+		{% set default_class = "w-full h-[46px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800" %}
+		{{ form_widget(field, {
         'attr': {
-            'class': 'max-w-[100%] w-full h-[46px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800'
+            'class': field.vars.attr.class|default(default_class)
         }
     }) }}
-
-	{{ form_errors(field) }}
-</div>
+		{% if field.vars.errors|length > 0 %}
+			<div class="text-red-500 text-sm mt-1">
+				{{ form_errors(field) }}
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
