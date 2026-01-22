@@ -149,11 +149,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-};
-});
-
-
-// POP-UP
     // Initialisation
     syncCheckboxesFromRealSelect();
     updateEverything();
