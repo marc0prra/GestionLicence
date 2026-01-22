@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="flex justify-center">
+		<div class="bg-white border border-gray-500 p-[20px] w-full max-w-[720px]">
+			<div class="flex items-center justify-center">
+				<img src="{{ asset('img/oeil (1).png') }}" alt="">
+				<div class="flex flex-col">
+					<h1>Supprimer l'année scolaire</h1>
+					<p>Êtes-vous sûr de vouloir supprimer l'année scolaire ?</p>
+				</div>
+			</div>
+			<div>
+				<p class="">
+					Vous vous apprêtez à supprimer l'année scolaire, cette action est irréversible. A noter qu'aucune intervention ne doit être liée à cette année pour pouvoir la supprimer.
+				</p>
+				<p>
+					Confirmez-vous l'action ?
+				</p>
+			</div>
+			<div>
+				{% include 'composants/button.html.twig' with {
+					label: 'Annuler',
+					type: 'cancel',
+				} %}
+				{% include 'composants/button.html.twig' with {
+					label: 'Supprimer',
+					type: 'danger',
+				} %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
