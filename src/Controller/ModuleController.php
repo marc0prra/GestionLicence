@@ -43,13 +43,6 @@ class ModuleController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush(); 
-            
-            $this->addFlash('success', 'Module modifié avec succès.');
-            return $this->redirectToRoute('app_home');
-        }
-
         return $this->render('module/form_module.html.twig', [
             'form' => $form->createView(),
             'module' => $module, 
