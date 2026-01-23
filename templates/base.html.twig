@@ -31,9 +31,30 @@
 
 		<main class="flex-1 min-w-0 p-0 flex flex-col">
 			{% include 'composants/header.html.twig' %}
-			<div class="p-6"> {% block header %}{% endblock %}{% block body %}{% endblock %}
-				</div>
-			</main>
+			<div class="p-6"> 
+			
+			{% block header %}
+			{% endblock %}
+
+			{# Messages de Succès (Enregistrement, Modification, etc.) #}
+				{% for message in app.flashes('success') %}
+					<div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 border border-green-200" role="alert">
+						<span class="font-bold">Succès :</span> {{ message }}
+					</div>
+				{% endfor %}
+
+				{# Messages d'Erreur (Validation échouée, problème technique) #}
+				{% for message in app.flashes('error') %}
+					<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200" role="alert">
+						<span class="font-bold">Erreur :</span> {{ message }}
+					</div>
+				{% endfor %}
+
+				{# --- FIN DES MESSAGES FLASH --- #}
+			{% block body %}
+			{% endblock %}
+			</div>
+		</main>
 
 		</body>
-	</html>
+</html>
