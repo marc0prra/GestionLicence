@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Types d’intervention{% endblock %}
+
+{% block body %}
+
+    <section class="max-w-5xl w-full mr-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center items-start justify-between">
+            <h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+                Types d’intervention
+            </h1>
+            {% include 'composants/button.html.twig' with {
+                    label: 'Ajouter un type',
+                    type: 'confirm',
+            } %}
+        </div>
+
+        <h2>
+        
+        </h2>
+        
+        {% embed 'composants/table.html.twig' with {
+			headers: ['Nom', 'Descriptif', 'Couleur' , '']
+		} %}
+			{% block body %}
+			{# annees devient un tableau, donc il contient les valeurs name, start_date et end_date. Pour vérifier, faites un dump du tableau annees #}
+				{% for intervention in lesInterventions %}
+					<tr>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.name }} </td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.description}} </td>
+                        <td style="color: {{ intervention.color }};" class="px-[25px] py-[20px] text-[14px] font-medium">{{ intervention.color}} </td>
+						<td class="px-[25px] py-[20px] flex items-center gap-2">
+							<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
+							<a href="" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="3" class="px-[25px] py-[20px] text-[14px] text-center text-gray-500">Aucun résultat trouvé</td>
+					</tr>
+				{% endfor %}
+			{% endblock %}
+		{% endembed %}
+
+    </section>
+
+{% endblock %}
