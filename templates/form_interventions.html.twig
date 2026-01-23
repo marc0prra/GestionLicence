@@ -11,17 +11,14 @@
 			'field' : form.title
 		} %}
 
-	<div
-		class="flex">
-		{# Premier champ : Date de début #}
+	<div class="flex">
+
 		{% include "composants/form_champ_date.html.twig" with {
             'field': form.start_date 
         } %}
 
 		<div class="mt-4"></div>
-		{# Espacement #}
 
-		{# Deuxième champ : Date de fin #}
 		{% include "composants/form_champ_date.html.twig" with {
             'label': 'Date de fin',
             'field': form.end_date
@@ -39,6 +36,15 @@
 			'field' : form.intervention_type_id
 		} %}
 	</div>
+
+		{% include "composants/multi_select.html.twig" with {
+			'field' : form.courseInstructors,
+		} %}
+
+		{% include "composants/form_champ_switch.html.twig" with{
+			'label' : 'Intervention effectuée en visio',
+			'field' : form.remotely
+		}%}
 	
 	<button type="submit" class="mt-6 bg-purple-600 text-white px-4 py-2 rounded">
 		Enregistrer

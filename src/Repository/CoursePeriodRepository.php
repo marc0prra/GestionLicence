@@ -16,7 +16,17 @@ class CoursePeriodRepository extends ServiceEntityRepository
         parent::__construct($registry, CoursePeriod::class);
     }
 
-//    /**
+    public function findPeriodByDates(\DateTimeInterface $startDate): ?CoursePeriod
+    {
+        return $this->createQueryBuilder('cp')
+            ->where(':date BETWEEN cp.start_date AND cp.end_date')
+            ->setParameter('date', $startDate)
+            ->setMaxResults(1) // On en prend une seule au cas où
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    //    /**
 //     * @return CoursePeriod[] Returns an array of CoursePeriod objects
 //     */
 //    public function findByExampleField($value): array
@@ -31,7 +41,7 @@ class CoursePeriodRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?CoursePeriod
+    //    public function findOneBySomeField($value): ?CoursePeriod
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

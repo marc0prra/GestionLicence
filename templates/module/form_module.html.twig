@@ -103,10 +103,15 @@
 
     {# --- 6. BOUTONS D'ACTION --- #}
     <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-        
-        {# BOUTON RETOUR (Gris) #}
-
+    
         <div class="flex gap-3">
+
+            {# BOUTON RETOUR (Gris) #}
+            <a href="{{ path('module_index') }}" 
+                class="inline-block bg-gray-100 hover:bg-gray-200 text-black font-medium py-3 px-8 rounded-xl transition-colors">
+                Retour à la liste
+            </a>
+
             {# BOUTON SUPPRIMER (Rouge - Seulement si édition) #}
             {% if is_edit is defined and is_edit %}
                 <button type="button" onclick="if(confirm('Êtes-vous sûr de vouloir supprimer ce module ?')) { document.getElementById('delete-form').submit(); }" class="text-white bg-[#ff0000] hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
