@@ -18,12 +18,10 @@ class ModuleController extends AbstractController
     #[Route('/modules', name: 'module_index')]
     public function index(TeachingBlockRepository $teachingBlockRepository): Response
     {
-        // On récupère les BLOCS (qui contiennent eux-mêmes les modules)
-        // Doctrine va renvoyer des Objets, pas des tableaux.
         $blocks = $teachingBlockRepository->findAll();
 
         return $this->render('module/modules.html.twig', [
-            'blocks' => $blocks, // On envoie 'blocks' à la vue
+            'blocks' => $blocks,
         ]);
     }
 
