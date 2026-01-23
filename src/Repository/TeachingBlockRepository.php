@@ -19,8 +19,7 @@ class TeachingBlockRepository extends ServiceEntityRepository
     // Requête pour filtrer les blocs d'enseignement
     public function findByFilters(?string $name, ?string $code): array
     {
-        $filtre = $this->createQueryBuilder('t')
-            ->select('t.id', 't.name', 't.code', 't.description', 't.hours_count');
+        $filtre = $this->createQueryBuilder('t');
 
         if ($name) {
             // LIKE permet de rechercher un nom qui contient le mot recherché

@@ -1,14 +1,13 @@
 security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
         # Il est recommandé d'ajouter explicitement votre entité :
         App\Entity\User:
             algorithm: auto
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        
         app_user_provider:
             entity:
                 class: App\Entity\User
@@ -20,14 +19,14 @@ security:
             security: false
         main:
             lazy: true
-            provider: app_user_provider 
-            
+            provider: app_user_provider
+
             custom_authenticator: App\Security\UserTypeAuthenticator
             logout:
                 path: app_logout
 
             remember_me:
-                secret: '%kernel.secret%'
+                secret: "%kernel.secret%"
                 lifetime: 604800
                 path: /
                 always_remember_me: true
