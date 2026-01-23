@@ -40,7 +40,7 @@ class TeachingBlockRepository extends ServiceEntityRepository
     public function findAll(): array
     {
         return $this->createQueryBuilder('t')
-            ->select('t.id', 't.name', 't.code', 't.description', 't.hours_count')
+            ->orderBy('t.code', 'ASC')
             ->getQuery()
             ->getResult();
     }
