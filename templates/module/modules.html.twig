@@ -39,19 +39,17 @@
 </div>
 
 {# --- MACRO --- #}
-{# --- MACRO --- #}
     {% macro display_tree(module) %}
         {% import _self as macros %}
 
         <div class="mb-1">
-            {# Le lien englobe tout le module pour le rendre cliquable #}
             <a href="{{ path('app_module_edit', {id: module.id}) }}" 
                class="flex items-center w-full text-slate-700 hover:text-indigo-600 hover:bg-gray-50 px-2 py-1.5 rounded transition-colors cursor-pointer select-none">
                 
                 {# Nom du module #}
                 <span class="font-medium text-sm">{{ module.name }}</span>
                 
-                {# Heures (poussées à droite) #}
+                {# Heures #}
                 <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full 
                 group-hover:bg-indigo-100 
                 group-hover:text-indigo-700">
@@ -65,7 +63,7 @@
                 </span>
             </a>
 
-            {# Enfants (récursivité) #}
+            {# Enfants#}
             {% if module.children is not empty %}
                 {# Ligne verticale en pointillés pour la hiérarchie #}
                 <div class="ml-4 border-l border-dashed border-gray-300 pl-2 mt-1">
