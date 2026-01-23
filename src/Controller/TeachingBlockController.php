@@ -17,18 +17,26 @@ final class TeachingBlockController extends AbstractController
     #[Route(path:'/teaching_block', name: 'teaching_block', methods: ['GET'])]
     public function teachingBlock(Request $request, TeachingBlockRepository $teachingBlockRepository): Response
     {
+        // Initialisation de la classe 
         $data = new TeachingBlock();
+        // Création du formulaire
         $form = $this->createForm(TeachingBlockFilterType::class, $data);
+        // Gestion de la requête
         $form->handleRequest($request);
 
+        // Gestion des filtres
         if($form->isSubmitted()) {
+            // Si le formulaire est soumis, on récupère les filtres
             $info = $teachingBlockRepository->findByFilters($data->getName(), $data->getCode());
         } 
         else {
+            // Sinon, on récupère tous les blocs
             $info = $teachingBlockRepository->findAll();
         }
 
+        // Rendu de la vue
         return $this->render('teaching_block/teaching_block.html.twig', [
+            // Données passées à la vue
             'info' => $info,
             'form' => $form->createView()
         ]);
@@ -43,6 +51,7 @@ final class TeachingBlockController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 try {
+                    // On POUSSE les données alors que "persist" c'est pour préciser qu'on veut ajouter ces nouvelles données
                     $entityManager->flush();
 
                     $this->addFlash('success', 'La modification a bien été prise en compte');
