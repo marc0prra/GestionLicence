@@ -8,7 +8,7 @@ import './stimulus_bootstrap.js';
 import './styles/app.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // GESTION DES BOUTONS PERIODES (Jour/Semaine/Mois)
     const periodButtons = document.querySelectorAll('.js-period-btn');
     const periodActive = ['bg-[#2E3B59]', 'text-white', 'shadow-sm'];
@@ -43,55 +43,118 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Champs multi_select formulaire
 document.addEventListener('DOMContentLoaded', function () {
-const select = document.getElementById('intervenant-select');
-const container = document.getElementById('chips-container');
+    const wrapper = document.getElementById('instructor-wrapper');
+    if (!wrapper) return; // Sécurité si l'élément n'est pas sur la page
 
-select.addEventListener('change', function () {
-const option = select.options[select.selectedIndex];
-const id = option.value;
-const name = option.getAttribute('data-name');
+    const fieldId = wrapper.getAttribute('data-field-id');
+    const realSelect = document.getElementById(fieldId);
 
-if (id) {
-addChip(id, name);
-option.disabled = true; // Empêche de choisir deux fois le même
-select.value = ""; // Reset le sélecteur
-}
-});
+    const modal = document.getElementById('instructor-modal');
+    const trigger = document.getElementById('modal-trigger');
+    const closeButtons = document.querySelectorAll('.close-modal');
+    const confirmBtn = document.getElementById('confirm-selection');
+    const chipsContainer = document.getElementById('chips-container');
+    const placeholder = document.getElementById('placeholder-text');
+    const checkboxes = document.querySelectorAll('.instructor-checkbox');
 
-function addChip(id, name) { // Création du jeton avec les classes Tailwind
-const chip = document.createElement('div');
-chip.id = `chip-${id}`;
-// Design : gris foncé (zinc-600), texte blanc, arrondi complet
-chip.className = "flex items-center gap-2 px-3 py-1 text-sm font-medium text-white transition-colors bg-zinc-600 rounded-full";
+    // Ouverture modale
+    trigger.addEventListener('click', (e) => {
+        if (!e.target.closest('.remove-chip-btn')) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+    });
 
-chip.innerHTML = `
-            <span>${name}</span>
-            <button type="button" onclick="removeChip('${id}')" class="flex items-center justify-center w-4 h-4 text-white transition-colors hover:text-red-300">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        `;
+    // Fermer la modale au clic sur l'arrière-plan (en dehors de la boîte blanche)
+    modal.addEventListener('click', (e) => {
+        // Si l'élément cliqué est exactement le conteneur 'instructor-modal' 
+        // (le fond noir transparent) et non son contenu blanc
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 
-container.appendChild(chip);
-}
+    // Fermeture modale
+    const closeModal = () => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        syncCheckboxesFromRealSelect();
+    };
 
-window.removeChip = function (id) { // Supprimer le jeton visuellement
-const chip = document.getElementById (`chip-${id}`);
-if (chip) 
-chip.remove();
+    closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
 
+    confirmBtn.addEventListener('click', () => {
+        updateEverything();
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    });
 
+    function updateEverything() {
+        chipsContainer.innerHTML = '';
+        const selectedValues = [];
 
-// Réactiver l'option dans la liste
-const option = select.querySelector (`option[value="${id}"]`);
-if (option) 
-option.disabled = false;
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                selectedValues.push(cb.value);
+                createChip(cb.value, cb.getAttribute('data-label'));
+            }
+        });
 
+        Array.from(realSelect.options).forEach(opt => {
+            opt.selected = selectedValues.includes(opt.value);
+        });
+
+        placeholder.style.display = selectedValues.length > 0 ? 'none' : 'block';
+    }
+
+    function createChip(id, name) {
+        const chip = document.createElement('div');
+        chip.className = "flex items-center gap-2 px-3 py-1 text-sm font-medium text-white rounded-md shadow-sm";
+
+        // Style forcé pour éviter le bug du "tout blanc"
+        chip.style.backgroundColor = '#757575';
+        chip.style.color = '#ffffff';
+
+        const span = document.createElement('span');
+        span.textContent = name;
+
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.innerHTML = "&times;";
+        btn.className = "remove-chip-btn hover:text-red-300 focus:outline-none leading-none text-lg transition-colors ml-1 text-white";
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            removeInstructorSelection(id);
+        });
+
+        chip.appendChild(span);
+        chip.appendChild(btn);
+        chipsContainer.appendChild(chip);
+    }
+
+    function removeInstructorSelection(id) {
+        const cb = document.querySelector(`.instructor-checkbox[value="${id}"]`);
+        if (cb) cb.checked = false;
+        updateEverything();
+    }
+
+    function syncCheckboxesFromRealSelect() {
+        const currentValues = Array.from(realSelect.selectedOptions).map(o => o.value);
+        checkboxes.forEach(cb => {
+            cb.checked = currentValues.includes(cb.value);
+        });
+    }
 
 };
 });
 
 
 // POP-UP
+    // Initialisation
+    syncCheckboxesFromRealSelect();
+    updateEverything();
+});
