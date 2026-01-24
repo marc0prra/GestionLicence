@@ -2,18 +2,40 @@
 
 namespace App\Controller;
 
-use App\Form\InterventionTypeType;
-use App\Entity\InterventionType;
+use App\Form\Filter\InterventionTypeFilterType;
+use App\Repository\InterventionTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Form\InterventionTypeType;
+use App\Entity\InterventionType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-
 
 final class InterventionTypeController extends AbstractController
 {
-    // #[Route('/intervention/type', name: 'intervention_type')]
+    #[Route('/intervention_type', name: 'annees_scolaire', methods: ['GET'])]
+    public function InterventionType(Request $request, InterventionTypeRepository $interventionTypeRepository): Response
+    {
+        $interventionType = $interventionTypeRepository->findAll();
+
+        $filterForm = $this->createForm(InterventionTypeFilterType::class);
+        $filterForm->handleRequest($request);
+
+        if ($filterForm->isSubmitted()) {
+            if ($filterForm->isValid()) {
+                $data = $filterForm->getData();
+                $interventionType = $interventionTypeRepository->findByFilters($data['name']);
+            }
+        }
+
+        return $this->render('intervention_type/intervention_type.html.twig', [
+            'lesInterventions' => $interventionType,
+            'form' => $filterForm->createView()
+        ]);
+    }
+  
+  // #[Route('/intervention/type', name: 'intervention_type')]
     // public function index(): Response
     // {
     //     return $this->render('intervention_type/intervention_type_form.html.twig', [
