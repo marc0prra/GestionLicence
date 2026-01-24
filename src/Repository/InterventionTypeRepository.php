@@ -19,11 +19,22 @@ class InterventionTypeRepository extends ServiceEntityRepository
     public function findAll(): array
     {
         return $this->createQueryBuilder('it')
-            ->select('it.name', 'it.description', 'it.color')
+            ->select('it.id', 'it.name', 'it.description', 'it.color')
             ->orderBy('it.name', 'ASC')
             ->getQuery()
             ->getResult();
+    }
 
+    public function findByFilters(?string $name): array
+    {
+        $filtre = $this->createQueryBuilder('it')
+            ->select('it.id', 'it.name', 'it.description', 'it.color');
+
+        if ($name) {
+            $filtre->andWhere('it.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
+        return $filtre->getQuery()->getResult();
     }
 
     //    /**
