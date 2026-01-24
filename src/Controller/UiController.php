@@ -86,4 +86,10 @@ class UiController extends AbstractController
     {
         return $this->render('components_test.html.twig');
     }
+
+    #[Route('/popup', name: 'app_pop_up')]
+    public function popup(): Response
+    {
+        return $this->render('composants/pop_up.html.twig');
+    }
 }

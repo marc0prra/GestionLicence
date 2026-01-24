@@ -1,11 +1,24 @@
 {# templates/composants/sidebar_login.html.twig #}
-<div class="w-80 h-full bg-[#F5F6FA] border-r border-gray-100 p-8 flex flex-col justify-between hidden md:flex">
-    <div class="w-48">
-         <img src="{{ asset('images/logo_saint_vincent.png') }}" alt="Logo Saint-Vincent" class="w-full object-contain">
-    </div>
+<aside class="hidden md:flex flex-col h-screen bg-[#F3F4F8] w-[260px] sticky top-0 border-r border-gray-200 flex-shrink-0">
     
-    <div class="text-xs text-gray-400">
+    <div class="flex items-center py-8 px-6">
+        <img src="{{ asset('img/logo.png') }}" alt="Logo Lycée Saint-Vincent" class="w-[25px] h-[25px] object-contain">
+        
+        <div class="ml-3 flex flex-col justify-center">
+            <h1 class="text-[14px] font-bold text-[#1F2D5C] leading-tight whitespace-nowrap">
+                Lycée Saint-Vincent
+            </h1>
+            <p class="text-[10px] text-[#1F2D5C] font-semibold opacity-80 whitespace-nowrap">
+                Enseignement Supérieur
+            </p>
+        </div>
+    </div>
+
+    <div class="flex-1"></div>
+
+    <div class="p-6 text-[10px] text-[#A0ABC0] text-center leading-relaxed">
         © Lycée Saint-Vincent<br>
         Enseignement Supérieur
     </div>
-</div>
+
+</aside>
