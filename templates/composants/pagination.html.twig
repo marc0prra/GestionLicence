@@ -1,0 +1,45 @@
+{% if pageCount > 1 %}
+	<div
+		class="flex items-center justify-center gap-2 mt-6 select-none">
+
+		{# Lien Précédent #}
+		{% if previous is defined %}
+			<a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" rel="prev" class="group relative flex items-center justify-center w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-500 hover:border-[#2C416E] hover:text-[#2C416E] hover:bg-slate-50 transition-all duration-300 ease-out shadow-sm hover:shadow-md active:scale-95" title="Précédent">
+				<svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+				</svg>
+			</a>
+		{% endif %}
+
+		{# Liens des pages #}
+		<div class="hidden sm:flex items-center gap-2 bg-slate-50/50 p-1 rounded-full">
+			{% for page in pagesInRange %}
+				{% if page != current %}
+					<a href="{{ path(route, query|merge({(pageParameterName): page})) }}" class="flex items-center justify-center w-9 h-9 rounded-full text-sm font-semibold text-slate-600 hover:bg-white hover:text-[#2C416E] hover:shadow-sm transition-all duration-200">
+						{{ page }}
+					</a>
+				{% else %}
+					<span class="flex items-center justify-center w-9 h-9 rounded-full bg-[#2C416E] text-white text-sm font-bold shadow-md ring-2 ring-blue-100 ring-offset-1 transform scale-105">
+						{{ page }}
+					</span>
+				{% endif %}
+			{% endfor %}
+		</div>
+
+		{# Version Mobile (Simple) - Visible uniquement sur petit écran si beaucoup de pages #}
+		<div class="sm:hidden flex items-center px-2 text-sm font-medium text-slate-600">
+			{{ current }}
+			/
+			{{ pageCount }}
+		</div>
+
+		{# Lien Suivant #}
+		{% if next is defined %}
+			<a href="{{ path(route, query|merge({(pageParameterName): next})) }}" rel="next" class="group relative flex items-center justify-center w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-500 hover:border-[#2C416E] hover:text-[#2C416E] hover:bg-slate-50 transition-all duration-300 ease-out shadow-sm hover:shadow-md active:scale-95" title="Suivant">
+				<svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+				</svg>
+			</a>
+		{% endif %}
+	</div>
+{% endif %}
