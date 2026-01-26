@@ -21,30 +21,30 @@ class InstructorModuleRepository extends ServiceEntityRepository
     
     public function findByFiltersAndPaginate(array $filters, int $page, int $limit): array
     {
-        $qb = $this->createQueryBuilder('i')
+        $query = $this->createQueryBuilder('i')
             ->join('i.user', 'u')
             ->addSelect('u') // Optimisation pour éviter 10 requêtes supplémentaires
             ->orderBy('u.LastName', 'ASC');
 
         // Application des filtres
         if (!empty($filters['LastName'])) {
-            $qb->andWhere('u.LastName LIKE :lname')
+            $query->andWhere('u.LastName LIKE :lname')
                ->setParameter('lname', '%' . $filters['LastName'] . '%');
         }
         if (!empty($filters['firstName'])) {
-            $qb->andWhere('u.firstName LIKE :fname')
+            $query->andWhere('u.firstName LIKE :fname')
                ->setParameter('fname', '%' . $filters['firstName'] . '%');
         }
         if (!empty($filters['email'])) {
-            $qb->andWhere('u.email LIKE :email')
+            $query->andWhere('u.email LIKE :email')
                ->setParameter('email', '%' . $filters['email'] . '%');
         }
 
         // Pagination 
-        $qb->setFirstResult(($page - 1) * $limit)
+        $query->setFirstResult(($page - 1) * $limit)
            ->setMaxResults($limit);
 
-        return $qb->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     }
 
 
@@ -53,23 +53,23 @@ class InstructorModuleRepository extends ServiceEntityRepository
 
     public function countByFilters(array $filters): int
     {
-        $qb = $this->createQueryBuilder('i')
+        $query = $this->createQueryBuilder('i')
             ->select('count(i.id)')
             ->join('i.user', 'u');
 
         if (!empty($filters['LastName'])) {
-            $qb->andWhere('u.LastName LIKE :lname')
+            $query->andWhere('u.LastName LIKE :lname')
                ->setParameter('lname', '%' . $filters['LastName'] . '%');
         }
         if (!empty($filters['firstName'])) {
-            $qb->andWhere('u.firstName LIKE :fname')
+            $query->andWhere('u.firstName LIKE :fname')
                ->setParameter('fname', '%' . $filters['firstName'] . '%');
         }
         if (!empty($filters['email'])) {
-            $qb->andWhere('u.email LIKE :email')
+            $query->andWhere('u.email LIKE :email')
                ->setParameter('email', '%' . $filters['email'] . '%');
         }
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $query->getQuery()->getSingleScalarResult();
     }
 }
