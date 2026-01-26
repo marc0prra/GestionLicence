@@ -19,7 +19,7 @@ class CoursePeriodRepository extends ServiceEntityRepository
     public function findAll(): array
     {
         return $this->createQueryBuilder('i')
-        ->select('i.id', 'i.start_date', 'i.end_date','i.remotely')
+        ->select('i.id', 'i.start_date', 'i.end_date','i.remotely');
     }
 
     public function findPeriodByDates(\DateTimeInterface $startDate): ?CoursePeriod
