@@ -104,8 +104,33 @@ class Instructor
     public function displayName(): string
     {
         $firstName = $this->user->getFirstName();
-        $lastName = $this->user->getLastName();
+        $LastName = $this->user->getLastName();
+        return $firstName . ' ' . $LastName;
+    }
 
-        return $firstName . ' ' . $lastName;
+    // Retourne la liste des noms des modules enseignés sous forme de string
+    public function getModuleNamesString(): string
+    {
+        $names = [];
+        foreach ($this->getInstructorModules() as $im) {
+            if ($im->getModule()) {
+                $names[] = $im->getModule()->getName();
+            }
+        }
+        return empty($names) ? 'Aucun module' : implode(', ', $names);
+    }
+
+    // Calcule le total des heures (basé sur les interventions/cours)
+    public function getTotalHours(): int
+    {
+        $total = 0;
+        foreach ($this->getCourseInstructors() as $ci) {
+            $course = $ci->getCourse();
+            if ($course && $course->getModuleId()) {
+                // On récupère le nombre d'heures défini dans le module associé au cours
+                $total += $course->getModuleId()->getHoursCount(); 
+            }
+        }
+        return $total;
     }
 }
