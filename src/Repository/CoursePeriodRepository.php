@@ -16,12 +16,6 @@ class CoursePeriodRepository extends ServiceEntityRepository
         parent::__construct($registry, CoursePeriod::class);
     }
 
-    public function findAll(): array
-    {
-        return $this->createQueryBuilder('i')
-        ->select('i.id', 'i.start_date', 'i.end_date','i.remotely')
-    }
-
     public function findPeriodByDates(\DateTimeInterface $startDate): ?CoursePeriod
     {
         return $this->createQueryBuilder('cp')
