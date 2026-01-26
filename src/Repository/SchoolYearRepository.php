@@ -19,7 +19,6 @@ class SchoolYearRepository extends ServiceEntityRepository
     public function findAll() : array 
     {
         return $this->createQueryBuilder('s')
-        ->select('s.id', 's.name', 's.start_date', 's.end_date')
         ->orderBy('s.name', 'DESC')
         ->getQuery()
         ->getResult();
