@@ -14,6 +14,7 @@ class InterventionTypeFilterType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'required' => false,
+                'format' => 'dd/MM/yyyy HH:mm',
                 'attr' => [
                     'placeholder' => 'Saisissez le nom'
                 ]
