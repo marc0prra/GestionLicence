@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\InstructorModule;
+use App\Entity\Instructor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +16,60 @@ class InstructorModuleRepository extends ServiceEntityRepository
         parent::__construct($registry, InstructorModule::class);
     }
 
-//    /**
-//     * @return InstructorModule[] Returns an array of InstructorModule objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    
+    // Récupère les instructeurs pour une page donnée
+    
+    public function findByFiltersAndPaginate(array $filters, int $page, int $limit): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->join('i.user', 'u')
+            ->addSelect('u') // Optimisation pour éviter 10 requêtes supplémentaires
+            ->orderBy('u.LastName', 'ASC');
 
-//    public function findOneBySomeField($value): ?InstructorModule
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        // Application des filtres
+        if (!empty($filters['LastName'])) {
+            $query->andWhere('u.LastName LIKE :lname')
+               ->setParameter('lname', '%' . $filters['LastName'] . '%');
+        }
+        if (!empty($filters['firstName'])) {
+            $query->andWhere('u.firstName LIKE :fname')
+               ->setParameter('fname', '%' . $filters['firstName'] . '%');
+        }
+        if (!empty($filters['email'])) {
+            $query->andWhere('u.email LIKE :email')
+               ->setParameter('email', '%' . $filters['email'] . '%');
+        }
+
+        // Pagination 
+        $query->setFirstResult(($page - 1) * $limit)
+           ->setMaxResults($limit);
+
+        return $query->getQuery()->getResult();
+    }
+
+
+
+    // Compte le nombre total de résultats (pour calculer le nombre de pages)
+
+    public function countByFilters(array $filters): int
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('count(i.id)')
+            ->join('i.user', 'u');
+
+        if (!empty($filters['LastName'])) {
+            $query->andWhere('u.LastName LIKE :lname')
+               ->setParameter('lname', '%' . $filters['LastName'] . '%');
+        }
+        if (!empty($filters['firstName'])) {
+            $query->andWhere('u.firstName LIKE :fname')
+               ->setParameter('fname', '%' . $filters['firstName'] . '%');
+        }
+        if (!empty($filters['email'])) {
+            $query->andWhere('u.email LIKE :email')
+               ->setParameter('email', '%' . $filters['email'] . '%');
+        }
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
 }

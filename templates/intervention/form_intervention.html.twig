@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Formulaire d'intervention
+{% block title %}Formulaire d'interventions
 {% endblock %}
 
 {% block body %}
@@ -28,17 +28,17 @@
 	<div class="flex">
 		{% include "composants/form_champ_select.html.twig" with {
 			'label' : 'Module',
-			'field' : form.module_id
+			'field' : form.module
 		} %}
 
 		{% include "composants/form_champ_select.html.twig" with {
 			'label' : 'Type d\'intervention',
-			'field' : form.intervention_type_id
+			'field' : form.intervention_type
 		} %}
 	</div>
 
 		{% include "composants/multi_select.html.twig" with {
-			'field' : form.courseInstructors,
+			'field' : form.courseInstructor,
 		} %}
 
 		{% include "composants/form_champ_switch.html.twig" with{
