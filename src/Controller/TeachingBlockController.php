@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 final class TeachingBlockController extends AbstractController
 {
     #[Route(path:'/teaching_block', name: 'teaching_block', methods: ['GET'])]
-    public function teachingBlock(Request $request, TeachingBlockRepository $teachingBlockRepository): Response
+    public function list(Request $request, TeachingBlockRepository $teachingBlockRepository): Response
     {
         // Initialisation de la classe 
         $data = new TeachingBlock();
@@ -35,7 +35,7 @@ final class TeachingBlockController extends AbstractController
         }
 
         // Rendu de la vue
-        return $this->render('teaching_block/teaching_block.html.twig', [
+        return $this->render('teaching_block/list.html.twig', [
             // Données passées à la vue
             'info' => $info,
             'form' => $form->createView()
@@ -43,7 +43,7 @@ final class TeachingBlockController extends AbstractController
     }
 
     #[Route(path:'/teaching_block/{id}/edit', name: 'teaching_block_edit', methods: ['GET', 'POST'])]
-    public function teachingBlockEdit(TeachingBlock $teachingBlock, Request $request, EntityManagerInterface $entityManager) : Response 
+    public function edit(TeachingBlock $teachingBlock, Request $request, EntityManagerInterface $entityManager) : Response 
     {
         $form = $this->createForm(TeachingBlockType::class, $teachingBlock);
         $form->handleRequest($request);
@@ -65,7 +65,7 @@ final class TeachingBlockController extends AbstractController
             }
         }
 
-        return $this->render('teaching_block/teaching_block_edit.html.twig', [
+        return $this->render('teaching_block/edit.html.twig', [
             'form' => $form,
             'teachingBlock' => $teachingBlock,
         ]);

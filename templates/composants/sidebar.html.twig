@@ -82,11 +82,11 @@
 					</a>
 
 					{# === ANNEES SCOLAIRE === #}
-					<a href="{{ path('annees_scolaire') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
-						{{ current_route == 'annees_scolaire'
+					<a href="{{ path('school_year') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
+						{{ current_route == 'school_year'
 							? 'bg-[#2E3B59] text-white shadow-sm'
 							: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
-						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'annees_scolaire' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'school_year' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16M10 4v16M14 4v16M18 4v16M6 4v16"></path>
 						</svg>
 						<span class="ml-3 text-[13px] font-medium max-[750px]:hidden whitespace-nowrap">Années scolaire</span>
