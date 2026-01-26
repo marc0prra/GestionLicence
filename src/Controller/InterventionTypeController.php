@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class InterventionTypeController extends AbstractController
 {
-    #[Route('/intervention_type', name: 'annees_scolaire', methods: ['GET'])]
+    #[Route('/intervention_type', name: 'intervention_type', methods: ['GET'])]
     public function InterventionType(Request $request, InterventionTypeRepository $interventionTypeRepository): Response
     {
         $interventionType = $interventionTypeRepository->findAll();
@@ -34,17 +34,10 @@ final class InterventionTypeController extends AbstractController
             'form' => $filterForm->createView()
         ]);
     }
-  
-  // #[Route('/intervention/type', name: 'intervention_type')]
-    // public function index(): Response
-    // {
-    //     return $this->render('intervention_type/intervention_type_form.html.twig', [
-    //         'controller_name' => 'InterventionTypeController',
-    //     ]);
-    // }
+
 
     #[Route('/intervention/type/fiche', name: 'intervention_type_fiche', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response 
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $interventionType = new InterventionType();
 
@@ -52,21 +45,17 @@ final class InterventionTypeController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) 
-        {
-            if ($form->isValid()) 
-            {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
                 $entityManager->persist($interventionType);
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Type d\'intervention créé avec succès.');
-                
+
                 return $this->redirectToRoute('intervention_type_fiche');
                 // Redirection vers la liste des types d'intervention après création
                 // return $this->redirectToRoute('intervention_type');
-            } 
-            else 
-            {
+            } else {
                 $this->addFlash('error', 'Le formulaire est invalide.');
             }
         }
