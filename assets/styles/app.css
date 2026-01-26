@@ -8,3 +8,8 @@ body {
 aside {
     font-family: 'Poppins', sans-serif;
 }
+
+#calendar {
+    min-height: 650px;
+    padding: 20px;
+}

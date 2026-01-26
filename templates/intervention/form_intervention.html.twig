@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="max-w-5xl mx-auto mt-10 p-6">
+<div class="mx-auto mt-10 p-6">
 	{{ form_start(form) }}
 	{% include "composants/form_champ_text.html.twig" with {
 			'label' : 'Titre',
@@ -28,17 +28,17 @@
 	<div class="flex">
 		{% include "composants/form_champ_select.html.twig" with {
 			'label' : 'Module',
-			'field' : form.module
+			'field' : form.module_id
 		} %}
 
 		{% include "composants/form_champ_select.html.twig" with {
 			'label' : 'Type d\'intervention',
-			'field' : form.intervention_type
+			'field' : form.intervention_type_id
 		} %}
 	</div>
 
 		{% include "composants/multi_select.html.twig" with {
-			'field' : form.courseInstructor,
+			'field' : form.courseInstructors,
 		} %}
 
 		{% include "composants/form_champ_switch.html.twig" with{
@@ -49,7 +49,7 @@
 	<button type="submit" class="mt-6 bg-purple-600 text-white px-4 py-2 rounded">
 		Enregistrer
 	</button>
-</div>
+	</div>
 
 {{ form_end(form) }}
 {% endblock %}

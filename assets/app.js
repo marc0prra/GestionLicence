@@ -7,6 +7,26 @@ import './stimulus_bootstrap.js';
  */
 import './styles/app.css';
 
+// CALENDRIER
+import { Calendar } from '@fullcalendar/core'; // L'objet principal qui gère le calendrier
+import dayGridPlugin from '@fullcalendar/daygrid'; // permet d’afficher le calendrier sous forme mois / jours (grille du mois).
+import timeGridPlugin from '@fullcalendar/timegrid'; // permet d’afficher le calendrier sous forme semaine / jours (grille de la semaine).
+import listPlugin from '@fullcalendar/list'; // permet d’afficher le calendrier sous forme liste d’événements.
+
+let calendarEl = document.getElementById('calendar');
+let calendar = new Calendar(calendarEl, {
+    plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,listWeek'
+    }
+});
+calendar.render();
+
+
+// BOUTON SEMAINE/MOIS/JOUR POUR LE CALENDRIER
 document.addEventListener('DOMContentLoaded', () => {
 
     // GESTION DES BOUTONS PERIODES (Jour/Semaine/Mois)
@@ -42,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
 
 // Champs multi_select formulaire
 document.addEventListener('DOMContentLoaded', function () {

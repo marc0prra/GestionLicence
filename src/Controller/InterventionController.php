@@ -11,36 +11,37 @@ use App\Entity\Course;
 use App\Entity\CourseInstructor;
 use App\Form\CourseType;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\CoursePeriodRepository;
+use App\Repository\CourseRepository;
 
 class InterventionController extends AbstractController
 {
-    #[Route('/intervention', name: 'intervention', methods: ['GET'])]
-    public function Intervention(Request $request, CoursePeriodRepository $periodRepo): Response
+    #[Route('/interventions', name: 'interventions', methods: ['GET'])]
+    public function liste(Request $request, CourseRepository $courseRepo): Response
     {
-        $interventionType = $periodRepo->findAll();
-
+        $interventions = $courseRepo->findAll();
         $filterForm = $this->createForm(CourseFilterType::class);
         $filterForm->handleRequest($request);
 
         if ($filterForm->isSubmitted()) {
             if ($filterForm->isValid()) {
+
                 $data = $filterForm->getData();
-                $interventionType = $periodRepo->findByFilters($data['name']);
+                $interventions = $courseRepo->findByFilters(
+                    $data['start_date'],
+                    $data['end_date'],
+                    $data['module_id'] ?? null
+                );
             }
         }
 
-        return $this->render('intervention_type/intervention_type.html.twig', [
-            'lesInterventions' => $interventionType,
+        return $this->render('intervention/liste.html.twig', [
+            'interventions' => $interventions,
             'form' => $filterForm->createView()
         ]);
     }
 
-
-
-
-    #[Route('/interventions', name: 'form_interventions')]
-    public function InterventionForm(EntityManagerInterface $em, Request $request, CoursePeriodRepository $periodRepo): Response
+    #[Route('/intervention', name: 'form_interventions')]
+    public function InterventionForm(EntityManagerInterface $em, Request $request, CourseRepository $periodRepo): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
@@ -77,7 +78,7 @@ class InterventionController extends AbstractController
             }
         }
 
-        return $this->render('intervention/form_interventions.html.twig', [
+        return $this->render('intervention/form_intervention.html.twig', [
             'form' => $form->createView(),
         ]);
     }

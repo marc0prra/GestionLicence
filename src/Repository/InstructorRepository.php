@@ -16,29 +16,59 @@ class InstructorRepository extends ServiceEntityRepository
         parent::__construct($registry, Instructor::class);
     }
 
+    /**
+     * Récupère les instructeurs pour une page donnée
+     */
+    public function findByFiltersAndPaginate(array $filters, int $page, int $limit): array
+    {
+        $query = $this->createQueryBuilder('i')
+            ->join('i.user', 'u')
+            ->addSelect('u')
+            ->orderBy('u.last_name', 'ASC'); 
+
+        // Application des filtres
+        if (!empty($filters['lastName'])) {
+            $query->andWhere('u.last_name LIKE :lname')
+               ->setParameter('lname', '%' . $filters['lastName'] . '%');
+        }
+        if (!empty($filters['firstName'])) {
+            $query->andWhere('u.first_name LIKE :fname')
+               ->setParameter('fname', '%' . $filters['firstName'] . '%');
+        }
+        if (!empty($filters['email'])) {
+            $query->andWhere('u.email LIKE :email')
+               ->setParameter('email', '%' . $filters['email'] . '%');
+        }
+
+        // Pagination Manuelle
+        $query->setFirstResult(($page - 1) * $limit)
+           ->setMaxResults($limit);
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Compte le nombre total de résultats (pour la pagination)
+     */
+    public function countByFilters(array $filters): int
+    {
+        $query = $this->createQueryBuilder('i')
+            ->select('count(i.id)')
+            ->join('i.user', 'u');
+
+        if (!empty($filters['lastName'])) {
+            $query->andWhere('u.last_name LIKE :lname')
+               ->setParameter('lname', '%' . $filters['lastName'] . '%');
+        }
+        if (!empty($filters['firstName'])) {
+            $query->andWhere('u.first_name LIKE :fname')
+               ->setParameter('fname', '%' . $filters['firstName'] . '%');
+        }
+        if (!empty($filters['email'])) {
+            $query->andWhere('u.email LIKE :email')
+               ->setParameter('email', '%' . $filters['email'] . '%');
+        }
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
 }
-
-//    /**
-//     * @return Instructor[] Returns an array of Instructor objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Instructor
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
