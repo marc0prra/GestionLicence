@@ -5,7 +5,7 @@
 
 {% block body %}
 
-	<section class="max-w-5xl w-full mr-auto">
+	<section class="w-full mr-auto">
 		<div class="flex flex-col sm:flex-row sm:items-center items-start justify-between">
 			<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
 				Années scolaire
@@ -17,8 +17,8 @@
 		</div>
 		<p class="font-medium font-[16px] pt-[10px] pb-[30px]">
 			Les années scolaires permettent de garder en mémoire les interventions réalisées sur les années antérieures. 
-						            La dernière période de cours sur l’année permet de déterminer la fin de l’année. Lorsque cette dernière période de cours est passée, 
-						            le programme passe automatiquement à l’année suivante (prochaine saison).
+									            La dernière période de cours sur l’année permet de déterminer la fin de l’année. Lorsque cette dernière période de cours est passée, 
+									            le programme passe automatiquement à l’année suivante (prochaine saison).
 		</p>
 
 		{% embed 'composants/table.html.twig' with {
@@ -26,7 +26,7 @@
 		} %}
 			{% block body %}
 				{# schoolYear est une instance de l'entité App\Entity\SchoolYear #}
-				{% for schoolYear in dataAnneesScolaire %}
+				{% for schoolYear in dataSchoolYear %}
 					<tr>
 						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ schoolYear.getName() }}</td>
 						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ schoolYear.getStartDate()|date('Y') }}
@@ -45,6 +45,9 @@
 				{% endfor %}
 			{% endblock %}
 		{% endembed %}
+
+		{# On appelle la fonction de pagnination #}
+		{{ knp_pagination_render(dataSchoolYear, 'composants/pagination.html.twig') }}
 
 	</section>
 

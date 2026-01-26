@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion période de cours{% endblock %}
+
+{% block body %}
+    <section class="max-w-5xl w-full mr-auto">
+        
+        {# --- En-tête (Basé sur ton code) --- #}
+        <div class="flex flex-col mb-[30px]">
+            <h1 class="font-medium text-[#1F384C] text-[26px]">
+                {# Tu peux rendre "2025" dynamique selon tes besoins #}
+                Promotion {{ form.vars.value.schoolYearId.name|default('2025') }}
+            </h1>
+        </div>
+
+        {# --- Début du Formulaire --- #}
+        {{ form_start(form, {'attr': {'class': 'w-full'}}) }}
+
+            {# 1. Champ Année (Pleine largeur) #}
+            <div class="mb-[20px]">
+                <label class="block mb-[8px] text-[14px] font-medium text-[#1F384C]">
+                    {{ field_label(form.school_year_id) }}
+                </label>
+                {{ form_widget(form.school_year_id, {'attr': {
+                    'class': 'w-full border border-gray-200 rounded-[5px] px-4 py-3 bg-gray-50 text-[#1F384C] focus:outline-none focus:border-[#1F384C]'
+                }}) }}
+                {{ form_errors(form.school_year_id) }}
+            </div>
+
+            {# 2. Conteneur Dates (Flexbox pour le côte à côte) #}
+            <div class="flex flex-col sm:flex-row gap-[20px] mb-[40px]">
+                
+                {# Date de début #}
+                <div class="w-full sm:w-1/2">
+                    <label class="block mb-[8px] text-[14px] font-medium text-[#1F384C]">
+                        {{ field_label(form.start_date) }}
+                    </label>
+                    <div class="relative">
+                        {{ form_widget(form.start_date, {'attr': {
+                            'class': 'w-full border border-gray-200 rounded-[5px] px-4 py-3 text-[#1F384C] focus:outline-none focus:border-[#1F384C]'
+                        }}) }}
+                        {# L'icône calendrier est native avec type="date", 
+                           mais tu peux forcer le style ici si besoin #}
+                    </div>
+                    {{ form_errors(form.start_date) }}
+                </div>
+
+                {# Date de fin #}
+                <div class="w-full sm:w-1/2">
+                    <label class="block mb-[8px] text-[14px] font-medium text-[#1F384C]">
+                        {{ field_label(form.end_date) }}
+                    </label>
+                    <div class="relative">
+                        {{ form_widget(form.end_date, {'attr': {
+                            'class': 'w-full border border-gray-200 rounded-[5px] px-4 py-3 text-[#1F384C] focus:outline-none focus:border-[#1F384C]'
+                        }}) }}
+                    </div>
+                    {{ form_errors(form.end_date) }}
+                </div>
+            </div>
+
+            {# --- Actions (Boutons) --- #}
+            <div class="flex items-center gap-[15px]">
+                {# Bouton Retour (Gris clair) #}
+                <a href="{{ path('app_course_period_index') }}" class="px-[25px] py-[12px] bg-[#EAEAEA] text-[#1F384C] font-medium rounded-[5px] text-[14px] hover:bg-gray-300 transition">
+                    Retour à la liste
+                </a>
+
+                {# Bouton Enregistrer (Ton bleu foncé) #}
+                <button type="submit" class="px-[25px] py-[12px] bg-[#1F384C] text-white font-medium rounded-[5px] text-[14px] hover:bg-[#16293A] transition shadow-md">
+                    Enregistrer les informations
+                </button>
+            </div>
+
+        {{ form_end(form) }}
+
+    </section>
+{% endblock %}

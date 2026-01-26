@@ -51,7 +51,7 @@ class AccessDeniedSubscriber implements EventSubscriberInterface
         }
 
         // Redirection vers l'accueil
-        $response = new RedirectResponse($this->urlGenerator->generate('teaching_block'));
+        $response = new RedirectResponse($this->urlGenerator->generate('app_login'));
         $event->setResponse($response);
     }
 }
