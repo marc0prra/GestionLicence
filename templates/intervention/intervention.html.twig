@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Types d’intervention
+{% endblock %}
+
+{% block body %}
+
+	<section class="max-w-5xl w-full mr-auto">
+		<div class="flex flex-col sm:flex-row sm:items-center items-start justify-between">
+			<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+				Types d’intervention
+			</h1>
+			{% include 'composants/button.html.twig' with {
+                    label: 'Ajouter un type',
+                    type: 'confirm',
+            } %}
+		</div>
+		<div class="mt-[40px]">
+			<p class="text-[#FFBD01] font-medium text-[20px] pb-[10px]">
+				Filtres
+			</p>
+
+			{{ form_start(form, {'attr': {'class': 'flex flex-col lg:flex-row lg:items-end gap-3'}}) }}
+
+			<div class="flex flex-col w-full md:w-auto md:mr-4">
+				{% include "composants/form_champ_date.html.twig" with {
+				'label': 'Nom',
+				'field': form.start_date
+			} %}
+			</div>
+
+            <div class="flex flex-col w-full md:w-auto md:mr-4">
+				{% include "composants/form_champ_text.html.twig" with {
+				'label': 'Nom',
+				'field': form.end_date
+			} %}
+			</div>
+
+            <div class="flex flex-col w-full md:w-auto md:mr-4">
+				{% include "composants/form_champ_text.html.twig" with {
+				'label': 'Nom',
+				'field': form.module_id
+			} %}
+			</div>
+
+			<div class="mt-2 md:mt-0">
+				{% include 'composants/button.html.twig' with {
+					label: 'Filtrer',
+					type: 'warning',
+				} %}
+			</div>            
+
+			{{ form_end(form) }}
+
+		</div>
