@@ -16,6 +16,8 @@ class InstructorRepository extends ServiceEntityRepository
         parent::__construct($registry, Instructor::class);
     }
 
+}
+
 //    /**
 //     * @return Instructor[] Returns an array of Instructor objects
 //     */
@@ -40,4 +42,3 @@ class InstructorRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
