@@ -16,28 +16,33 @@ class InstructorModuleRepository extends ServiceEntityRepository
         parent::__construct($registry, InstructorModule::class);
     }
 
-//    /**
-//     * @return InstructorModule[] Returns an array of InstructorModule objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    // Requête pour filtrer les intervenants
+    public function findByFilters(?string $name, ?string $firstName, ?string $email): array
+    {
+        $filtre = $this->createQueryBuilder('t');
 
-//    public function findOneBySomeField($value): ?InstructorModule
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($name) {
+            $filtre->andWhere('t.nom LIKE :name')
+            ->setParameter('name', '%' . $name . '%');
+        }
+
+        if ($firstName) {
+            $filtre->andWhere('t.prenom LIKE :firstName')
+            ->setParameter('firstName', '%' . $firstName . '%');
+        }
+
+        if ($email) {
+            $filtre->andWhere('t.email LIKE :email')
+            ->setParameter('email', '%' . $email . '%');
+        }
+        return $filtre->getQuery()->getResult();
+    }
+
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.nom', 'ASC') 
+            ->getQuery()
+            ->getResult();
+    }
 }
