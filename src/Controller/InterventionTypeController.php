@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 final class InterventionTypeController extends AbstractController
 {
     #[Route('/intervention_type', name: 'intervention_type', methods: ['GET'])]
-    public function InterventionType(Request $request, InterventionTypeRepository $interventionTypeRepository): Response
+    public function list(Request $request, InterventionTypeRepository $interventionTypeRepository): Response
     {
         $interventionType = $interventionTypeRepository->findAll();
 
@@ -29,7 +29,7 @@ final class InterventionTypeController extends AbstractController
             }
         }
 
-        return $this->render('intervention_type/intervention_type.html.twig', [
+        return $this->render('intervention_type/list.html.twig', [
             'lesInterventions' => $interventionType,
             'form' => $filterForm->createView()
         ]);
