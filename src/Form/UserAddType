@@ -14,16 +14,22 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name', null, [
+                'label' => 'Nom - champ obligatoire',
+                'attr' => [
+                'placeholder' => 'Dupont',
+                ],
+            ])
+            ->add('firstName', null, [
+                'label' => 'Prénom - champ obligatoire',
+                'attr' => [
+                'placeholder' => 'Jean',
+                ],
+            ])
             ->add('email', EmailType::class, [
                 'label' => 'Email - champ obligatoire',
                 'attr' => [
-                    'placeholder' => 'j.martins@mentalworks.fr',
-                ],
-            ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe - champ obligatoire',
-                'attr' => [
-                    'placeholder' => '**********',
+                'placeholder' => 'exemple@mail.fr',
                 ],
             ])
         ;
@@ -36,3 +42,4 @@ class UserType extends AbstractType
         ]);
     }
 }
+            
