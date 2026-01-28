@@ -21,7 +21,7 @@
 				<div class="space-y-1">
 
 					{# === CALENDRIER === #}
-						<a href="#" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
+						<a href="{{ path('calendar') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
 							{{ current_route == 'app_calendar'
 								? 'bg-[#2E3B59] text-white shadow-sm'
 								: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}"> <svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'app_calendar' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">

@@ -7,8 +7,11 @@ use App\Repository\SchoolYearRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\CoursePeriod;
+use App\Form\CoursePeriodType;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 final class SchoolYearController extends AbstractController
 {
@@ -25,6 +28,28 @@ final class SchoolYearController extends AbstractController
 
         return $this->render('school_year/list.html.twig', [
             'dataSchoolYear' => $schoolYear
+        ]);
+    }
+        
+    #[Route('/school_year/new', name: 'app_course_period_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $coursePeriod = new CoursePeriod();
+        $form = $this->createForm(CoursePeriodType::class, $coursePeriod);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($coursePeriod);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'La promotion a bien été enregistrée.');
+
+            return $this->redirectToRoute('app_course_period_new', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('school_year/new_course_period.html.twig', [
+            'course_period' => $coursePeriod,
+            'form' => $form,
         ]);
     }
 }
