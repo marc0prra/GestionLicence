@@ -13,6 +13,7 @@
 			{% include 'composants/button.html.twig' with {
                     label: 'Ajouter un type',
                     type: 'confirm',
+					url: path('intervention_type_fiche')
             } %}
 		</div>
 		<div class="mt-[40px]">
@@ -36,7 +37,6 @@
 				} %}
 			</div>
 			{{ form_end(form) }}
-
 		</div>
 
 		<h1 class="font-medium text-[20px] text-[#1F384C] mt-6 mb-2">
