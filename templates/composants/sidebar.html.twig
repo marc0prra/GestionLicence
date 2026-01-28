@@ -18,23 +18,25 @@
 			<div>
 				<h3 class="text-[11px] text-[#A0ABC0] uppercase tracking-wider mb-3 px-3 max-[750px]:hidden">Menu</h3>
 
-				<div class="space-y-1">
+				<div
+					class="space-y-1">
 
 					{# === CALENDRIER === #}
-						<a href="#" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
-							{{ current_route == 'app_calendar'
-								? 'bg-[#2E3B59] text-white shadow-sm'
-								: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}"> <svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'app_calendar' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+					<a href="#" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
+														{{ current_route == 'app_calendar'
+															? 'bg-[#2E3B59] text-white shadow-sm'
+															: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
+						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'app_calendar' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
 						</svg>
 						<span class="ml-3 text-[13px] font-medium max-[750px]:hidden whitespace-nowrap">Calendrier</span>
 					</a>
 
 					{# === INTERVENTIONS === #}
-					<a href="{{ path('form_interventions') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
-						{{ current_route == 'form_interventions'
-							? 'bg-[#2E3B59] text-white shadow-sm'
-							: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
+					<a href="{{ path('interventions') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
+													{{ current_route == 'form_interventions'
+														? 'bg-[#2E3B59] text-white shadow-sm'
+														: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
 						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'form_interventions' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
 						</svg>
@@ -43,9 +45,9 @@
 
 					{# === CORPS ENSEIGNANT === #}
 					<a href="#" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
-							                        {{ current_route == 'app_teachers'
-							                           ? 'bg-[#2E3B59] text-white shadow-sm'
-							                           : 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
+														                        {{ current_route == 'app_teachers'
+														                           ? 'bg-[#2E3B59] text-white shadow-sm'
+														                           : 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
 						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'app_teachers' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
 						</svg>
@@ -61,9 +63,9 @@
 
 					{# === MODULES === #}
 					<a href="{{ path('module_index') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
-						{{ current_route == 'module_index'
-							? 'bg-[#2E3B59] text-white shadow-sm'
-							: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
+													{{ current_route == 'module_index'
+														? 'bg-[#2E3B59] text-white shadow-sm'
+														: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
 						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'module_index' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path>
 						</svg>
@@ -72,9 +74,9 @@
 
 					{# === BLOCS D'ENSEIGNEMENT #}
 					<a href="{{ path('teaching_block') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
-						{{ current_route == 'teaching_block'
-							? 'bg-[#2E3B59] text-white shadow-sm'
-							: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
+													{{ current_route == 'teaching_block'
+														? 'bg-[#2E3B59] text-white shadow-sm'
+														: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
 						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'teaching_block' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
 						</svg>
@@ -83,9 +85,9 @@
 
 					{# === ANNEES SCOLAIRE === #}
 					<a href="{{ path('school_year') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
-						{{ current_route == 'school_year'
-							? 'bg-[#2E3B59] text-white shadow-sm'
-							: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
+													{{ current_route == 'school_year'
+														? 'bg-[#2E3B59] text-white shadow-sm'
+														: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
 						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'school_year' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16M10 4v16M14 4v16M18 4v16M6 4v16"></path>
 						</svg>
@@ -94,9 +96,9 @@
 
 					{# === TYPES D'INTERVENTION === #}
 					<a href="{{ path('intervention_type') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
-						{{ current_route == 'app_intervention_types'
-							? 'bg-[#2E3B59] text-white shadow-sm'
-							: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
+													{{ current_route == 'app_intervention_types'
+														? 'bg-[#2E3B59] text-white shadow-sm'
+														: 'text-[#718096] hover:bg-[#2E3B59] hover:text-white hover:shadow-sm' }}">
 						<svg class="w-5 h-5 flex-shrink-0 {{ current_route == 'app_intervention_types' ? '' : 'opacity-70' }}" fill="none" stroke="currentColor" viewbox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
 						</svg>

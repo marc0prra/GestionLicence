@@ -16,7 +16,7 @@ use App\Repository\CourseRepository;
 class InterventionController extends AbstractController
 {
     #[Route('/interventions', name: 'interventions', methods: ['GET'])]
-    public function liste(Request $request, CourseRepository $courseRepo): Response
+    public function list(Request $request, CourseRepository $courseRepo): Response
     {
         $interventions = $courseRepo->findAll();
         $filterForm = $this->createForm(CourseFilterType::class);
@@ -34,14 +34,14 @@ class InterventionController extends AbstractController
             }
         }
 
-        return $this->render('intervention/liste.html.twig', [
+        return $this->render('intervention/list.html.twig', [
             'interventions' => $interventions,
             'form' => $filterForm->createView()
         ]);
     }
 
     #[Route('/intervention', name: 'form_interventions')]
-    public function InterventionForm(EntityManagerInterface $em, Request $request, CourseRepository $periodRepo): Response
+    public function form(EntityManagerInterface $em, Request $request, CourseRepository $periodRepo): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
@@ -78,7 +78,7 @@ class InterventionController extends AbstractController
             }
         }
 
-        return $this->render('intervention/form_intervention.html.twig', [
+        return $this->render('intervention/form.html.twig', [
             'form' => $form->createView(),
         ]);
     }
