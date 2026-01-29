@@ -38,8 +38,9 @@ class InterventionTypeType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Ex: #6750A4',
-                    'class' => "w-full max-w-[395px] bg-[#F9FAFB] px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    
+                    'class' => "w-full max-w-[395px] bg-[#F9FAFB] px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    'pattern' => '#[0-9a-fA-F]{6}',
+                    'title' => 'Code hexadécimal (ex: #6750A4)',
                 ],
 
                 // Ajout d'une aide pour le format attendu

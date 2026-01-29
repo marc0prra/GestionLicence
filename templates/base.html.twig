@@ -14,11 +14,13 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-		{% block stylesheets %}
+		{% block stylesheets %}
+
 			<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
 		{% endblock %}
 
-		{% block javascripts %}
+		{% block javascripts %}
+
 			{% block importmap %}
 				{{ importmap('app') }}
 			{% endblock %}
@@ -39,25 +41,25 @@
 			{% endblock %}
 
 
-			<div class="p-6"> {% block body %}{% endblock %}
-
+			<div class="p-6">
 				{# === ZONE DES MESSAGES FLASH (POP-UP) === #}
 				{# Messages de Succès (Enregistrement, Modification, etc.) #}
-				{% for message in app.flashes('success') %}
-					<div class="mt-4 w-full max-w-[500px] p-4 text-sm text-green-800 rounded-lg bg-green-50 border border-green-200" role="alert">
-						<span class="font-bold">Succès :</span>
+					{% for message in app.flashes('success') %}
+						<div class="mb-4 w-full max-w-[500px] p-4 text-sm text-green-800 rounded-lg bg-green-50 border border-green-200" role="alert"> <span class="font-bold">Succès :</span>
 						{{ message }}
 					</div>
 				{% endfor %}
 
 				{# Messages d'Erreur (Validation échouée, problème technique) #}
 				{% for message in app.flashes('error') %}
-					<div class="mt-4 w-full max-w-[500px] p-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200" role="alert">
+					<div class="mb-4 w-full max-w-[500px] p-4 text-sm text-red-800 rounded-lg bg-red-50 border border-red-200" role="alert">
 						<span class="font-bold">Erreur :</span>
 						{{ message }}
 					</div>
 				{% endfor %}
 				{# === FIN ZONE FLASH === #}
+
+				{% block body %}{% endblock %}
 			</div>
 		</main>
 	</body>
