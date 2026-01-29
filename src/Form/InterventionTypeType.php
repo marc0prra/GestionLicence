@@ -22,7 +22,7 @@ class InterventionTypeType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Ex: Cours Magistral, TP...',
-                    'class' => 'form-control'
+                    'class' => "w-full max-w-[395px] bg-[#F9FAFB] px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 ],
                 'constraints' => [
                     new NotBlank(
@@ -38,7 +38,8 @@ class InterventionTypeType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Ex: #6750A4',
-                    'class' => 'form-control'
+                    'class' => "w-full max-w-[395px] bg-[#F9FAFB] px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    
                 ],
 
                 // Ajout d'une aide pour le format attendu
@@ -60,7 +61,7 @@ class InterventionTypeType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'rows' => 4,
-                    'class' => 'form-control',
+                    'class' => "max-w-[800px] w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500",
                     'placeholder' => 'Description du type d\'intervention...'
                 ],
                 
