@@ -17,7 +17,7 @@ final class AnneesScolaireController extends AbstractController
     #[Route('/annees/scolaire', name: 'annees_scolaire', methods: ['GET'])]
     public function anneesScolaire(SchoolYearRepository $schoolYearRepository): Response
     {
-        $anneesScolaire = $schoolYearRepository->findAll(); 
+        $anneesScolaire = $schoolYearRepository->findAll();
 
         return $this->render('annees_scolaire/annees_scolaire.html.twig', [
             'dataAnneesScolaire' => $anneesScolaire
@@ -44,5 +44,11 @@ final class AnneesScolaireController extends AbstractController
             'course_period' => $coursePeriod,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/annee', name: 'annee_scolaire_edit', methods: ['POST'])]
+    public function form(Request $request, EntityManagerInterface $entityManager, SchoolYearRepository $schoolYearRepository)
+    {
+
     }
 }

@@ -63,4 +63,19 @@ class SchoolYear
 
         return $this;
     }
+
+    public function getYear(): ?string
+    {
+        // Si tu n'as pas de propriété $year, on utilise startDate
+        return $this->startDate ? $this->startDate->format('Y') : null;
+    }
+
+    public function setYear(?string $year): self
+    {
+        if ($year && $this->startDate) {
+            // On garde le mois et le jour, mais on change l'année
+            $this->startDate->setDate((int) $year, (int) $this->startDate->format('m'), (int) $this->startDate->format('d'));
+        }
+        return $this;
+    }
 }
