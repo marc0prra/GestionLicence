@@ -1,28 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ fiche.id ? 'Modifier' : 'Créer' }}
+	{{ schoolYear.id ? 'Modifier' : 'Créer' }}
 	Promotion
 {% endblock %}
 
 {% block body %}
-<div class="mx-auto mt-10 p-6">
-	<h1 class="text-[#1F384C] text-[26px] font-medium">
-		Promotion
-		{{ fiche.startDate|date('Y') }}
-	</h1>
-
+	<div class="mx-auto mt-10 p-6">
+		<h1 class="text-[#1F384C] text-[26px] font-medium">
+			Promotion
+			{{ schoolYear.getName() }}
+		</h1>
+	</div>
 	{{ form_start(form) }}
-	<div
-		class="grid grid-cols-2 gap-4">
-		{# Symfony affichera 'year' et 'saison' si ils sont dans ton SchoolYearType #}
-		{{ form_row(form.year) }}
-		{{ form_row(form.saison) }}
-	</div>
-
-	<div class="mt-6 flex gap-2">
-		<a href="{{ path('liste_school_years') }}" class="btn">Retour à la liste</a>
-		<button type="submit" class="btn btn-primary">Enregistrer les informations</button>
-	</div>
 	{{ form_end(form) }}
-</div>
+{% endblock %}
