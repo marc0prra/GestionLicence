@@ -33,28 +33,27 @@ final class SchoolYearController extends AbstractController
 
 
     #[Route('/school_year/{id}', name: 'school_year_one', methods: ['GET', 'POST'])]
-    public function oneYear(
-        SchoolYear $schoolYear,
-        Request $request,
-        EntityManagerInterface $em // Interface obligatoire pour l'autowiring
-    ): Response {
-
+    public function oneYear(SchoolYear $schoolYear, Request $request, EntityManagerInterface $em): Response
+    {
         $form = $this->createForm(SchoolYearType::class, $schoolYear);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $em->flush(); // Sauvegarde les modifs (y compris le changement d'année via setYear)
-                $this->addFlash('success', 'Modifications enregistrées !');
-                return $this->redirectToRoute('school_year_one', ['id' => $schoolYear->getId()]);
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Erreur lors de la sauvegarde.');
+        dd($schoolYear);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                try {
+                    $em->flush();
+                    $this->addFlash('success', 'Modifications enregistrées !');
+                    return $this->redirectToRoute('school_year_one', ['id' => $schoolYear->getId()]);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Erreur lors de la sauvegarde.');
+                }
             }
         }
 
-        return $this->render('fiche/show.html.twig', [
+        return $this->render('school_year/form.html.twig', [
             'fiche' => $schoolYear,
-            'form' => $form->createView(), // Indispensable pour Twig
+            'form' => $form->createView(),
         ]);
     }
 }
