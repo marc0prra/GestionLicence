@@ -4,6 +4,8 @@
     - type  : 'confirm', 'cancel', 'warning', 'danger' (Défaut: confirm)
     - url   : (Optionnel) Si défini, devient un lien <a>, sinon <button>
     - icon  : (Optionnel) Classe icône (ex: 'bi bi-check')
+    - buttonType : (Optionnel) Type HTML du bouton: 'submit' ou 'button' (Défaut: submit)
+    - dataAction : (Optionnel) Attribut data-action pour le ciblage JS
 #}
 
 {# 1. Définition des styles spécifiques pour chaque bouton (Couleur + Largeur + Couleur Texte) #}
@@ -27,7 +29,7 @@
         {{ label }}
     </a>
 {% else %}
-    <button type="submit" class="{{ common_classes }} {{ current_style }}">
+    <button type="{{ buttonType|default('submit') }}" class="{{ common_classes }} {{ current_style }}" {% if dataAction is defined %}data-action="{{ dataAction }}"{% endif %}>
         {% if icon is defined %}<i class="{{ icon }}"></i>{% endif %}
         {{ label }}
     </button>

@@ -10,36 +10,42 @@
 {% endblock %}
 
 {% block body %}
-<div class="bg-white min-h-screen w-full text-left" style="padding-top: 60px; padding-left: 80px;">
+{# MODIFICATION 1 : padding-top réduit de 60px à 30px pour remonter le tout #}
+<div class="bg-white min-h-screen w-full text-left" style="padding-top: 30px; padding-left: 80px;">
     
-    <h1 class="text-3xl font-bold text-black mb-10">
+    {# MODIFICATION 2 : mb-10 réduit à mb-6 #}
+    <h1 class="text-3xl font-bold text-black mb-6">
         Gestion du supérieur
     </h1>
 
     <div style="width: 600px; max-width: 100%;">
-        <h2 class="text-xl font-bold mb-6" style="color: #2C416E;">
+        {# MODIFICATION 3 : mb-6 réduit à mb-4 #}
+        <h2 class="text-xl font-bold mb-4" style="color: #2C416E;">
             Connexion au portail
         </h2>
 
-        <form method="post" class="space-y-6">
+        {# MODIFICATION 4 : space-y-6 réduit à space-y-4 pour tasser le formulaire #}
+        <form method="post" class="space-y-4">
             {% if error %}
-                <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+                <div class="p-3 mb-3 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                     {{ error.messageKey|trans(error.messageData, 'security') }}
                 </div>
             {% endif %}
 
-            {# 1. Zone d'information si déjà connecté (mais n'empêche plus l'affichage du form) #}
+            {# Zone d'information si déjà connecté #}
             {% if app.user %}
-                <div class="mb-6 p-4 bg-blue-50 text-gray-800 rounded-lg border border-blue-100">
+                {# MODIFICATION 5 : Marges et padding réduits #}
+                <div class="mb-4 p-3 bg-blue-50 text-gray-800 rounded-lg border border-blue-100 text-sm">
                     Vous êtes connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>. 
                     <br>
                     <a href="{{ path('app_logout') }}" style="color: #2C416E;" class="underline hover:text-blue-800 font-medium">Se déconnecter</a>
                 </div>
             {% endif %}
             
-            {# 2. Le formulaire s'affiche désormais TOUT LE TEMPS #}
-            <div class="mb-4">
-                <label for="inputEmail" class="block mb-2 text-base font-normal text-black">
+            {# Email #}
+            {# MODIFICATION 6 : mb-4 réduit à mb-3 #}
+            <div class="mb-3">
+                <label for="inputEmail" class="block mb-1 text-base font-normal text-black">
                     Email - champ obligatoire
                 </label>
                 <input type="email" 
@@ -54,8 +60,10 @@
                        autofocus>
             </div>
             
-            <div class="mb-6">
-                <label for="inputPassword" class="block mb-2 text-base font-normal text-black">
+            {# Mot de passe #}
+            {# MODIFICATION 7 : mb-6 réduit à mb-4 #}
+            <div class="mb-4">
+                <label for="inputPassword" class="block mb-1 text-base font-normal text-black">
                     Mot de passe - champ obligatoire
                 </label>
                 <input type="password" 

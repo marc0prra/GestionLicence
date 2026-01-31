@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c86ae16203ead1ced38221fa6b0689cd",
+    "content-hash": "5790875cc7bb5bbd3144e4a0c2b82946",
     "packages": [
         {
             "name": "composer/semver",
@@ -7653,6 +7653,8 @@
             "time": "2025-11-27T13:41:46+00:00"
         },
         {
+=======
+>>>>>>> 86eea71c0ecd73d85bea59945e1e3931275f3c8d
             "name": "symfony/yaml",
             "version": "v8.0.1",
             "source": {
