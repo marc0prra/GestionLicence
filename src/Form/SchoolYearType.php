@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class SchoolYearType extends AbstractType
 {
@@ -15,18 +14,15 @@ class SchoolYearType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom de l\'année - champ obligatoire',
+                'label' => 'Année - champ obligatoire',
                 'required' => true,
+                'attr' => ['placeholder' => '2026'],
             ])
-            ->add('startDate', DateType::class, [
-                'label' => 'Date de début - champ obligatoire',
+            ->add('saison', TextType::class, [
+                'label' => 'Saison (format YYYY/YYYY) - champ obligatoire',
                 'required' => true,
-                'widget' => 'single_text',
-            ])
-            ->add('endDate', DateType::class, [
-                'label' => 'Date de fin - champ obligatoire',
-                'required' => true,
-                'widget' => 'single_text',
+                'mapped' => false,
+                'attr' => ['placeholder' => '2026/2027'],
             ]);
     }
 

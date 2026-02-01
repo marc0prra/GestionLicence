@@ -10,7 +10,7 @@ class SchoolYearFixtures extends Fixture
 {
     // Constantes pour les années d'écoles (utilisées comme références dans les fixtures)
     public const SCHOOL_YEAR_2015 = 'school_year_2015';
-    public const SCHOOL_YEAR_2016 = 'school_year_2016'; 
+    public const SCHOOL_YEAR_2016 = 'school_year_2016';
     public const SCHOOL_YEAR_2017 = 'school_year_2017';
     public const SCHOOL_YEAR_2018 = 'school_year_2018';
     public const SCHOOL_YEAR_2019 = 'school_year_2019';
@@ -42,18 +42,6 @@ class SchoolYearFixtures extends Fixture
                 'start_date' => '2026-09-01',
                 'end_date' => '2027-07-07',
                 'reference_school' => self::SCHOOL_YEAR_2026,
-            ],
-            [
-                'name' => '2025',
-                'start_date' => '2025-09-01',
-                'end_date' => '2026-07-07',
-                'reference_school' => self::SCHOOL_YEAR_2025,
-            ],
-            [
-                'name' => '2024',
-                'start_date' => '2024-09-01',
-                'end_date' => '2025-07-07',
-                'reference_school' => self::SCHOOL_YEAR_2024,
             ],
             [
                 'name' => '2023',
