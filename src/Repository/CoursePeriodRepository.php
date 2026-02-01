@@ -16,6 +16,15 @@ class CoursePeriodRepository extends ServiceEntityRepository
         parent::__construct($registry, CoursePeriod::class);
     }
 
+    public function findBySchoolYear($schoolYearId)
+    {
+        return $this->createQueryBuilder('cp')
+            ->where('cp.school_year_id = :schoolYearId')
+            ->setParameter('schoolYearId', $schoolYearId)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findPeriodByDates(\DateTimeInterface $startDate): ?CoursePeriod
     {
         return $this->createQueryBuilder('cp')
