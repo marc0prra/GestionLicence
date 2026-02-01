@@ -80,12 +80,15 @@ class ModuleController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($module);
-            $em->flush();
-            $this->addFlash('success', 'Module modifié avec succès.');
+        if ($form->isSubmitted() ) {
+            if ($form->isValid()) {
+                    $em->persist($module);
+                $em->flush();
+                $this->addFlash('success', 'Module modifié avec succès.');
 
-            return $this->redirectToRoute('app_module_edit', ['id' => $module->getId()]);
+
+                return $this->redirectToRoute('app_module_edit', ['id' => $module->getId()]);
+            }
         }
         // Rendre la vue du formulaire d'édition de module
         return $this->render('module/form_module.html.twig', [
