@@ -79,7 +79,7 @@ class ModuleController extends AbstractController
         ]);
 
         $form->handleRequest($request);
-
+        // Si le formulaire est soumis et valide, enregistrer les modifications du module
         if ($form->isSubmitted() ) {
             if ($form->isValid()) {
                     $em->persist($module);
@@ -97,17 +97,21 @@ class ModuleController extends AbstractController
             'is_edit' => true
         ]);
     }
-
-    // Route pour supprimer un module
     #[Route('/modules/{id}/delete', name: 'app_module_delete', methods: ['POST'])]
-    public function delete(Request $request, Module $module, EntityManagerInterface $em): Response
+    public function delete(Module $module, Request $request, EntityManagerInterface $em): Response
     {
-        // Vérifier le token CSRF pour la sécurité
+        // Vérification de sécurité CSRF
         if ($this->isCsrfTokenValid('delete' . $module->getId(), $request->request->get('_token'))) {
-            $em->remove($module);
-            $em->flush();
-            $this->addFlash('success', 'Module supprimé.');
+            // Tentative de suppression du module
+            try {
+                $em->remove($module);
+                $em->flush();
+                $this->addFlash('success', 'Module supprimé avec succès.');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible de supprimer ce module car il est utilisé ailleurs.');
+            }
         }
+        // Redirection vers la liste des modules
         return $this->redirectToRoute('module_index');
     }
 }
