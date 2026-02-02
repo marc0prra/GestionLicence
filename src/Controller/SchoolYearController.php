@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Entity\CoursePeriod;
+use App\Form\CoursePeriodType;
 
 final class SchoolYearController extends AbstractController
 {

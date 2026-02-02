@@ -67,24 +67,38 @@
 </p>
 
 <section>
-	{% embed 'composants/table.html.twig' with {
-			headers: ['Date début', 'Date de fin', '']
-		} %}
-		{% block body %}
-			{% for coursePeriod in coursePeriods %}
-				<tr>
-					<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ coursePeriod.startDate|date('d-m-Y')}}
-					</td>
-					<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ coursePeriod.endDate|date('d-m-Y')}}
-					</td>
-					<td class="px-[25px] py-[20px] flex items-center gap-2">
-						<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
-						<a href="{{ path('intervention_type_fiche', { id: coursePeriod.id }) }}" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
-					</td>
-				</tr>
-			{% endfor %}
-		{% endblock %}
-	{% endembed %}
+    {% embed 'composants/table.html.twig' with {
+            headers: ['Date début', 'Date de fin', '']
+        } %}
+        {% block body %}
+            {% for coursePeriod in coursePeriods %}
+                <tr>
+                    <td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">
+                        {{ coursePeriod.startDate|date('d/m/Y') }}
+                    </td>
+                    <td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">
+                        {{ coursePeriod.endDate|date('d/m/Y') }}
+                    </td>
+                    <td class="px-[25px] py-[20px] flex items-center gap-2">
+                        <img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
+                        {# CORRECTION DU LIEN : Pointe vers la modification #}
+                        <a href="{{ path('app_course_period_edit', { id: coursePeriod.id }) }}" 
+                           class="text-[#1F384C] text-[14px] font-medium hover:underline">
+                           Accéder à la fiche
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+    
+    {# Bouton pour Ajouter une semaine #}
+    <div class="mt-6">
+        <a href="{{ path('app_course_period_new', {'schoolYearId': schoolYear.id}) }}" 
+           class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#1F384C] hover:bg-[#2c4b63]">
+            Ajouter une semaine de cours
+        </a>
+    </div>
 </section>
 
 {% if schoolYear.id %}

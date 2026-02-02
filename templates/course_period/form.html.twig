@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ is_edit ? 'Modifier' : 'Ajouter' }} une semaine de cours
+{% endblock %}
+
+{% block body %}
+    <section class="w-full p-8 bg-white min-h-screen font-poppins">
+        
+        {# Fil d'Ariane #}
+        <div class="text-sm text-gray-500 mb-6">
+            <span class="flex items-center gap-2">
+                <img src="{{ asset('img/home.png') }}" alt="Accueil" class="w-4 h-4">
+                > Années scolaire > Promotion {{ schoolYear.name }} > Semaines de cours > 
+                <span class="font-bold text-[#1F384C]">{{ is_edit ? course_period.startDate|date('d/m/Y') ~ ' au ' ~ course_period.endDate|date('d/m/Y') : 'Ajouter' }}</span>
+            </span>
+        </div>
+
+        <h1 class="text-[28px] font-bold text-[#1F384C] mb-8">
+            Promotion {{ schoolYear.name }}
+        </h1>
+
+        {{ form_start(form, {'attr': {'class': 'w-full max-w-[800px]'}}) }}
+
+            {# 1. ANNÉE (Lecture seule) #}
+            <div class="mb-8 w-full">
+                {% include 'composants/form_champ_select.html.twig' with {
+                    'field': form.school_year_id,
+                    'label': 'Année - champ obligatoire'
+                } %}
+            </div>
+
+            {# 2. DATES (Côte à côte) #}
+            <div class="flex flex-col md:flex-row w-full gap-6 mb-10">
+                <div class="w-full md:w-1/2"> 
+                    {% include 'composants/form_champ_date.html.twig' with {
+                        'field': form.start_date,
+                        'label': 'Date de début - champ obligatoire'
+                    } %}
+                </div>
+                <div class="w-full md:w-1/2">
+                    {% include 'composants/form_champ_date.html.twig' with {
+                        'field': form.end_date,
+                        'label': 'Date de fin - champ obligatoire'
+                    } %}
+                </div>
+            </div>
+
+            {# 3. ACTIONS (Boutons) #}
+            {# CDC: 3 boutons présents en modification, 2 en ajout [cite: 2411] #}
+            <div class="flex flex-wrap items-center justify-start gap-4 mt-8">
+                
+                {# Bouton RETOUR #}
+                <div class="flex-1">
+                    {% include 'composants/button.html.twig' with {
+                        'label': 'Retour à la liste',
+                        'type': 'cancel', 
+                        'url': path('school_year_edit', {'id': schoolYear.id}),
+                        'fullWidth': true
+                    } %}
+                </div>
+
+                {# Bouton SUPPRIMER (Uniquement en mode Édition) #}
+                {% if is_edit %}
+                    <div class="flex-1">
+                        {% include 'composants/button.html.twig' with {
+                            'label': 'Supprimer',
+                            'type': 'delete',
+                            'buttonType': 'button',
+                            'fullWidth': true,
+                            'onclick': "toggleDeletePeriodModal()"
+                        } %}
+                    </div>
+                {% endif %}
+
+                {# Bouton ENREGISTRER #}
+                <div class="flex-1">
+                    {% include 'composants/button.html.twig' with {
+                        'label': 'Enregistrer les informations',
+                        'type': 'confirm',
+                        'fullWidth': true
+                    } %}
+                </div>
+            </div>
+
+        {{ form_end(form) }}
+
+    </section>
+
+    {# --- MODALE DE SUPPRESSION (Uniquement si en édition) --- #}
+    {# CDC: Modale apparaît lors du clic sur Supprimer [cite: 2420] #}
+    {% if is_edit %}
+        {% include 'composants/pop_up.html.twig' with {
+            'title': 'Supprimer la semaine de cours',
+            'message': 'Vous vous apprêtez à supprimer cette semaine. Cette action est irrévocable.',
+            'id': 'modal-delete-period' 
+        } %}
+        
+        {# Le formulaire caché pour la suppression #}
+        <form id="delete-period-form" 
+              method="post" 
+              action="{{ path('app_course_period_delete', {'id': course_period.id}) }}" 
+              class="hidden">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course_period.id) }}">
+        </form>
+
+        <script>
+            // Fonction pour ouvrir la modale (doit correspondre à l'ID dans pop_up.html.twig si tu l'utilises, 
+            // sinon adapte selon ton composant pop_up)
+            function toggleDeletePeriodModal() {
+                const modal = document.getElementById('modal-delete'); // ID par défaut souvent utilisé
+                if(modal) modal.classList.toggle('hidden');
+            }
+            
+            // Fonction appelée par le bouton "Confirmer" de la modale
+            function confirmDelete() {
+                document.getElementById('delete-period-form').submit();
+            }
+        </script>
+    {% endif %}
+
+{% endblock %}
