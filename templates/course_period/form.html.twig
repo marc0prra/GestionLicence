@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ is_edit ? 'Modifier' : 'Ajouter' }} une semaine de cours
+{% endblock %}
+
+{% block body %}
+    <section class="w-full p-8 bg-white min-h-screen font-poppins">
+
+        <h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+            Promotion {{ schoolYear.name }}
+        </h1>
+
+        {{ form_start(form, {'attr': {'class': 'w-full max-w-[800px]'}}) }}
+
+            {# 1. ANNÉE (Lecture seule) #}
+            <div class="mb-8 w-full">
+                {% include 'composants/form_champ_select.html.twig' with {
+                    'field': form.school_year_id,
+                    'label': 'Année - champ obligatoire'
+                } %}
+            </div>
+
+            {# 2. DATES (Côte à côte) #}
+            <div class="flex flex-col md:flex-row w-full gap-6 mb-10">
+                <div class="w-full md:w-1/2"> 
+                    {% include 'composants/form_champ_date.html.twig' with {
+                        'field': form.start_date,
+                        'label': 'Date de début - champ obligatoire'
+                    } %}
+                </div>
+                <div class="w-full md:w-1/2">
+                    {% include 'composants/form_champ_date.html.twig' with {
+                        'field': form.end_date,
+                        'label': 'Date de fin - champ obligatoire'
+                    } %}
+                </div>
+            </div>
+
+            {# 3. ACTIONS (Boutons) #}
+            {# CDC: 3 boutons présents en modification, 2 en ajout [cite: 2411] #}
+            <div class="flex flex-wrap items-center justify-start gap-4 mt-8">
+                
+                {# Bouton RETOUR #}
+                <div class="flex-1">
+                    {% include 'composants/button.html.twig' with {
+                        'label': 'Retour à la liste',
+                        'type': 'cancel', 
+                        'url': path('school_year_edit', {'id': schoolYear.id}),
+                        'fullWidth': true
+                    } %}
+                </div>
+
+                {# Bouton SUPPRIMER (Uniquement en mode Édition) #}
+                {% if is_edit %}
+                    <div class="flex-1">
+                        {% include 'composants/button.html.twig' with {
+                            'label': 'Supprimer',
+                            'type': 'delete',
+                            'buttonType': 'button',
+                            'fullWidth': true,
+                            'onclick': "toggleDeletePeriodModal()"
+                        } %}
+                    </div>
+                {% endif %}
+
+                {# Bouton ENREGISTRER #}
+                <div class="flex-1">
+                    {% include 'composants/button.html.twig' with {
+                        'label': 'Enregistrer les informations',
+                        'type': 'confirm',
+                        'fullWidth': true
+                    } %}
+                </div>
+            </div>
+
+        {{ form_end(form) }}
+
+    </section>
+
+    {# --- MODALE DE SUPPRESSION (Uniquement si en édition) --- #}
+    {% if is_edit %}
+        {% include 'composants/pop_up.html.twig' with {
+            'title': 'Supprimer la semaine de cours',
+            'message': 'Vous vous apprêtez à supprimer la semaine de cours, cette action est irrévoquable.A noter qu’aucune intervention ne doit être liée à cette semaine de cours pour pouvoir la supprimer.',
+            'id': 'modal-delete-period' 
+        } %}
+        
+        {# Le formulaire caché pour la suppression #}
+        <form id="delete-period-form" 
+              method="post" 
+              action="{{ path('app_course_period_delete', {'id': course_period.id}) }}" 
+              class="hidden">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course_period.id) }}">
+        </form>
+
+        <script>
+            function toggleDeletePeriodModal() {
+                const modal = document.getElementById('modal-delete');
+                if(modal) modal.classList.toggle('hidden');
+            }
+
+            function confirmDelete() {
+                document.getElementById('delete-period-form').submit();
+            }
+        </script>
+    {% endif %}
+
+{% endblock %}

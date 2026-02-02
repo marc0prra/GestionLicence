@@ -1,4 +1,4 @@
-<div class="w-full max-w-md mt-5" id="instructor-wrapper" data-field-id="{{ field.vars.id }}">
+<div class="w-full max-w-[1200px] mb-8" id="instructor-wrapper" data-field-id="{{ field.vars.id }}">
 	<label class="block mb-2 text-sm font-medium text-gray-700">
 		{{ field.vars.label|default("Intervenants - champ obligatoire") }}
 	</label>
@@ -46,12 +46,13 @@
 	</div>
 </div>
 <script>
-
 	// Champs multi_select formulaire
 document.addEventListener('DOMContentLoaded', function () {
 const wrapper = document.getElementById('instructor-wrapper');
 if (! wrapper) 
 return;
+
+
 
 // Sécurité si l'élément n'est pas sur la page
 
@@ -147,6 +148,7 @@ function removeInstructorSelection(id) {
 const cb = document.querySelector(`.instructor-checkbox[value="${id}"]`);
 if (cb) 
 cb.checked = false;
+
 
 
 updateEverything();
