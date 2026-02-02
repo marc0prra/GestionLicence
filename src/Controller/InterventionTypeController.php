@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class InterventionTypeController extends AbstractController
 {
-    // ... (méthode list inchangée) ...
     #[Route('/intervention_type', name: 'intervention_type', methods: ['GET'])]
     public function list(Request $request, InterventionTypeRepository $interventionTypeRepository): Response
     {
