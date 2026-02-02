@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ instructor.user.firstName }}
+	{{ instructor.user.lastName }}
+	- Corps Enseignant
+{% endblock %}
+
+{% block body %}
+	<div
+		class="p-6 bg-white rounded-lg">
+
+		{# --- BREADCRUMB --- #}
+		<nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+			<a href="{{ path('app_instructor_index') }}" class="hover:text-gray-700">Corps enseignant</a>
+			<span>›</span>
+			<span class="text-[#1F384C] font-medium">{{ instructor.user.firstName }}
+				{{ instructor.user.lastName }}</span>
+			<span>›</span>
+			<span class="text-[#1F384C] font-medium">Informations générales</span>
+		</nav>
+
+		{# --- TITRE --- #}
+		<h1 class="font-bold text-[#1F384C] text-[28px] mb-4">
+			{{ instructor.user.firstName }}
+			{{ instructor.user.lastName }}
+		</h1>
+
+		{# --- SECTION MODULES ENSEIGNÉS --- #}
+		<div class="mb-6">
+			<h2 class="text-[#FFBD01] font-semibold text-[18px] mb-3">Modules enseignés</h2>
+			<div class="space-y-1 text-[14px] text-[#1F384C]">
+				{% for im in instructor.instructorModules %}
+					<p>
+						<strong>{{ im.module.name }}</strong>
+						:
+						{{ im.module.hoursCount }}h00
+						<span class="text-gray-500">(dont
+							{{ im.module.hoursCount }}
+							restantes pour cette année)</span>
+					</p>
+				{% else %}
+					<p class="text-gray-500">Aucun module assigné.</p>
+				{% endfor %}
+			</div>
+		</div>
+
+		{# --- BOUTON EXPORT --- #}
+		<div class="mb-8">
+			<button type="button" class="inline-flex items-center justify-center bg-[#1F384C] hover:bg-[#2C416E] text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm">
+				Exporter le récapitulatif (fichier .xls)
+			</button>
+		</div>
+
+		<hr
+		class="border-gray-200 mb-6">
+
+		{# --- ONGLETS --- #}
+		<div class="flex gap-2 mb-6">
+			<button type="button" class="py-2 px-6 rounded-lg font-medium text-sm bg-[#1F384C] text-white">
+				Informations générales
+			</button>
+			<button type="button" class="py-2 px-6 rounded-lg font-medium text-sm bg-[#F0F0F0] text-[#1F384C] hover:bg-gray-200 transition-colors">
+				Interventions
+			</button>
+		</div>
+
+		{# --- TITRE SECTION FORMULAIRE --- #}
+		<h3 class="text-[#FFBD01] font-semibold text-[18px] mb-4">Informations générales</h3>
+
+		{{ form_start(form) }}
+
+		{# --- CHAMPS NOM, PRÉNOM, EMAIL SUR LA MÊME LIGNE --- #}
+		<div
+			class="flex flex-col lg:flex-row gap-6 mb-6 max-w-[1200px]">
+			{# Nom de famille #}
+			<div class="flex-1">
+				<label class="block mb-2 text-sm font-medium text-[#1F384C]">
+					Nom de famille -
+					<span class="text-gray-500">champ obligatoire</span>
+				</label>
+				{{ form_widget(form.lastName, {
+				'attr': {
+					'class': 'bg-[#F9FAFB] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3',
+					'placeholder': 'Martins-Jacquelot'
+				}
+			}) }}
+				{{ form_errors(form.lastName) }}
+			</div>
+
+			{# Prénom #}
+			<div class="flex-1">
+				<label class="block mb-2 text-sm font-medium text-[#1F384C]">
+					Prénom -
+					<span class="text-gray-500">champ obligatoire</span>
+				</label>
+				{{ form_widget(form.firstName, {
+				'attr': {
+					'class': 'bg-[#F9FAFB] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3',
+					'placeholder': 'Jeff'
+				}
+			}) }}
+				{{ form_errors(form.firstName) }}
+			</div>
+
+			{# Email #}
+			<div class="flex-1">
+				<label class="block mb-2 text-sm font-medium text-[#1F384C]">
+					Email -
+					<span class="text-gray-500">champ obligatoire</span>
+				</label>
+				{{ form_widget(form.email, {
+				'attr': {
+					'class': 'bg-[#F9FAFB] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3',
+					'placeholder': 'j.martins@mentalworks.fr'
+				}
+			}) }}
+				{{ form_errors(form.email) }}
+			</div>
+		</div>
+
+		{# --- MODULES ENSEIGNÉS --- #}
+		{% include "composants/multi_select.html.twig" with {
+			'field': form.modules
+		} %}
+
+		{# --- BOUTON ENREGISTRER --- #}
+		<div class="flex flex-wrap items-center gap-4 pt-6 max-w-[1200px]">
+			<button type="submit" class="inline-flex items-center justify-center text-white bg-[#2C416E] hover:bg-[#1F384C] font-medium py-3 px-8 rounded-lg transition-colors">
+				Enregistrer les informations
+			</button>
+		</div>
+
+		{{ form_end(form) }}
+
+	</div>
+{% endblock %}
