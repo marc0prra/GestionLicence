@@ -80,6 +80,40 @@ final class SchoolYearController extends AbstractController
         ]);
     }
 
+    #[Route('/school_year/add', name: 'school_year_add')]
+    public function add(Request $request, EntityManagerInterface $em): Response
+    {
+        $year = new SchoolYear();
+        $form = $this->createForm(SchoolYearType::class, $year);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                try {
+                    $saison = $form->get('saison')->getData();
+                    if ($saison && preg_match('/^(\d{4})\/(\d{4})$/', $saison, $matches)) {
+                        $startYear = (int) $matches[1];
+                        $endYear = (int) $matches[2];
+
+                        $year->setStartDate(new \DateTime("$startYear-09-01"));
+                        $year->setEndDate(new \DateTime("$endYear-08-31"));
+                    }
+
+                    $em->persist($year);
+                    $em->flush();
+                    $this->addFlash('success', 'Année scolaire ajoutée !');
+                    return $this->redirectToRoute('school_year');
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Erreur lors de lajout.');
+                }
+            }
+        }
+
+        return $this->render('school_year/add.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/school_year/{id}/delete', name: 'school_year_delete', methods: ['POST'])]
     public function delete(SchoolYear $schoolYear, Request $request, EntityManagerInterface $em): Response
     {

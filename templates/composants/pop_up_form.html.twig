@@ -1,0 +1,38 @@
+<div id="modal-intervention" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+	<div
+		class="bg-white rounded-[20px] p-8 w-full max-w-[750px] shadow-xl relative">
+		{# Bouton Fermer en haut à droite #}
+		<button onclick="toggleModal()" class="absolute top-6 right-6 text-gray-400 hover:text-black">
+			<svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+		</button>
+
+		<div class="flex items-start gap-5 mb-8">
+			<div class="bg-[#F0F0F0] rounded-[12px] p-4 flex items-center justify-center w-[60px] h-[60px] shrink-0">
+				<svg width="29" height="29" viewbox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M14.5 2V27M2 14.5H27" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</div>
+			<div class="flex flex-col pt-1">
+				<h1 class="text-[24px] font-bold text-[#1A1A1A] leading-tight">Ajouter une intervention</h1>
+				<p class="text-[#808080] text-[16px]">Remplissez les informations ci-dessous.</p>
+			</div>
+		</div>
+
+		{{ form_start(form) }}
+		<div
+			class="space-y-4">
+			{# Ton contenu de formulaire injecté ici #}
+			{% block form_content %}{% endblock %}
+		</div>
+
+		<div class="flex items-center gap-4 w-full mt-10">
+			<button type="button" onclick="toggleModal()" class="h-[44px] flex-1 rounded-[8px] font-medium bg-[#F0F0F0] text-black transition-opacity hover:opacity-90">
+				Annuler
+			</button>
+			<button type="submit" class="h-[44px] flex-1 rounded-[8px] font-medium bg-[#2D4071] text-white transition-opacity hover:opacity-90">
+				Confirmer
+			</button>
+		</div>
+		{{ form_end(form) }}
+	</div>
+</div>
