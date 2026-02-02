@@ -6,17 +6,8 @@
 
 {% block body %}
     <section class="w-full p-8 bg-white min-h-screen font-poppins">
-        
-        {# Fil d'Ariane #}
-        <div class="text-sm text-gray-500 mb-6">
-            <span class="flex items-center gap-2">
-                <img src="{{ asset('img/home.png') }}" alt="Accueil" class="w-4 h-4">
-                > Années scolaire > Promotion {{ schoolYear.name }} > Semaines de cours > 
-                <span class="font-bold text-[#1F384C]">{{ is_edit ? course_period.startDate|date('d/m/Y') ~ ' au ' ~ course_period.endDate|date('d/m/Y') : 'Ajouter' }}</span>
-            </span>
-        </div>
 
-        <h1 class="text-[28px] font-bold text-[#1F384C] mb-8">
+        <h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
             Promotion {{ schoolYear.name }}
         </h1>
 

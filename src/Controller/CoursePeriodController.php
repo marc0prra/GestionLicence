@@ -24,6 +24,7 @@ final class CoursePeriodController extends AbstractController
         int $schoolYearId
     ): Response {
         $schoolYear = $schoolYearRepository->find($schoolYearId);
+        // Verifie si il y a une année scolaire correspondante
         if (!$schoolYear) {
             throw $this->createNotFoundException('Année scolaire introuvable');
         }
@@ -38,6 +39,7 @@ final class CoursePeriodController extends AbstractController
             $entityManager->persist($coursePeriod);
             $entityManager->flush();
 
+            // Flash message de succès (année bien ajoutée )
             $this->addFlash('success', 'Semaine de cours ajoutée avec succès.');
             
             return $this->redirectToRoute('school_year_edit', ['id' => $schoolYearId]);
@@ -66,6 +68,7 @@ final class CoursePeriodController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            // Flash message de succès (année bien modifiée )
             $this->addFlash('success', 'Semaine de cours modifiée avec succès.');
 
             return $this->redirectToRoute('school_year_edit', ['id' => $schoolYear->getId()]);
@@ -87,11 +90,14 @@ final class CoursePeriodController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
         $schoolYearId = $coursePeriod->getSchoolYearId()->getId();
-
+        
+        // Vérification du token CSRF
         if ($this->isCsrfTokenValid('delete' . $coursePeriod->getId(), $request->request->get('_token'))) {
             
             $entityManager->remove($coursePeriod);
             $entityManager->flush();
+
+            // Flash message de succès (année bien supprimée )
             $this->addFlash('success', 'Semaine de cours supprimée.');
         }
 
