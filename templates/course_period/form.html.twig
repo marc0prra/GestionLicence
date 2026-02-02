@@ -79,11 +79,10 @@
     </section>
 
     {# --- MODALE DE SUPPRESSION (Uniquement si en édition) --- #}
-    {# CDC: Modale apparaît lors du clic sur Supprimer [cite: 2420] #}
     {% if is_edit %}
         {% include 'composants/pop_up.html.twig' with {
             'title': 'Supprimer la semaine de cours',
-            'message': 'Vous vous apprêtez à supprimer cette semaine. Cette action est irrévocable.',
+            'message': 'Vous vous apprêtez à supprimer la semaine de cours, cette action est irrévoquable.A noter qu’aucune intervention ne doit être liée à cette semaine de cours pour pouvoir la supprimer.',
             'id': 'modal-delete-period' 
         } %}
         
@@ -96,14 +95,11 @@
         </form>
 
         <script>
-            // Fonction pour ouvrir la modale (doit correspondre à l'ID dans pop_up.html.twig si tu l'utilises, 
-            // sinon adapte selon ton composant pop_up)
             function toggleDeletePeriodModal() {
-                const modal = document.getElementById('modal-delete'); // ID par défaut souvent utilisé
+                const modal = document.getElementById('modal-delete');
                 if(modal) modal.classList.toggle('hidden');
             }
-            
-            // Fonction appelée par le bouton "Confirmer" de la modale
+
             function confirmDelete() {
                 document.getElementById('delete-period-form').submit();
             }
