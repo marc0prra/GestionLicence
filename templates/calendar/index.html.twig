@@ -4,5 +4,27 @@
 {% endblock %}
 
 {% block body %}
-	<div id="calendar"></div>
+	<section class="mr-auto w-full">
+		<h1 class="font-medium text-[#1F384C] text-[32px] mb-6">
+			Calendrier
+		</h1>
+
+		<div class="flex items-center justify-between mb-6">
+			<button type="button" id="js-calendar-prev" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-700">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+				</svg>
+			</button>
+
+			{{ include('composants/button_period.html.twig') }}
+
+			<button type="button" id="js-calendar-next" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-700">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+				</svg>
+			</button>
+		</div>
+
+		<div id="calendar" class="bg-white rounded-lg shadow-sm p-4"></div>
+	</section>
 {% endblock %}
