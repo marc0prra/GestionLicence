@@ -8,3 +8,105 @@ body {
 aside {
     font-family: 'Poppins', sans-serif;
 }
+
+#calendar {
+    min-height: 800px;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- PERSONNALISATION FULLCALENDAR --- */
+
+.fc-header-toolbar {
+    margin-bottom: 2rem !important;
+    padding: 0 10px !important;
+}
+
+.fc-toolbar-title {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #1a202c !important;
+    text-transform: capitalize !important;
+}
+
+.fc-button-primary {
+    background-color: transparent !important;
+    border: none !important;
+    color: #4a5568 !important;
+    box-shadow: none !important;
+    font-size: 1.25rem !important;
+    transition: color 0.2s !important;
+}
+
+.fc-button-primary:hover {
+    color: #1a202c !important;
+    background-color: transparent !important;
+}
+
+.fc-button-primary:focus {
+    box-shadow: none !important;
+}
+
+.fc-today-button {
+    text-transform: capitalize !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+    margin-right: 1rem !important;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border-color: #e2e8f0 !important;
+}
+
+.fc-col-header-cell {
+    background-color: white !important;
+    border-bottom: 0 !important;
+    padding-bottom: 10px !important;
+}
+
+.fc-col-header-cell-cushion {
+    color: #718096 !important;
+    font-weight: 500 !important;
+    text-transform: lowercase !important;
+    text-decoration: none !important;
+}
+
+.fc-timegrid-slot-label-cushion {
+    color: #a0aec0 !important;
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+    text-transform: uppercase !important;
+}
+
+.fc-timegrid-slot {
+    border-bottom: 1px solid #edf2f7 !important;
+    height: 3rem !important;
+}
+
+.fc-scrollgrid-section-header>td {
+    border-bottom: 0 !important;
+}
+
+.fc-timegrid-now-indicator-line {
+    border-color: #e53e3e !important;
+    border-width: 2px 0 0 !important;
+}
+
+.fc-timegrid-now-indicator-arrow {
+    border-color: #e53e3e !important;
+    border-width: 5px 0 5px 6px !important;
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+}
+
+.fc-event {
+    border: none !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.fc .fc-timegrid-slot {
+    border-bottom: 0px;
+    height: 5em !important;
+}

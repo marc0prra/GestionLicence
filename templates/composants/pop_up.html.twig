@@ -1,53 +1,46 @@
-{% extends 'base.html.twig' %}
+<div id="modal-delete" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+	<div class="bg-white rounded-[20px] p-8 w-full max-w-[650px] shadow-xl relative">
 
-{% block body %}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-		<div class="bg-white rounded-[20px] p-8 w-full max-w-[650px] shadow-xl relative">
-
-			<div class="flex items-start gap-5 mb-8">
-				<div class="bg-[#F0F0F0] rounded-[12px] p-4 flex items-center justify-center w-[60px] h-[60px] shrink-0">
-					{% if icon|default('cross') == 'plus' %}
-						{# Icone Plus #}
-						<svg width="29" height="29" viewbox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M14.5 2V27M2 14.5H27" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					{% else %}
-						{# Icone Croix (Défaut) #}
-						<svg width="25" height="25" viewbox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M25 4.54688L20.4531 0L12.5 7.95312L4.54688 0L0 4.54688L7.95312 12.5L0 20.4531L4.54688 25L12.5 17.0469L20.4531 25L25 20.4531L17.0469 12.5L25 4.54688Z" fill="black"/>
-						</svg>
-					{% endif %}
-				</div>
-				<div class="flex flex-col pt-1">
-					<h1 class="text-[24px] font-bold text-[#1A1A1A] leading-tight mb-1">{{ title|default("Supprimer l'année scolaire") }}</h1>
-					<p class="text-[#808080] text-[16px]">{{ subtitle|default("Confirmation de l'action") }}</p>
-				</div>
+		<div class="flex items-start gap-5 mb-8">
+			<div class="bg-[#F0F0F0] rounded-[12px] p-4 flex items-center justify-center w-[60px] h-[60px] shrink-0">
+				{% if icon|default('cross') == 'plus' %}
+					{# Icone Plus #}
+					<svg width="29" height="29" viewbox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M14.5 2V27M2 14.5H27" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				{% else %}
+					{# Icone Croix (Défaut) #}
+					<svg width="25" height="25" viewbox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M25 4.54688L20.4531 0L12.5 7.95312L4.54688 0L0 4.54688L7.95312 12.5L0 20.4531L4.54688 25L12.5 17.0469L20.4531 25L25 20.4531L17.0469 12.5L25 4.54688Z" fill="black"/>
+					</svg>
+				{% endif %}
 			</div>
-
-			<div class="mb-10 text-[16px] text-[#1A1A1A] leading-relaxed">
-				<p class="mb-6 font-medium">
-					{{ message|default("Vous vous apprêtez à supprimer l'année scolaire, cette action est irrévoquable. A noter qu'aucune intervention ne doit être liée à cette année pour pouvoir la supprimer.")|raw }}
-				</p>
-				<p class="font-bold">
-					{{ question|default("Confirmez-vous l'action ?") }}
-				</p>
+			<div class="flex flex-col pt-1">
+				<h1 class="text-[24px] font-bold text-[#1A1A1A] leading-tight mb-1">{{ title|default("Supprimer l'année scolaire") }}</h1>
+				<p class="text-[#808080] text-[16px]">{{ subtitle|default("Confirmation de l'action") }}</p>
 			</div>
+		</div>
 
-			<div class="flex items-center gap-4 w-full">
-				<div class="w-full">
-					{% include 'composants/button.html.twig' with {
-                    label: cancel_label|default('Annuler'),
-                    type: 'cancel',
-                } %}
-				</div>
-				<div class="w-full">
-					{% include 'composants/button.html.twig' with {
-                    label: confirm_label|default('Confirmer'),
-                    type: confirm_type|default('danger'),
-                } %}
-				</div>
+		<div class="mb-10 text-[16px] text-[#1A1A1A] leading-relaxed">
+			<p class="mb-6 font-medium">
+				{{ message|default("Vous vous apprêtez à supprimer l'année scolaire, cette action est irrévoquable. A noter qu'aucune intervention ne doit être liée à cette année pour pouvoir la supprimer.")|raw }}
+			</p>
+			<p class="font-bold">
+				{{ question|default("Confirmez-vous l'action ?") }}
+			</p>
+		</div>
+
+		<div class="flex items-center gap-4 w-full">
+			<div class="w-full">
+				<button type="button" onclick="toggleModal()" class="h-[44px] text-[16px] rounded-[8px] inline-flex items-center justify-center text-center font-medium transition-opacity hover:opacity-90 cursor-pointer bg-[#F0F0F0] text-black w-full max-w-[328px]">
+					{{ cancel_label|default('Annuler') }}
+				</button>
+			</div>
+			<div class="w-full">
+				<button type="button" onclick="confirmDelete()" class="h-[44px] text-[16px] rounded-[8px] inline-flex items-center justify-center text-center font-medium transition-opacity hover:opacity-90 cursor-pointer bg-[#FF0004] text-white w-full max-w-[328px]">
+					{{ confirm_label|default('Confirmer') }}
+				</button>
 			</div>
 		</div>
 	</div>
-
-{% endblock %}
+</div>

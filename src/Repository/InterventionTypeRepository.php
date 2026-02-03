@@ -16,7 +16,28 @@ class InterventionTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, InterventionType::class);
     }
 
-//    /**
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('it')
+            ->select('it.id', 'it.name', 'it.description', 'it.color')
+            ->orderBy('it.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByFilters(?string $name): array
+    {
+        $filtre = $this->createQueryBuilder('it')
+            ->select('it.id', 'it.name', 'it.description', 'it.color');
+
+        if ($name) {
+            $filtre->andWhere('it.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
+        return $filtre->getQuery()->getResult();
+    }
+
+    //    /**
 //     * @return InterventionType[] Returns an array of InterventionType objects
 //     */
 //    public function findByExampleField($value): array
@@ -31,7 +52,7 @@ class InterventionTypeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?InterventionType
+    //    public function findOneBySomeField($value): ?InterventionType
 //    {
 //        return $this->createQueryBuilder('i')
 //            ->andWhere('i.exampleField = :val')

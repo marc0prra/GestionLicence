@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\Filter\CourseFilterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -10,28 +11,80 @@ use App\Entity\Course;
 use App\Entity\CourseInstructor;
 use App\Form\CourseType;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\CourseRepository;
 use App\Repository\CoursePeriodRepository;
 
 class InterventionController extends AbstractController
 {
-    #[Route('/interventions', name: 'form_interventions')]
-    public function index(EntityManagerInterface $em, Request $request, CoursePeriodRepository $periodRepo): Response
+    #[Route('/interventions', name: 'interventions', methods: ['GET', 'POST'])]
+    public function list(
+        EntityManagerInterface $em,
+        Request $request,
+        CourseRepository $courseRepo,
+        CoursePeriodRepository $periodRepo
+    ): Response {
+        $interventions = $courseRepo->findAll();
+        $filterForm = $this->createForm(CourseFilterType::class);
+        $filterForm->handleRequest($request);
+
+        $newCourse = new Course();
+        $addForm = $this->createForm(CourseType::class, $newCourse);
+        $addForm->handleRequest($request);
+        if ($addForm->isSubmitted()) {
+
+            if ($addForm->isValid()) {
+                $period = $periodRepo->findPeriodByDates($newCourse->getStartDate());
+
+                if (!$period) {
+                    $this->addFlash('error', 'Aucune période scolaire ne correspond à la date choisie.');
+                } else {
+                    $newCourse->setCoursePeriodId($period);
+                    try {
+                        $em->persist($newCourse);
+                        $instructors = $addForm->get('courseInstructors')->getData();
+
+                        foreach ($instructors as $instructor) {
+                            $courseInstructor = new CourseInstructor();
+                            $courseInstructor->setCourse($newCourse);
+                            $courseInstructor->setInstructor($instructor);
+                            $em->persist($courseInstructor);
+                        }
+                        $em->flush();
+                        $this->addFlash('success', 'Intervention ajoutée.');
+
+                        // On redirige vers la même page pour vider le formulaire et voir le nouvel élément
+                        return $this->redirectToRoute('interventions');
+                    } catch (\Exception $e) {
+                        $this->addFlash('error', 'Erreur : ' . $e->getMessage());
+                    }
+                }
+            }
+        }
+
+        return $this->render('intervention/list.html.twig', [
+            'interventions' => $interventions,
+            'form' => $filterForm->createView(),
+            'formAdd' => $addForm->createView(),
+        ]);
+    }
+
+    #[Route('/intervention', name: 'form_interventions')]
+    public function form(EntityManagerInterface $em, Request $request, CourseRepository $periodRepo): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
-        // On va récupérer les informations du formulaire pour insérer dans course et dans course_instructor (id de course et id de l'instructeur)
+
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $period = $periodRepo->findPeriodByDates($course->getStartDate());
 
                 if (!$period) {
                     $this->addFlash('error', 'Aucune période scolaire ne correspond à la date de début choisie.');
-                    // On peut choisir d'arrêter l'exécution ici si c'est obligatoire
+
                     return $this->render('form_interventions.html.twig', ['form' => $form->createView()]);
                 }
 
-                // 2. Assigner manuellement la période trouvée
                 $course->setCoursePeriodId($period);
                 try {
                     $em->persist($course);
@@ -53,7 +106,7 @@ class InterventionController extends AbstractController
             }
         }
 
-        return $this->render('form_interventions.html.twig', [
+        return $this->render('intervention/form.html.twig', [
             'form' => $form->createView(),
         ]);
     }

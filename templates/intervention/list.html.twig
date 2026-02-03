@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Interventions
+{% endblock %}
+
+{% block body %}
+
+<section class="w-full mr-auto">
+	<div class="flex flex-col sm:flex-row sm:items-center items-start justify-between">
+		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+			Interventions
+		</h1>
+		<div onclick="toggleModal()">
+			{% include 'composants/button.html.twig' with { label: 'Ajouter une nouvelle intervention', type: 'confirm' } %}
+		</div>
+	</div>
+	<div class="mt-[40px]">
+		<p class="text-[#FFBD01] font-medium text-[20px] pb-[10px]">
+			Interventions
+		</p>
+
+		{{ form_start(form, {'attr': {'class': 'flex flex-col lg:flex-row lg:items-end gap-3'}}) }}
+
+		<div class="flex flex-col w-full md:w-auto md:mr-4">
+			{% include "composants/form_champ_date.html.twig" with {
+				'label': 'Date de début',
+				'field': form.start_date
+			} %}
+		</div>
+
+		<div class="flex flex-col w-full md:w-auto md:mr-4">
+			{% include "composants/form_champ_text.html.twig" with {
+				'label': 'Date de fin',
+				'field': form.end_date
+			} %}
+		</div>
+
+		<div class="flex flex-col w-full md:w-auto md:mr-4">
+			{% include "composants/form_champ_text.html.twig" with {
+				'label': 'Module',
+				'field': form.module_id
+			} %}
+		</div>
+
+		<div class="mt-2 md:mt-0">
+			{% include 'composants/button.html.twig' with {
+					label: 'Filtrer',
+					type: 'warning',
+				} %}
+		</div>
+
+		{{ form_end(form) }}
+
+	</div>
+
+	<h1 class="font-medium text-[20px] text-[#1F384C] mt-6 mb-2">
+		{{ interventions|length }}
+		intervention{{ interventions|length > 1 ? 's' : ''}}
+		trouvée{{ interventions|length > 1 ? 's' : ''}}
+	</h1>
+
+	{% embed 'composants/table.html.twig' with {
+			headers: ['Date de l\'intervention', 'Module & titre', 'Type' , 'Intervenants', 'En visio', '']
+		} %}
+			{% block body %}
+				{# annees devient un tableau, donc il contient les valeurs name, start_date et end_date. Pour vérifier, faites un dump du tableau annees #}
+				{% for intervention in interventions %}
+					<tr>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.start_date|date('d/m/Y H\\hi') }} à {{ intervention.end_date|date('H\\hi') }}
+						</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.Module }}{{ intervention.title is not empty ? ' - ' ~ intervention.title : '' }}
+						</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.Type}}
+						</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.first_name|slice(0, 1)|upper }}. {{ intervention.last_name|upper }}
+						</td>
+						<td class="px-[25px] py-[20px] flex items-center gap-2">
+						{% if intervention.remotely %}
+							<img class="w-[16px] h-[16px]" src="{{ asset('img/cam_on.png') }}" alt="">
+						{% else %}
+							<img class="w-[16px] h-[16px]" src="{{ asset('img/cam_off.png') }}" alt="">
+						{% endif %}
+						</td>
+						<td class="px-[25px] py-[20px] flex items-center gap-2">
+							<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
+							<a href="{{ path('form_interventions', { id: intervention.id }) }}" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
+						</td>
+				{% else %}
+					<tr>
+						<td colspan="3" class="px-[25px] py-[20px] text-[14px] text-center text-gray-500">Aucun résultat trouvé</td>
+					</tr>
+				{% endfor %}
+			{% endblock %}
+		{% endembed %}
+
+	</section>
+
+	{% include 'intervention/form.html.twig' with { 'formAdd': formAdd } %}
+
+<script>
+    function toggleModal() {
+        document.getElementById('modal-intervention').classList.toggle('hidden');
+    }
+</script>
+{% endblock %}
