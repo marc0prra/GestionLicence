@@ -6,38 +6,35 @@ use App\Entity\CoursePeriod;
 use App\Entity\SchoolYear;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class CoursePeriodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // 1. L'année (indispensable pour ton visuel)
             ->add('school_year_id', EntityType::class, [
                 'class' => SchoolYear::class,
-                'choice_label' => 'name', 
+                'choice_label' => 'name',
                 'label' => 'Année - champ obligatoire',
-                'required' => true,
-                'attr' => ['class' => 'form-control']
+                'disabled' => true, 
+                'attr' => [
+                    'class' => 'w-full bg-gray-100 text-gray-500 border border-gray-300 rounded px-3 py-2 cursor-not-allowed'
+                ]
             ])
-            
-            // 2. Date de début (une seule fois suffit !)
             ->add('start_date', DateType::class, [
                 'label' => 'Date de début - champ obligatoire',
-                'required' => true,
                 'widget' => 'single_text',
-                'attr' => ['class' => 'form-control']
+                'html5' => true, 
+                'attr' => ['class' => 'w-full border border-gray-300 rounded px-3 py-2']
             ])
-            
-            // 3. Date de fin
             ->add('end_date', DateType::class, [
                 'label' => 'Date de fin - champ obligatoire',
-                'required' => true,
                 'widget' => 'single_text',
-                'attr' => ['class' => 'form-control']
+                'html5' => true,
+                'attr' => ['class' => 'w-full border border-gray-300 rounded px-3 py-2']
             ])
         ;
     }

@@ -1,19 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Types d’intervention
+{% block title %}Interventions
 {% endblock %}
 
 {% block body %}
 
-<section class="max-w-5xl w-full mr-auto">
+<section class="w-full mr-auto">
 	<div class="flex flex-col sm:flex-row sm:items-center items-start justify-between">
 		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
-			Types d’intervention
+			Interventions
 		</h1>
-		{% include 'composants/button.html.twig' with {
-                    label: 'Ajouter un type',
-                    type: 'confirm',
-            } %}
+		<div onclick="toggleModal()">
+			{% include 'composants/button.html.twig' with { label: 'Ajouter une nouvelle intervention', type: 'confirm' } %}
+		</div>
 	</div>
 	<div class="mt-[40px]">
 		<p class="text-[#FFBD01] font-medium text-[20px] pb-[10px]">
@@ -84,7 +83,7 @@
 						</td>
 						<td class="px-[25px] py-[20px] flex items-center gap-2">
 							<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
-							<a href="{{ path('teaching_block_edit', { id: intervention.id }) }}" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
+							<a href="{{ path('form_interventions', { id: intervention.id }) }}" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
 						</td>
 				{% else %}
 					<tr>
@@ -95,4 +94,12 @@
 		{% endembed %}
 
 	</section>
+
+	{% include 'intervention/form.html.twig' with { 'formAdd': formAdd } %}
+
+<script>
+    function toggleModal() {
+        document.getElementById('modal-intervention').classList.toggle('hidden');
+    }
+</script>
 {% endblock %}

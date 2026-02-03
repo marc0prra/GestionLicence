@@ -1,0 +1,134 @@
+{# templates/school_year/form.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ schoolYear.id ? 'Modifier' : 'Créer' }}
+	Promotion
+{% endblock %}
+
+{% block body %}
+<section class="w-full mr-auto">
+	<div class="flex flex-col sm:flex-row sm:items-center items-start justify-between">
+		<h1 class="text-[#1F384C] text-[26px] font-medium">
+			Promotion
+			{{ schoolYear.getName() }}
+		</h1>
+	</div>
+	{{ form_start(form) }}
+	<div class="max-w-[800px]">
+		<div class="flex flex-col md:flex-row gap-3">
+			<div class="flex flex-col flex-1">
+				{% include "composants/form_champ_text.html.twig" with {
+						'label': 'Année - champ obligatoire',
+						'field': form.name
+					} %}
+			</div>
+			<div class="flex flex-col flex-1">
+				{% include "composants/form_champ_text.html.twig" with {
+						'label': 'Saison (format YYYY/YYYY) - champ obligatoire',
+						'field': form.saison
+					} %}
+			</div>
+		</div>
+		<div class="flex flex-col md:flex-row gap-3 mt-4">
+			<div class="flex-1">
+				{% include 'composants/button.html.twig' with {
+						label: 'Retour à la liste',
+						type: 'cancel',
+						url: path('school_year'),
+						fullWidth: true,
+					} %}
+			</div>
+			<div class="flex-1">
+				{% include 'composants/button.html.twig' with {
+						label: 'Supprimer',
+						type: 'delete',
+						buttonType: 'button',
+						fullWidth: true,
+						onclick: "toggleModal()"
+					} %}
+			</div>
+			<div class="flex-1">
+				{% include 'composants/button.html.twig' with {
+						label: 'Enregistrer les informations',
+						type: 'confirm',
+						fullWidth: true,
+					} %}
+			</div>
+		</div>
+	</div>
+	{{ form_end(form) }}
+</section>
+
+<h2 class="text-[#FFBD01] text-[20px] font-medium">
+	Semaines de cours
+</h2>
+<p class="text-[#1F384C] font-poppins font-medium text-[16px] leading-[23px] tracking-[0.5px]">Les semaines de cours permettent de contrôler l’ajout des interventions. Une intervention a lieu uniquement 
+								pendant les semaines de cours.
+</p>
+
+<section>
+	{% embed 'composants/table.html.twig' with {
+                headers: ['Date début', 'Date de fin', '']
+            } %}
+		{% block body %}
+			{% for coursePeriod in coursePeriods %}
+				<tr>
+					<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">
+						{{ coursePeriod.startDate|date('d/m/Y') }}
+					</td>
+					<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">
+						{{ coursePeriod.endDate|date('d/m/Y') }}
+					</td>
+					<td class="px-[25px] py-[20px] flex items-center gap-2">
+						<img
+						class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="Voir">
+						{# LIEN VERS LA MODIFICATION DE LA SEMAINE #}
+						<a href="{{ path('app_course_period_edit', { id: coursePeriod.id }) }}" class="text-[#1F384C] text-[14px] font-medium hover:underline">
+							Accéder à la fiche
+						</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3" class="px-[25px] py-[20px] text-center text-gray-500">Aucune semaine définie.</td>
+				</tr>
+			{% endfor %}
+		{% endblock %}
+	{% endembed %}
+
+	{# BOUTON AJOUTER UNE SEMAINE (Bleu grâce au type 'confirm') #}
+	<div class="mt-6">
+		{% include 'composants/button.html.twig' with {
+                    'label': 'Ajouter une semaine de cours',
+                    'type': 'confirm',
+                    'url': path('app_course_period_new', {'schoolYearId': schoolYear.id})
+                } %}
+	</div>
+</section>
+
+{# MODALE SUPPRESSION ANNÉE #}
+{% include 'composants/pop_up.html.twig' with {
+            'title': 'Supprimer l\'année scolaire',
+            'message': "Vous vous apprêtez à supprimer l'année scolaire. Cette action est irrévocable.",
+        } %}
+
+        <form id="delete-form-{{ schoolYear.id }}" 
+              action="{{ path('school_year_delete', {'id': schoolYear.id}) }}" 
+              method="post" 
+              class="hidden">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ schoolYear.id) }}">
+        </form>
+    {% endif %}
+
+    <script>
+    function toggleModal() {
+        const modal = document.getElementById('modal-delete');
+        if (modal) modal.classList.toggle('hidden');
+    }
+    function confirmDelete() {
+        const deleteForm = document.getElementById('delete-form-{{ schoolYear.id }}');
+        if (deleteForm) deleteForm.submit();
+    }
+    </script>
+{% endblock %}
