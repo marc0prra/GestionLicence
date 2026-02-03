@@ -29,13 +29,16 @@ class ModuleType extends AbstractType
                 'label' => 'Bloc enseignement',
                 'disabled' => true,
                 'required' => false,
+                'attr' => [
+                    'class' => 'w-full max-w-[784px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 cursor-not-allowed opacity-100'
+                ]
             ])
             ->add('code', TextType::class, [
                 'label' => 'Code',
                 'required' => true,
                 'help' => 'Champ obligatoire, doit être unique.',
                 'attr' => [
-                    'class' => "w-full max-w-[395px] bg-[#F9FAFB] px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    'class' => "w-full max-w-[395px] bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
                 ],
                 'constraints' => [
                     new NotBlank(
@@ -47,7 +50,7 @@ class ModuleType extends AbstractType
                 'label' => 'Nom',
                 'required' => true,
                 'attr' => [
-                    'class' => "w-full max-w-[395px] bg-[#F9FAFB] px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    'class' => "w-full max-w-[395px] bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
                 ],
                 'constraints' => [
                     new NotBlank(
@@ -58,6 +61,9 @@ class ModuleType extends AbstractType
             ->add('hoursCount', IntegerType::class, [
                 'label' => 'Nombre d\'heures',
                 'required' => false,
+                'attr' => [
+                    'class' => "w-full max-w-[395px] bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                ],
             ])
             ->add('parent', EntityType::class, [
                 'class' => Module::class,
@@ -66,13 +72,16 @@ class ModuleType extends AbstractType
                 'placeholder' => 'Sélectionnez un parent (optionnel)',
                 'choice_label' => 'name',
                 'choices' => $blocActuel ? $blocActuel->getModules() : [],
+                'attr' => [
+                    'class' => 'bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full max-w-[395px] p-2.5'
+                ]
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'required' => false,
                 'attr' => ['rows' => 4],
                 'attr' => [
-                    'class' => "w-full max-w-[395px] bg-[#F9FAFB] px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    'class' => "w-full max-w-[784px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 cursor-not-allowed opacity-100"
                 ],
                 'constraints' => [
                     new NotBlank(
