@@ -12,31 +12,59 @@ use App\Entity\CourseInstructor;
 use App\Form\CourseType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\CourseRepository;
+use App\Repository\CoursePeriodRepository;
 
 class InterventionController extends AbstractController
 {
-    #[Route('/interventions', name: 'interventions', methods: ['GET'])]
-    public function list(Request $request, CourseRepository $courseRepo): Response
-    {
+    #[Route('/interventions', name: 'interventions', methods: ['GET', 'POST'])]
+    public function list(
+        EntityManagerInterface $em,
+        Request $request,
+        CourseRepository $courseRepo,
+        CoursePeriodRepository $periodRepo
+    ): Response {
         $interventions = $courseRepo->findAll();
         $filterForm = $this->createForm(CourseFilterType::class);
         $filterForm->handleRequest($request);
 
-        if ($filterForm->isSubmitted()) {
-            if ($filterForm->isValid()) {
+        $newCourse = new Course();
+        $addForm = $this->createForm(CourseType::class, $newCourse);
+        $addForm->handleRequest($request);
+        if ($addForm->isSubmitted()) {
 
-                $data = $filterForm->getData();
-                $interventions = $courseRepo->findByFilters(
-                    $data['start_date'],
-                    $data['end_date'],
-                    $data['module_id'] ?? null
-                );
+            if ($addForm->isValid()) {
+                $period = $periodRepo->findPeriodByDates($newCourse->getStartDate());
+
+                if (!$period) {
+                    $this->addFlash('error', 'Aucune période scolaire ne correspond à la date choisie.');
+                } else {
+                    $newCourse->setCoursePeriodId($period);
+                    try {
+                        $em->persist($newCourse);
+                        $instructors = $addForm->get('courseInstructors')->getData();
+
+                        foreach ($instructors as $instructor) {
+                            $courseInstructor = new CourseInstructor();
+                            $courseInstructor->setCourse($newCourse);
+                            $courseInstructor->setInstructor($instructor);
+                            $em->persist($courseInstructor);
+                        }
+                        $em->flush();
+                        $this->addFlash('success', 'Intervention ajoutée.');
+
+                        // On redirige vers la même page pour vider le formulaire et voir le nouvel élément
+                        return $this->redirectToRoute('interventions');
+                    } catch (\Exception $e) {
+                        $this->addFlash('error', 'Erreur : ' . $e->getMessage());
+                    }
+                }
             }
         }
 
         return $this->render('intervention/list.html.twig', [
             'interventions' => $interventions,
-            'form' => $filterForm->createView()
+            'form' => $filterForm->createView(),
+            'formAdd' => $addForm->createView(),
         ]);
     }
 

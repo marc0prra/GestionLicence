@@ -10,10 +10,9 @@
 		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
 			Interventions
 		</h1>
-		{% include 'composants/button.html.twig' with {
-                    label: 'Ajouter une nouvelle intervention',
-                    type: 'confirm',
-            } %}
+		<div onclick="toggleModal()">
+			{% include 'composants/button.html.twig' with { label: 'Ajouter une nouvelle intervention', type: 'confirm' } %}
+		</div>
 	</div>
 	<div class="mt-[40px]">
 		<p class="text-[#FFBD01] font-medium text-[20px] pb-[10px]">
@@ -95,4 +94,12 @@
 		{% endembed %}
 
 	</section>
+
+	{% include 'intervention/form.html.twig' with { 'formAdd': formAdd } %}
+
+<script>
+    function toggleModal() {
+        document.getElementById('modal-intervention').classList.toggle('hidden');
+    }
+</script>
 {% endblock %}
