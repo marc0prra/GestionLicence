@@ -13,12 +13,13 @@
 			{% include 'composants/button.html.twig' with {
                     label: 'Ajouter une année',
                     type: 'confirm',
+					url: path('school_year_add'),
             } %}
 		</div>
 		<p class="font-medium font-[16px] pt-[10px] pb-[30px]">
 			Les années scolaires permettent de garder en mémoire les interventions réalisées sur les années antérieures. 
-									            La dernière période de cours sur l’année permet de déterminer la fin de l’année. Lorsque cette dernière période de cours est passée, 
-									            le programme passe automatiquement à l’année suivante (prochaine saison).
+																																	            La dernière période de cours sur l’année permet de déterminer la fin de l’année. Lorsque cette dernière période de cours est passée, 
+																																	            le programme passe automatiquement à l’année suivante (prochaine saison).
 		</p>
 
 		{% embed 'composants/table.html.twig' with {
@@ -35,7 +36,7 @@
 						</td>
 						<td class="px-[25px] py-[20px] flex items-center gap-2">
 							<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
-							<a href="" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
+							<a href="{{ path('school_year_edit', { id: schoolYear.id }) }}" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
 						</td>
 					</tr>
 				{% else %}

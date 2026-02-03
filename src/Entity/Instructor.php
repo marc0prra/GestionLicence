@@ -112,23 +112,22 @@ class Instructor
     public function getModuleNamesString(): string
     {
         $names = [];
-        foreach ($this->getInstructorModules() as $im) {
-            if ($im->getModule()) {
-                $names[] = $im->getModule()->getName();
+        foreach ($this->getInstructorModules() as $InstruModule) {
+            if ($InstruModule->getModule()) {
+                $names[] = $InstruModule->getModule()->getName();
             }
         }
         return empty($names) ? 'Aucun module' : implode(', ', $names);
     }
 
-    // Calcule le total des heures (basé sur les interventions/cours)
+    // Calcule le total des heures (basé sur les modules assignés)
     public function getTotalHours(): int
     {
         $total = 0;
-        foreach ($this->getCourseInstructors() as $ci) {
-            $course = $ci->getCourse();
-            if ($course && $course->getModuleId()) {
-                // On récupère le nombre d'heures défini dans le module associé au cours
-                $total += $course->getModuleId()->getHoursCount(); 
+        foreach ($this->getInstructorModules() as $im) {
+            $module = $im->getModule();
+            if ($module) {
+                $total += $module->getHoursCount();
             }
         }
         return $total;
