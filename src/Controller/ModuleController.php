@@ -55,11 +55,13 @@ class ModuleController extends AbstractController
         $form->handleRequest($request);
 
         // Si le formulaire est soumis et valide, enregistrer le nouveau module
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($module);
-            $em->flush();
-            $this->addFlash('success', 'Module créé avec succès.');
-            return $this->redirectToRoute('module_index');
+        if ($form->isSubmitted() ) {
+            if ($form->isValid()) {
+                $em->persist($module);
+                $em->flush();
+                $this->addFlash('success', 'Module créé avec succès.');
+                return $this->redirectToRoute('module_index');
+            }
         }
 
         // Rendre la vue du formulaire de création de module
