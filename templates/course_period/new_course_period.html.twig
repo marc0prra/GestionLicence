@@ -2,48 +2,6 @@
 
 {% block title %}Ajouter une période de cours{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        /* 1. FORCE LA TAILLE ET LE STYLE DES INPUTS */
-        /* Le !important est crucial pour écraser les max-w-[395px] du PHP */
-        .form-override input, 
-        .form-override select {
-            height: 56px !important;       
-            font-size: 16px !important;    
-            border-radius: 8px !important; 
-            max-width: 100% !important;    /* Force l'input à prendre toute la place disponible */
-            width: 100% !important;
-            background-color: #FAFAFA !important; 
-            border: 1px solid #E5E7EB !important; 
-            box-sizing: border-box !important; /* Évite les débordements */
-        }
-
-        /* 2. NETTOYAGE INPUT DATE */
-        input[type="date"] {
-            padding-left: 1rem !important; 
-        }
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            display: none; 
-            -webkit-appearance: none;
-        }
-
-        /* 3. STYLE DES BOUTONS */
-        .actions-override button, 
-        .actions-override a {
-            height: 50px !important;
-            font-size: 15px !important;
-            font-weight: 600 !important;
-            padding-left: 32px !important;
-            padding-right: 32px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            white-space: nowrap !important;
-        }
-    </style>
-{% endblock %}
-
 {% block body %}
     <section class="w-full p-8 bg-white min-h-screen">
         
@@ -51,10 +9,9 @@
             Promotion {{ form.vars.value.schoolYearId.name|default('2025') }}
         </h1>
 
-        {# Formulaire avec max-w-[800px] pour correspondre à la largeur visuelle de la maquette #}
         {{ form_start(form, {'attr': {'class': 'w-full max-w-[800px] form-override'}}) }}
 
-            {# --- 1. ANNÉE (Pleine largeur) --- #}
+            {# --- 1. ANNÉE  --- #}
             <div class="mb-8 w-full">
                 {% include 'composants/form_champ_select.html.twig' with {
                     'field': form.school_year_id,
@@ -62,11 +19,9 @@
                 } %}
             </div>
 
-            {# --- 2. DATES (CÔTE À CÔTE FORCÉ) --- #}
-            {# Utilisation de flex-row + w-1/2 strict pour garantir 50% / 50% #}
+            {# --- 2. DATES --- #}
             <div class="flex flex-row w-full gap-6 mb-10">
-                
-                {# Bloc Gauche : 50% de largeur #}
+
                 <div class="w-1/2 flex-1"> 
                     {% include 'composants/form_champ_date.html.twig' with {
                         'field': form.start_date,
@@ -74,7 +29,6 @@
                     } %}
                 </div>
 
-                {# Bloc Droit : 50% de largeur #}
                 <div class="w-1/2 flex-1">
                     {% include 'composants/form_champ_date.html.twig' with {
                         'field': form.end_date,
@@ -86,7 +40,6 @@
 
             {# --- 3. ACTIONS --- #}
             <div class="flex flex-row items-center justify-start gap-6 mt-8 actions-override">
-                {# Bouton Retour #}
                 <div>
                     {% include 'composants/button.html.twig' with {
                         'label': 'Retour à la liste',
@@ -95,7 +48,6 @@
                     } %}
                 </div>
 
-                {# Bouton Enregistrer #}
                 <div>
                     {% include 'composants/button.html.twig' with {
                         'label': 'Enregistrer les informations',
