@@ -35,12 +35,4 @@ class TeachingBlockRepository extends ServiceEntityRepository
 
         return $filtre->getQuery()->getResult();
     }
-
-    public function findAll(): array
-    {
-        return $this->createQueryBuilder('t')
-            ->orderBy('t.code', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
 }
