@@ -18,56 +18,39 @@
     <div class="mb-6">
         {{ form_label(form.teachingBlock, 'Bloc enseignement', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
         {{ form_widget(form.teachingBlock, {
-            'attr': {
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed opacity-100'
-            }
         }) }}
         {{ form_errors(form.teachingBlock) }}
     </div>
 
     {# CODE & NOM #}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-            {{ form_label(form.code, 'Code - champ obligatoire', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-            {{ form_widget(form.code, {
-                'attr': {
-                    'class': 'bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
-                    'placeholder': 'Ex: B4_FRONT'
-                }
-            }) }}
-            {{ form_errors(form.code) }}
+    <div class="flex md:flex-row flex-col gap-3 mt-4 mb-4">
+        <div class=" w-full max-w-[386px]">
+            {% include "composants/form_champ_text.html.twig" with {
+                'label': 'Code du bloc - champ obligatoire',
+                'field': form.code,
+            } %}
         </div>
 
-        <div>
-            {{ form_label(form.name, 'Nom - champ obligatoire', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-            {{ form_widget(form.name, {
-                'attr': {
-                    'class': 'bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
-                    'placeholder': 'Ex: Tailwind CSS'
-                }
-            }) }}
-            {{ form_errors(form.name) }}
+        <div class=" w-full max-w-[387px]">
+            {% include "composants/form_champ_text.html.twig" with {
+                'label': 'Code du bloc - champ obligatoire',
+                'field': form.name,
+            } %}
         </div>
     </div>
 
     {# HEURES & PARENT #}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-            {{ form_label(form.hoursCount, 'Nombre d\'heures', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-            {{ form_widget(form.hoursCount, {
-                'attr': {
-                    'class': 'bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-                }
-            }) }}
-            {{ form_errors(form.hoursCount) }}
+    <div class="flex md:flex-row flex-col gap-3 mt-4 ">
+        <div class=" w-full max-w-[387px]">
+            {% include "composants/form_champ_text.html.twig" with {
+                'label': 'Nombre d\'heures - champ obligatoire',
+                'field': form.hoursCount
+            } %}
         </div>
 
-        <div>
+        <div class=" w-full max-w-[387px]">
             {{ form_label(form.parent, 'Parent', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
             {{ form_widget(form.parent, {
-                'attr': {
-                    'class': 'bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-                }
             }) }}
             {{ form_errors(form.parent) }}
         </div>
@@ -77,10 +60,6 @@
     <div class="mb-6">
         {{ form_label(form.description, 'Description - champ obligatoire', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
         {{ form_widget(form.description, {
-            'attr': {
-                'class': 'block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500',
-                'rows': '4'
-            }
         }) }}
         {{ form_errors(form.description) }}
     </div>
