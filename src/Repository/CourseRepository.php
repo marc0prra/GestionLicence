@@ -17,7 +17,7 @@ class CourseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Course::class);
     }
-    public function findAll(): array
+    public function findCourses()
     {
         $subQuery = $this->getEntityManager()->createQueryBuilder()
             ->select('MIN(c2.start_date)')
