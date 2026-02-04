@@ -2,23 +2,39 @@
 
 namespace App\Validator;
 
+use App\Entity\Instructor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class IntervenantHasModuleValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
     {
-        /* @var IntervenantHasModule $constraint */
+        if (!$constraint instanceof IntervenantHasModule) {
+            throw new UnexpectedTypeException($constraint, IntervenantHasModule::class);
+        }
 
-        if (null === $value || '' === $value) {
+        if (null === $value || empty($value)) {
             return;
         }
 
-        // TODO: implement the validation here
-        $this->context->buildViolation($constraint->message)
-            ->setParameter('{{ value }}', $value)
-            ->addViolation()
-        ;
+        $form = $this->context->getRoot();
+        $module = $form->get($constraint->moduleField)->getData();
+
+        if (!$module) {
+            return;
+        }
+
+        foreach ($value as $instructor) {
+            $isAssociated = $instructor->getInstructorModules()->exists(function ($key, $instructorModule) use ($module) {
+                return $instructorModule->getModule() === $module;
+            });
+
+            if (!$isAssociated) {
+                $this->context->buildViolation($constraint->message)
+                    ->addViolation();
+            }
+        }
     }
 }
