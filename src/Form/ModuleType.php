@@ -78,10 +78,10 @@ class ModuleType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'required' => false,
+                'required' => true,
                 'attr' => ['rows' => 4],
                 'attr' => [
-                    'class' => "w-full max-w-[784px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 cursor-not-allowed opacity-100"
+                    'class' => "w-full max-w-[784px] border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 opacity-100"
                 ],
                 'constraints' => [
                     new NotBlank(

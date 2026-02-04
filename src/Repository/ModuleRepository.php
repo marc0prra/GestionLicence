@@ -23,7 +23,6 @@ class ModuleRepository extends ServiceEntityRepository
             ->orderBy('m.name', 'ASC');
     }
 
-
     //    /**
 //     * @return Module[] Returns an array of Module objects
 //     */
