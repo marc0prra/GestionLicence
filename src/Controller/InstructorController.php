@@ -60,7 +60,8 @@ class InstructorController extends AbstractController
         $form = $this->createForm(InstructorType::class, $instructor);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()){
+            if($form->isValid()) {
             // Créer un nouvel utilisateur
             $user = new User();
             $user->setLastName($form->get('lastName')->getData());
@@ -87,7 +88,8 @@ class InstructorController extends AbstractController
 
             $this->addFlash('success', 'L\'enseignant a été créé avec succès.');
             return $this->redirectToRoute('app_instructor_show', ['id' => $instructor->getId()]);
-        }
+            }
+            }
 
         return $this->render('instructor/new.html.twig', [
             'form' => $form->createView(),
