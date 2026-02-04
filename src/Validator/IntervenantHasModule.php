@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class IntervenantHasModule extends Constraint
 {
+    public string $moduleField = 'module_id';
     public string $message = 'L\'intervenant n\'est pas rattaché à ce module';
 
     // You can use #[HasNamedArguments] to make some constraint options required.
