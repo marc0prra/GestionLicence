@@ -6,6 +6,7 @@ use App\Repository\CourseRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 class Course
@@ -16,9 +17,17 @@ class Course
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Renseignez une date de début.")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?\DateTime $start_date = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Renseignez une date de fin.")]
+    #[Assert\Type("\DateTimeInterface")]
+    #[Assert\GreaterThan(
+        propertyPath: "start_date",
+        message: "La date de fin doit être postérieure à la date de début."
+    )]
     private ?\DateTime $end_date = null;
 
     #[ORM\Column]
