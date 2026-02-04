@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Repository\ModuleRepository;
+use App\Validator\IntervenantHasModule;
 
 class CourseType extends AbstractType
 {
@@ -63,6 +64,9 @@ class CourseType extends AbstractType
                 'choice_label' => 'displayName',
                 'attr' => [
                     'class' => 'flex-1 min-w-[150px] bg-transparent border-none outline-none text-sm cursor-pointer focus:ring-0 appearance-none',
+                ],
+                'constraints' => [
+                    new IntervenantHasModule(),
                 ],
             ])
         ;
