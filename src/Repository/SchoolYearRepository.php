@@ -15,12 +15,4 @@ class SchoolYearRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, SchoolYear::class);
     }
-
-    public function findAll() : array 
-    {
-        return $this->createQueryBuilder('s')
-        ->orderBy('s.name', 'DESC')
-        ->getQuery()
-        ->getResult();
-    }
 }
