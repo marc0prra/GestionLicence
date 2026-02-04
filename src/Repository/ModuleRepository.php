@@ -23,14 +23,6 @@ class ModuleRepository extends ServiceEntityRepository
             ->orderBy('m.name', 'ASC');
     }
 
-    public function findAll(): array
-    {
-        return $this->createQueryBuilder('m')
-            ->orderBy('m.code', 'ASC')
-            ->getQuery()
-            ->getResult(); 
-    }
-
     //    /**
 //     * @return Module[] Returns an array of Module objects
 //     */
