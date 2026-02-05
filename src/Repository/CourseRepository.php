@@ -17,32 +17,19 @@ class CourseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Course::class);
     }
+    public function findInterventions()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
+            ->leftJoin('c.intervention_type_id', 'it')
+            ->leftJoin('c.module_id', 'm')
+            ->leftJoin('c.courseInstructors', 'ci')
+            ->leftJoin('ci.instructor', 'ins')
+            ->leftJoin('ins.user', 'u')
+            ->getQuery()
+            ->getResult();
+    }
 
-    // public function findAll(): array
-    // {
-    //     $subQuery = $this->getEntityManager()->createQueryBuilder()
-    //         ->select('MIN(c2.start_date)')
-    //         ->from('App\Entity\Course', 'c2')
-    //         ->getDQL();
-
-    //     return $this->createQueryBuilder('c')
-    //         ->select('c.id', 'c.title', 'c.start_date', 'c.end_date', 'c.remotely')
-    //         ->addSelect('it.name as Type')
-    //         ->addSelect('m.name as Module')
-    //         ->addSelect('u.first_name', 'u.last_name')
-    //         ->addSelect('(' . $subQuery . ') as oldest_course_date')
-
-    //         ->leftJoin('c.intervention_type_id', 'it')
-    //         ->leftJoin('c.module_id', 'm')
-    //         ->leftJoin('c.courseInstructors', 'ci')
-    //         ->leftJoin('ci.instructor', 'ins')
-    //         ->leftJoin('ins.user', 'u')
-
-    //         ->getQuery()
-    //         ->getResult();
-    // }
-
-//    /**
     public function findByFilters(?Datetime $date_start, ?Datetime $date_end, $module = null): array
     {
 

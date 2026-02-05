@@ -16,15 +16,6 @@ class InterventionTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, InterventionType::class);
     }
 
-    public function findAll(): array
-    {
-        return $this->createQueryBuilder('it')
-            ->select('it.id', 'it.name', 'it.description', 'it.color')
-            ->orderBy('it.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
     public function findByFilters(?string $name): array
     {
         $filtre = $this->createQueryBuilder('it')
