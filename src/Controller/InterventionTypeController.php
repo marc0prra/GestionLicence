@@ -43,12 +43,14 @@ final class InterventionTypeController extends AbstractController
         $form = $this->createForm(InterventionTypeType::class, $interventionType);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($interventionType);
-            $entityManager->flush();
+        if ($form->isSubmitted()){
+            if($form->isValid()) {
+                $entityManager->persist($interventionType);
+                $entityManager->flush();
 
-            $this->addFlash('success', $isNew ? 'Type d\'intervention créé avec succès.' : 'Type d\'intervention modifié avec succès.');
-            return $this->redirectToRoute('intervention_type');
+                $this->addFlash('success', $isNew ? 'Type d\'intervention créé avec succès.' : 'Type d\'intervention modifié avec succès.');
+                return $this->redirectToRoute('intervention_type');
+            }
         }
 
         return $this->render('intervention_type/intervention_type_form.html.twig', [

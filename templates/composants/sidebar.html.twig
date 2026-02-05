@@ -1,9 +1,9 @@
-<aside
-    class="flex flex-col h-screen bg-[#F3F4F8] sticky top-0 flex-shrink-0 transition-all duration-300 w-[60px] min-[750px]:w-[260px]">
+<aside class="flex flex-col h-screen bg-[#F3F4F8] sticky top-0 flex-shrink-0 transition-all duration-300 w-[60px] min-[750px]:w-[260px]">
 
     {# On récupère le nom de la route actuelle une seule fois #}
     {% set current_route = app.request.attributes.get('_route') %}
 
+    {# === LOGO === #}
     <div class="flex items-center py-8 mb-2 px-0 justify-center min-[750px]:justify-start min-[750px]:px-6">
         <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-[25px] h-[25px] object-contain">
         <div class="ml-3 flex flex-col justify-center max-[750px]:hidden">
@@ -12,9 +12,11 @@
         </div>
     </div>
 
+    {# === NAVIGATION SCROLLABLE === #}
     <div class="flex flex-col flex-1 custom-scrollbar px-2 min-[750px]:px-4">
         <nav class="space-y-6">
 
+            {# SECTION MENU #}
             <div>
                 <h3 class="text-[11px] text-[#A0ABC0] uppercase tracking-wider mb-3 px-3 max-[750px]:hidden">Menu</h3>
 
@@ -59,6 +61,7 @@
                 </div>
             </div>
 
+            {# SECTION PARAMÉTRAGE #}
             <div>
                 <h3 class="text-[11px] text-[#A0ABC0] uppercase tracking-wider mb-3 px-3 max-[750px]:hidden">Paramétrage</h3>
                 <div class="space-y-1">
@@ -118,7 +121,28 @@
             </div>
         </nav>
 
+        {# === FOOTER SIDEBAR (LOGOUT + PROFIL) === #}
         <div class="mt-auto pb-6 pt-4">
+            
+            {# === BOUTON DÉCONNEXION (CORRIGÉ) === #}
+            <div class="px-2 min-[750px]:px-4 mb-3">
+                <a href="{{ path('app_logout') }}" 
+                   class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3 text-[#718096] hover:bg-[#EF4444] hover:text-white hover:shadow-sm' }}">
+                    
+                    {# Icône #}
+                    <svg class="w-5 h-5 flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    
+                    {# Texte #}
+                    <span class="ml-3 text-[13px] font-medium max-[750px]:hidden whitespace-nowrap">Déconnexion</span>
+                </a>
+            </div>
+
+            {# SÉPARATEUR #}
+            <div class="border-t border-gray-200 mx-4 mb-4 opacity-60"></div>
+
+            {# === PROFIL UTILISATEUR === #}
             <div class="flex items-center justify-center min-[750px]:justify-start px-0 min-[750px]:px-2">
                 <img src="{{ asset('img/photo_stella.png') }}" alt="Stella" class="w-[49px] h-[49px] rounded-full object-cover shadow-sm">
                 <div class="ml-3 flex-1 max-[750px]:hidden">

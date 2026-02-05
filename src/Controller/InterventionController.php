@@ -23,7 +23,7 @@ class InterventionController extends AbstractController
         CourseRepository $courseRepo,
         CoursePeriodRepository $periodRepo
     ): Response {
-        $interventions = $courseRepo->findAll();
+        $interventions = $courseRepo->findInterventions();
         $filterForm = $this->createForm(CourseFilterType::class);
         $filterForm->handleRequest($request);
 

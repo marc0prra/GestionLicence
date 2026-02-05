@@ -8,7 +8,8 @@ import './stimulus_bootstrap.js';
 import './styles/app.css';
 
 // CALENDRIER & NAVIGATION
-document.addEventListener('DOMContentLoaded', () => {
+// Encapsuler la logique d'initialisation pour pouvoir l'appeler facilement
+const initApp = () => {
     // 1. Initialisation du Calendrier
     const calendarEl = document.getElementById('calendar');
     let calendar;
@@ -157,5 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.add(...sidebarActive);
         });
     });
-});
+};
+
+// Utiliser turbo:load au lieu de DOMContentLoaded pour supporter la navigation Turbo
+document.addEventListener('turbo:load', initApp);
 
