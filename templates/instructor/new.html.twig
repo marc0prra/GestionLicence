@@ -4,13 +4,8 @@
 {% endblock %}
 
 {% block body %}
-	<div class="p-6 bg-white rounded-lg">
-		<nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
-			<a href="{{ path('app_instructor_index') }}" class="hover:text-gray-700">Corps enseignant</a>
-			<span>›</span>
-			<span class="text-[#1F384C] font-medium">Ajouter un enseignant</span>
-		</nav>
-
+	<div
+		class="p-6 bg-white rounded-lg">
 		{# --- TITRE --- #}
 		<h1 class="font-bold text-[#1F384C] text-[28px] mb-4">
 			Ajouter un enseignant
@@ -18,8 +13,7 @@
 
 		{# --- DESCRIPTION --- #}
 		<p class="text-gray-600 text-[14px] mb-6">
-			Remplissez les informations ci-dessous pour créer un nouvel enseignant. 
-																					Un mot de passe par défaut sera attribué et devra être changé lors de la première connexion.
+			Remplissez les informations ci-dessous pour créer un nouvel enseignant.
 		</p>
 
 		<hr
@@ -30,7 +24,7 @@
 
 		{{ form_start(form) }}
 
-		{# --- CHAMPS NOM, PRÉNOM, EMAIL SUR LA MÊME LIGNE --- #}
+		{# --- CHAMPS NOM, PRÉNOM, EMAIL --- #}
 		<div
 			class="flex flex-col lg:flex-row gap-6 mb-6 max-w-[1200px]">
 			{# Nom de famille #}

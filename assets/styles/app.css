@@ -110,3 +110,50 @@ aside {
     border-bottom: 0px;
     height: 5em !important;
 }
+
+/* -- Style Module -- */
+
+.sub-tree {
+    position: relative;
+    margin-left: 1.6rem;      /* Alignement sous la flèche parente */
+    border-left: 1px solid #D1D5DB; /* Gris très clair */
+    padding-left: 1.2rem;     /* Longueur de la branche horizontale */
+}
+
+.tree-node::before {
+    content: "";
+    position: absolute;
+    width: 1rem;              /* Largeur du trait horizontal */
+    height: 26px;             /* Hauteur totale du coude */
+    border-left: 1px solid #D1D5DB;
+    border-bottom: 1px solid #D1D5DB;
+    border-bottom-left-radius: 10px; /* Arrondi fluide comme sur la maquette */
+    z-index: 1;
+}
+
+.tree-node:last-child::after {
+    content: "";
+    position: absolute;
+    top: 17px;                /* Coupe pile au niveau du dernier coude */
+    left: -1.35rem;
+    width: 4px;
+    height: 100%;
+    background-color: white;  /* Cache la bordure parente */
+    z-index: 2;
+}
+
+.icon-wrapper {
+    position: relative;
+    z-index: 10;
+    background-color: white;  /* Crée la coupure dans le trait gris */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 1%;
+    margin-left: 1%;
+}
+.arrow-rotate {
+    transform: rotate(90deg);
+}
