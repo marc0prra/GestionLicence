@@ -124,13 +124,17 @@
         {# === FOOTER SIDEBAR (LOGOUT + PROFIL) === #}
         <div class="mt-auto pb-6 pt-4">
             
-            {# === BOUTON DÉCONNEXION (Ajouté) === #}
+            {# === BOUTON DÉCONNEXION (CORRIGÉ) === #}
             <div class="px-2 min-[750px]:px-4 mb-3">
                 <a href="{{ path('app_logout') }}" 
-                   class="flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3 text-[#718096] hover:bg-red-50 hover:text-red-600 hover:shadow-sm group">
+                   class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3 text-[#718096] hover:bg-[#EF4444] hover:text-white hover:shadow-sm' }}">
+                    
+                    {# Icône #}
                     <svg class="w-5 h-5 flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
+                    
+                    {# Texte #}
                     <span class="ml-3 text-[13px] font-medium max-[750px]:hidden whitespace-nowrap">Déconnexion</span>
                 </a>
             </div>
