@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/course_period')]
 final class CoursePeriodController extends AbstractController
 {
-    // --- 1. AJOUTER UNE SEMAINE (Liée à une année précise) ---
+    // AJOUTER UNE SEMAINE
     #[Route('/new/{schoolYearId}', name: 'app_course_period_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
@@ -39,7 +39,7 @@ final class CoursePeriodController extends AbstractController
             $entityManager->persist($coursePeriod);
             $entityManager->flush();
 
-            // Flash message de succès (année bien ajoutée )
+            // Flash message 
             $this->addFlash('success', 'Semaine de cours ajoutée avec succès.');
             
             return $this->redirectToRoute('school_year_edit', ['id' => $schoolYearId]);
@@ -53,7 +53,7 @@ final class CoursePeriodController extends AbstractController
         ]);
     }
 
-    // --- 2. MODIFIER UNE SEMAINE ---
+    // MODIFIER UNE SEMAINE
     #[Route('/{id}/edit', name: 'app_course_period_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
@@ -68,7 +68,7 @@ final class CoursePeriodController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            // Flash message de succès (année bien modifiée )
+            // Flash message 
             $this->addFlash('success', 'Semaine de cours modifiée avec succès.');
 
             return $this->redirectToRoute('school_year_edit', ['id' => $schoolYear->getId()]);
@@ -82,7 +82,7 @@ final class CoursePeriodController extends AbstractController
         ]);
     }
 
-    // --- 3. SUPPRIMER UNE SEMAINE ---
+    // SUPPRIMER UNE SEMAINE 
     #[Route('/{id}', name: 'app_course_period_delete', methods: ['POST'])]
     public function delete(
         Request $request,
@@ -97,7 +97,7 @@ final class CoursePeriodController extends AbstractController
             $entityManager->remove($coursePeriod);
             $entityManager->flush();
 
-            // Flash message de succès (année bien supprimée )
+            // Flash message 
             $this->addFlash('success', 'Semaine de cours supprimée.');
         }
 
