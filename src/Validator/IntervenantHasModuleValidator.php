@@ -28,7 +28,8 @@ final class IntervenantHasModuleValidator extends ConstraintValidator
 
         foreach ($value as $instructor) {
             $isAssociated = $instructor->getInstructorModules()->exists(function ($key, $instructorModule) use ($module) {
-                return $instructorModule->getModule() === $module;
+                $linkedModule = $instructorModule->getModule();
+                return $linkedModule && $linkedModule->getId() === $module->getId();
             });
 
             if (!$isAssociated) {

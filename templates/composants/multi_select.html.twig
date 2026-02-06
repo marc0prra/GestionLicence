@@ -1,13 +1,15 @@
-<div class="w-full max-w-[1200px] mb-8" id="instructor-wrapper" data-field-id="{{ field.vars.id }}">
+<div class="relative w-full max-w-[1200px] mb-8" id="instructor-wrapper" data-controller="multi-select" data-field-id="{{ field.vars.id }}">
+
 	<label class="block mb-2 text-sm font-medium text-gray-700">
 		{{ field.vars.label|default("Intervenants - champ obligatoire") }}
 	</label>
 
-	<div id="modal-trigger" class="flex items-center justify-between p-2 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer hover:border-zinc-400 min-h-[46px] relative transition-all">
+	{# TRIGGER DU SELECT #}
+	<div data-multi-select-target="trigger" data-action="click->multi-select#open" class="flex items-center justify-between p-2 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer hover:border-zinc-400 min-h-[46px] relative transition-all">
 
 		<div class="flex flex-wrap items-center gap-2 flex-1">
-			<div id="chips-container" class="flex flex-wrap gap-2"></div>
-			<span id="placeholder-text" class="text-zinc-400 text-sm ml-1">Cliquer pour sélectionner...</span>
+			<div data-multi-select-target="chipsContainer" class="flex flex-wrap gap-2"></div>
+			<span data-multi-select-target="placeholder" class="text-zinc-400 text-sm ml-1">Cliquer pour sélectionner...</span>
 		</div>
 
 		<div class="flex-shrink-0 ml-2 pr-1">
@@ -17,175 +19,34 @@
 		</div>
 	</div>
 
+	{# SELECT CACHÉ (SYMFONY) #}
 	<div class="hidden">
-		{{ form_widget(field) }}
+		{{ form_widget(field, {'attr': {'data-multi-select-target': 'realSelect'}}) }}
+	</div>
+
+	{# MODALE #}
+	<div data-multi-select-target="modal" data-action="click->multi-select#closeBackground" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+
+		<div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh]">
+
+			<div class="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50">
+				<h3 class="font-bold text-zinc-800 text-lg">Choisir les intervenants</h3>
+				<button type="button" data-action="click->multi-select#close" class="text-zinc-400 hover:text-zinc-800 text-2xl p-2">&times;</button>
+			</div>
+
+			<div class="p-2 overflow-y-auto flex-1 bg-white">
+				{% for choice in field.vars.choices %}
+					<label class="flex items-center p-3 hover:bg-zinc-100 rounded-lg cursor-pointer transition-colors group">
+						<input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}" data-multi-select-target="checkbox" class="w-5 h-5 text-zinc-800 border-zinc-300 rounded focus:ring-zinc-500 cursor-pointer">
+						<span class="ml-3 text-zinc-700 group-hover:text-black font-medium text-sm">{{ choice.label }}</span>
+					</label>
+				{% endfor %}
+			</div>
+
+			<div class="p-4 bg-zinc-50 border-t border-zinc-100 flex justify-end gap-3">
+				<button type="button" data-action="click->multi-select#close" class="px-4 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-200 rounded-lg">Annuler</button>
+				<button type="button" data-multi-select-target="confirmBtn" data-action="click->multi-select#confirm" class="px-6 py-2 text-sm font-bold text-white bg-zinc-800 hover:bg-black rounded-lg shadow-md transition-all active:scale-95">Valider</button>
+			</div>
+		</div>
 	</div>
 </div>
-
-<div id="instructor-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-	<div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh]">
-
-		<div class="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50">
-			<h3 class="font-bold text-zinc-800 text-lg">Choisir les intervenants</h3>
-			<button type="button" class="close-modal text-zinc-400 hover:text-zinc-800 text-2xl p-2">&times;</button>
-		</div>
-
-		<div class="p-2 overflow-y-auto flex-1 bg-white">
-			{% for choice in field.vars.choices %}
-				<label class="flex items-center p-3 hover:bg-zinc-100 rounded-lg cursor-pointer transition-colors group">
-					<input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}" class="instructor-checkbox w-5 h-5 text-zinc-800 border-zinc-300 rounded focus:ring-zinc-500 cursor-pointer">
-					<span class="ml-3 text-zinc-700 group-hover:text-black font-medium text-sm">{{ choice.label }}</span>
-				</label>
-			{% endfor %}
-		</div>
-
-		<div class="p-4 bg-zinc-50 border-t border-zinc-100 flex justify-end gap-3">
-			<button type="button" class="close-modal px-4 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-200 rounded-lg">Annuler</button>
-			<button type="button" id="confirm-selection" class="px-6 py-2 text-sm font-bold text-white bg-zinc-800 hover:bg-black rounded-lg shadow-md transition-all active:scale-95">Valider</button>
-		</div>
-	</div>
-</div>
-<script>
-	document.addEventListener('DOMContentLoaded', function () {
-const wrapper = document.getElementById('instructor-wrapper');
-if (! wrapper) 
-return;
-
-
-// Récupération des éléments DOM
-const fieldId = wrapper.getAttribute('data-field-id');
-const realSelect = document.getElementById(fieldId);
-const modal = document.getElementById('instructor-modal');
-const trigger = document.getElementById('modal-trigger');
-const confirmBtn = document.getElementById('confirm-selection');
-const closeButtons = document.querySelectorAll('.close-modal');
-const chipsContainer = document.getElementById('chips-container');
-const placeholder = document.getElementById('placeholder-text');
-const checkboxes = document.querySelectorAll('.instructor-checkbox');
-
-if (! realSelect) {
-console.error("Erreur : Le champ select natif est introuvable (ID: " + fieldId + ")");
-return;
-}
-
-/**
-     * Ouvre la modale
-     */
-const openModal = () => { // Avant d'ouvrir, on synchronise les cases à cocher avec l'état actuel du select
-syncCheckboxesFromRealSelect();
-modal.classList.remove('hidden');
-document.body.style.overflow = 'hidden';
-};
-
-/**
-     * Ferme la modale
-     */
-const closeModal = () => {
-modal.classList.add('hidden');
-document.body.style.overflow = '';
-};
-
-/**
-     * Met à jour les badges (chips) et le vrai select caché
-     */
-function updateEverything() {
-chipsContainer.innerHTML = '';
-const selectedValues = [];
-
-// 1. On parcourt les checkboxes pour voir qui est coché
-checkboxes.forEach(cb => {
-if (cb.checked) {
-selectedValues.push(cb.value);
-createChip(cb.value, cb.getAttribute('data-label'));
-}
-});
-
-// 2. On met à jour le vrai select (multiple)
-Array.from(realSelect.options).forEach(opt => {
-opt.selected = selectedValues.includes(opt.value);
-});
-
-// 3. On déclenche l'événement "change" pour que Symfony ou d'autres scripts captent la modif
-realSelect.dispatchEvent(new Event('change', {bubbles: true}));
-
-// 4. Gestion du placeholder
-placeholder.style.display = selectedValues.length > 0 ? 'none' : 'block';
-}
-
-/**
-     * Crée l'élément visuel du badge (chip)
-     */
-function createChip(id, name) {
-const chip = document.createElement('div');
-chip.className = "flex items-center gap-2 px-3 py-1 text-sm font-medium text-white rounded-md shadow-sm";
-chip.style.backgroundColor = '#757575'; // Gris
-chip.style.color = '#ffffff';
-
-const span = document.createElement('span');
-span.textContent = name;
-
-const btn = document.createElement('button');
-btn.type = "button";
-btn.innerHTML = "&times;";
-btn.className = "remove-chip-btn hover:text-red-300 focus:outline-none leading-none text-lg transition-colors ml-1 text-white";
-
-btn.onclick = (e) => {
-e.preventDefault();
-e.stopPropagation();
-removeInstructorSelection(id);
-};
-
-chip.appendChild(span);
-chip.appendChild(btn);
-chipsContainer.appendChild(chip);
-}
-
-/**
-     * Décoche une option via le badge
-     */
-function removeInstructorSelection(id) {
-checkboxes.forEach(cb => {
-if (cb.value == id) 
-cb.checked = false;
-
-});
-updateEverything();
-}
-
-/**
-     * Synchronise les checkboxes de la modale avec le select caché
-     */
-function syncCheckboxesFromRealSelect() {
-const currentValues = Array.from(realSelect.selectedOptions).map(o => o.value);
-checkboxes.forEach(cb => {
-cb.checked = currentValues.includes(cb.value);
-});
-}
-
-// --- Événements ---
-
-trigger.addEventListener('click', (e) => { // On n'ouvre pas la modale si on clique sur la croix d'un badge
-if (!e.target.closest('.remove-chip-btn')) {
-openModal();
-}
-});
-
-confirmBtn.addEventListener('click', () => {
-updateEverything();
-closeModal();
-});
-
-closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
-
-// Fermeture si clic à l'extérieur du cadre blanc
-modal.addEventListener('click', (e) => {
-if (e.target === modal) 
-closeModal();
-
-});
-
-// --- Initialisation au chargement ---
-syncCheckboxesFromRealSelect();
-updateEverything();
-});
-</script>

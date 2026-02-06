@@ -10,9 +10,9 @@
 		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
 			Interventions
 		</h1>
-		<div onclick="toggleModal()">
+		<a href="{{ path('intervention_new') }}">
 			{% include 'composants/button.html.twig' with { label: 'Ajouter une nouvelle intervention', type: 'confirm' } %}
-		</div>
+		</a>
 	</div>
 	<div class="mt-[40px]">
 		<p class="text-[#FFBD01] font-medium text-[20px] pb-[10px]">
@@ -88,11 +88,12 @@
 	{% endif %}
 </td>
 <td class="px-[25px] py-[20px] flex items-center gap-2">
-	<img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
-	<a href="{{ path('form_interventions', { id: intervention.id }) }}" class="text-[#1F384C] text-[14px] font-medium">Accéder à la fiche</a>
-</td>{% else %}
-<tr>
-	<td colspan="3" class="px-[25px] py-[20px] text-[14px] text-center text-gray-500">Aucun résultat trouvé</td>
-</tr>{% endfor %}{% endblock %}{% endembed %}</section>{% include 'intervention/form.html.twig' with { 'formAdd': formAdd } %}<script>function toggleModal() {
-document.getElementById('modal-intervention').classList.toggle('hidden');
-}</script>{% endblock %}
+    <img class="w-[16px] h-[16px]" src="{{ asset('img/oeil (1).png') }}" alt="">
+    <a href="{{ path('intervention_edit', { id: intervention.id }) }}" class="text-[#1F384C] text-[14px] font-medium">
+        Accéder à la fiche
+    </a>
+</td>
+{% endfor %}
+{% endblock %}
+{% endembed %}
+{% endblock %}
