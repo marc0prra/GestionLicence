@@ -1,9 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'instructor/list.html.twig' %}
 
 {% block title %}
 	{{ instructor.user.firstName }}
 	{{ instructor.user.lastName }}
 	- Corps Enseignant
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} <span class="mx-1">></span> {{ instructor.user.firstName }} {{ instructor.user.lastName }} > Informations générales
 {% endblock %}
 
 {% block body %}
