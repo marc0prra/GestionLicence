@@ -19,7 +19,7 @@ final class CalendarController extends AbstractController
 
         foreach($courses as $course) {
             // Construction du nom de l'instructeur
-            $instructorName = '';
+            $instructors = [];
             foreach($course->getCourseInstructors() as $instructor){
                 $instructors[] = [
                     'name' => $instructor->getInstructor()->getUser()->getFirstName() . ' ' . $instructor->getInstructor()->getUser()->getLastName(), 

@@ -15,8 +15,6 @@ aside {
     font-family: 'Poppins', sans-serif;
 }
 
-/* --- PERSONNALISATION FULLCALENDAR --- */
-
 .fc-header-toolbar {
     margin-bottom: 2rem !important;
     padding: 0 10px !important;
@@ -111,41 +109,40 @@ aside {
     height: 5em !important;
 }
 
-/* -- Style Module -- */
 
 .sub-tree {
     position: relative;
-    margin-left: 1.6rem;      /* Alignement sous la flèche parente */
-    border-left: 1px solid #D1D5DB; /* Gris très clair */
-    padding-left: 1.2rem;     /* Longueur de la branche horizontale */
+    margin-left: 1.6rem;
+    border-left: 1px solid #D1D5DB;
+    padding-left: 1.2rem;
 }
 
 .tree-node::before {
     content: "";
     position: absolute;
-    width: 1rem;              /* Largeur du trait horizontal */
-    height: 26px;             /* Hauteur totale du coude */
+    width: 1rem;
+    height: 26px;
     border-left: 1px solid #D1D5DB;
     border-bottom: 1px solid #D1D5DB;
-    border-bottom-left-radius: 10px; /* Arrondi fluide comme sur la maquette */
+    border-bottom-left-radius: 10px;
     z-index: 1;
 }
 
 .tree-node:last-child::after {
     content: "";
     position: absolute;
-    top: 17px;                /* Coupe pile au niveau du dernier coude */
+    top: 17px;
     left: -1.35rem;
     width: 4px;
     height: 100%;
-    background-color: white;  /* Cache la bordure parente */
+    background-color: white;
     z-index: 2;
 }
 
 .icon-wrapper {
     position: relative;
     z-index: 10;
-    background-color: white;  /* Crée la coupure dans le trait gris */
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -154,6 +151,7 @@ aside {
     margin-right: 1%;
     margin-left: 1%;
 }
+
 .arrow-rotate {
     transform: rotate(90deg);
 }
