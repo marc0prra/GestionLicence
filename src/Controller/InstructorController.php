@@ -14,6 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\User;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class InstructorController extends AbstractController
 {
@@ -54,7 +58,7 @@ class InstructorController extends AbstractController
     }
 
     #[Route('/instructors/new', name: 'app_instructor_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ): Response
     {
         $instructor = new Instructor();
         $form = $this->createForm(InstructorType::class, $instructor);
@@ -95,6 +99,58 @@ class InstructorController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+#[Route('/instructors/export', name: 'app_instructor_export', methods: ['GET'])]
+public function exportInstructors(InstructorRepository $repository): StreamedResponse
+{
+    $instructors = $repository->findAll(); // Récupère tous les enseignants
+    
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setTitle('Récapitulatif Enseignants');
+
+    // En-têtes
+    $sheet->setCellValue('A1', 'Nom');
+    $sheet->setCellValue('B1', 'Prénom');
+    $sheet->setCellValue('C1', 'Email');
+    $sheet->setCellValue('D1', 'Modules enseignés');
+    $sheet->setCellValue('E1', 'Heures Totales');
+
+    $row = 2;
+    foreach ($instructors as $instructor) {
+        $user = $instructor->getUser();
+        $sheet->setCellValue('A' . $row, $user->getLastName());
+        $sheet->setCellValue('B' . $row, $user->getFirstName());
+        $sheet->setCellValue('C' . $row, $user->getEmail());
+
+        // Utilise la méthode de votre entité pour lister les modules
+        $sheet->setCellValue('D' . $row, $instructor->getModuleNamesString());
+
+        // Utilise la méthode de votre entité pour le total des heures
+        $sheet->setCellValue('E' . $row, $instructor->getTotalHours() . ' h');
+        
+        $row++;
+    }
+
+    // Ajustement automatique de la largeur des colonnes
+    foreach (range('A', 'E') as $col) {
+        $sheet->getColumnDimension($col)->setAutoSize(true);
+    }
+
+    // Création de la réponse, pour éviter l'erreur BinaryFileResponse
+    $response = new StreamedResponse(function () use ($spreadsheet) {
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+    });
+
+    $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    // Content-Disposition pour forcer le téléchargement
+    $response->headers->set('Content-Disposition', 'attachment;filename="recapitulatif_enseignants.xlsx"');
+    // Cache-Control pour éviter les problèmes de cache 
+    $response->headers->set('Cache-Control', 'max-age=0');
+
+    return $response;
+}
 
     #[Route('/instructors/{id}', name: 'app_instructor_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Instructor $instructor, EntityManagerInterface $entityManager): Response
