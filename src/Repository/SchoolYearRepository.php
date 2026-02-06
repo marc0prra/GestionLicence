@@ -15,4 +15,5 @@ class SchoolYearRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, SchoolYear::class);
     }
+
 }
