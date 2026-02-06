@@ -1,11 +1,13 @@
+{# templates/composants/header.html.twig #}
 <div class="flex flex-col w-full">
-	<div class="flex items-center gap-2 p-4">
-		<svg width="14" height="14" viewbox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M1.75 12.4444H4.375V7.77778H9.625V12.4444H12.25V5.44444L7 1.94444L1.75 5.44444V12.4444ZM0 14V4.66667L7 0L14 4.66667V14H7.875V9.33333H6.125V14H0Z" fill="#1F384C"/>
-		</svg>
-		<p class="font-medium text-[#1F384C]">
-			> Stella Ribas
-		</p>
-	</div>
-	<hr class="border-[#C8CBD9] w-full">
+    <div class="flex items-center gap-2 p-4">
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.75 12.4444H4.375V7.77778H9.625V12.4444H12.25V5.44444L7 1.94444L1.75 5.44444V12.4444ZM0 14V4.66667L7 0L14 4.66667V14H7.875V9.33333H6.125V14H0Z" fill="#1F384C"/>
+        </svg>
+        
+        <p class="font-medium text-[#1F384C] flex items-center gap-1">
+            {% block breadcrumb %}{% endblock %}
+        </p>
+    </div>
+    <hr class="border-[#C8CBD9] w-full"> 
 </div>
