@@ -34,6 +34,7 @@ const initApp = () => {
             // Configuration des heures
             slotMinTime: '08:00:00', // Heure de début : 8h
             slotMaxTime: '19:00:00', // Heure de fin : 18h
+            contentHeight: 'auto', // Ajuster la hauteur au contenu
             slotDuration: '01:00:00', // Intervalle d'une heure
             allDaySlot: false, // Masquer la ligne "toute la journée"
             nowIndicator: true, // Afficher l'indicateur de l'heure actuelle
@@ -53,6 +54,7 @@ const initApp = () => {
                 const module = arg.event.extendedProps.module;
                 const type = arg.event.extendedProps.type;
                 const instructors = arg.event.extendedProps.instructors;
+                const remotely = arg.event.extendedProps.remotely;
 
                 // Création du conteneur principal
                 const container = document.createElement('div');
@@ -62,9 +64,21 @@ const initApp = () => {
 
                 // Heure (uniquement début)
                 const timeDiv = document.createElement('div');
-                timeDiv.className = 'font-semibold mb-1';
-                const startTime = arg.timeText;
-                timeDiv.textContent = startTime;
+                timeDiv.className = 'font-semibold mb-1 flex items-center justify-between';
+
+                const timeSpan = document.createElement('span');
+                timeSpan.textContent = arg.timeText;
+                timeDiv.appendChild(timeSpan);
+
+                // Icône Visio
+                if (remotely) {
+                    const iconContainer = document.createElement('div');
+                    iconContainer.innerHTML = `<svg class="w-4 h-4 text-white" fill="currentColor" viewbox="0 0 24 24">
+						<path d="M4.5 4.5a3 3 0 00-3 3v9a3 3 0 003 3h8.25a3 3 0 003-3v-9a3 3 0 00-3-3H4.5zM19.94 18.75l-2.69-2.69V7.94l2.69-2.69c.944-.944 2.56-.276 2.56 1.06v11.38c0 1.336-1.616 2.004-2.56 1.06z"/>
+					</svg>`;
+                    timeDiv.appendChild(iconContainer);
+                }
+
                 container.appendChild(timeDiv);
 
                 // Module (titre du cours)
