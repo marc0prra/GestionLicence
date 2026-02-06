@@ -1,8 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'interv.html.twig' %}
 
 {% block title %}
 	{{ interventionType.id ? 'Modifier' : 'Créer' }}
 	un type d'intervention
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} <span class="mx-1">></span> {{ intervention.name }}
 {% endblock %}
 
 {% block body %}

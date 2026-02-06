@@ -1,6 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'instructor/list.html.twig' %}
 
 {% block title %}Ajouter un enseignant - Corps Enseignant
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} <span class="mx-1">></span> Ajouter un enseignant
 {% endblock %}
 
 {% block body %}
