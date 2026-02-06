@@ -7,10 +7,10 @@
 {% endblock %}
 
 {% block body %}
-	<div
-		class="p-6 bg-white rounded-lg">
+	<section
+		class="w-full mr-auto">
 		{# --- TITRE --- #}
-		<h1 class="font-bold text-[#1F384C] text-[28px] mb-4">
+		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
 			{{ instructor.user.firstName }}
 			{{ instructor.user.lastName }}
 		</h1>
@@ -21,8 +21,7 @@
 			<div class="space-y-1 text-[14px] text-[#1F384C]">
 				{% for im in instructor.instructorModules %}
 					<p>
-						<strong>{{ im.module.name }}</strong>
-						:
+						<strong>{{ im.module.name }}</strong>:
 						{{ im.module.hoursCount }}h00
 						<span class="text-gray-500">(dont
 							{{ im.module.hoursCount }}
@@ -38,7 +37,7 @@
 		<div class="mb-8">
 			{% include 'composants/button.html.twig' with 
 			{
-				'label': 'Exporter le récapitulatif',
+				'label': 'Exporter le récapitulatif (format .xls)',
 				'url': path ('app_instructor_export'), 
 				'type': 'confirm', 
 				'icon': 'fa fa-file-excel-o'
@@ -126,5 +125,5 @@
 
 		{{ form_end(form) }}
 
-	</div>
+	</section>
 {% endblock %}
