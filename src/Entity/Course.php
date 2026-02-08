@@ -6,8 +6,8 @@ use App\Repository\CourseRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Validator\IntervenantHasModule;
 use App\Validator\CourseDateLength;
+use App\Validator\CourseDatesWithinPeriod;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
@@ -32,6 +32,7 @@ class Course
     )]
 
     #[CourseDateLength]
+    #[CourseDatesWithinPeriod]
     private ?\DateTime $end_date = null;
 
     #[ORM\Column]
@@ -53,7 +54,6 @@ class Course
     private ?Module $module_id = null;
 
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: CourseInstructor::class, cascade: ['persist', 'remove'])]
-    #[IntervenantHasModule]
     private Collection $courseInstructors;
 
     public function __construct()

@@ -22,7 +22,7 @@ final class CoursePeriodController extends AbstractController
         int $schoolYearId
     ): Response {
         $schoolYear = $schoolYearRepository->find($schoolYearId);
-        
+
         // Verifie si il y a une année scolaire correspondante
         if (!$schoolYear) {
             throw $this->createNotFoundException('Année scolaire introuvable');
@@ -35,7 +35,7 @@ final class CoursePeriodController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            if ($form->isValid()) {
+            if (!$form->isValid()) {
                 try {
                     $entityManager->persist($coursePeriod);
                     $entityManager->flush();

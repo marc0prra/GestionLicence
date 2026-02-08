@@ -72,10 +72,7 @@ class InterventionController extends AbstractController
     #[Route('/interventions/{id}/edit', name: 'intervention_edit', methods: ['GET', 'POST'])]
     public function edit(Course $course, Request $request, EntityManagerInterface $em): Response
     {
-        $currentInstructors = [];
-        foreach ($course->getCourseInstructors() as $ci) {
-            $currentInstructors[] = $ci->getInstructor();
-        }
+        $currentInstructors = $course->getCourseInstructors()->map(fn($ci) => $ci->getInstructor());
 
         $form = $this->createForm(CourseType::class, $course);
         $form->get('courseInstructors')->setData($currentInstructors);
@@ -83,15 +80,21 @@ class InterventionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($course->getCourseInstructors() as $oldCi) {
-                $em->remove($oldCi);
-            }
-
             $newInstructors = $form->get('courseInstructors')->getData();
+
+            foreach ($course->getCourseInstructors() as $ci) {
+                if (!$newInstructors->contains($ci->getInstructor())) {
+                    $em->remove($ci);
+                }
+            }
+            $existingInstructors = $course->getCourseInstructors()->map(fn($ci) => $ci->getInstructor())->toArray();
+
             foreach ($newInstructors as $instructor) {
-                $ci = new CourseInstructor();
-                $ci->setCourse($course)->setInstructor($instructor);
-                $em->persist($ci);
+                if (!in_array($instructor, $existingInstructors, true)) {
+                    $ci = new CourseInstructor();
+                    $ci->setCourse($course)->setInstructor($instructor);
+                    $em->persist($ci);
+                }
             }
 
             $em->flush();
@@ -102,6 +105,17 @@ class InterventionController extends AbstractController
         return $this->render('intervention/form.html.twig', [
             'course' => $course,
             'form' => $form->createView(),
-        ]);
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
+    }
+    #[Route('/interventions/{id}/delete', name: 'intervention_delete', methods: ['POST'])]
+    public function delete(Request $request, Course $course, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $course->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($course);
+            $entityManager->flush();
+            $this->addFlash('success', 'Intervention supprimée.');
+        }
+
+        return $this->redirectToRoute('interventions');
     }
 }

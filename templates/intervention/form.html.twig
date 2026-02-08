@@ -1,46 +1,64 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<section class="max-w-[800px] mx-auto bg-white p-8 rounded-[20px] shadow-sm mt-10">
-		<h1 class="text-[24px] font-bold mb-6">
-			{{ course.id is defined ? 'Modifier l\'intervention' : 'Nouvelle intervention' }}
+<section class="max-w-[800px] mx-auto bg-white p-8 rounded-[20px] shadow-sm mt-10">
+	<h1 class="text-[24px] font-bold mb-6">
+		{{ course.id is defined ? 'Modifier l\'intervention' : 'Nouvelle intervention' }}
     </h1>
-		{{ form_start(form) }}
 
-		<div class="space-y-6">
-			{% include "composants/form_champ_text.html.twig" with { 'label' : 'Titre', 'field' : form.title } %}
+    {{ form_start(form, {'attr': {'id': 'course_form'}}) }}
+        
+        <div class="text-red-500 mb-4">
+            {{ form_errors(form) }}
+        </div>
 
-	<div class="grid grid-cols-2 gap-4">
-		<div>
-			{% include "composants/form_champ_date.html.twig" with { 'label': 'Début', 'field': form.start_date } %}
-		</div>
+        <div class="space-y-6">
+            {% include "composants/form_champ_text.html.twig" with { 'label' : 'Titre', 'field' : form.title } %}
 
-		<div>
-			{% include "composants/form_champ_date.html.twig" with { 'label': 'Fin', 'field': form.end_date } %}
-		</div>
-	</div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    {% include "composants/form_champ_date.html.twig" with { 'label': 'Début', 'field': form.start_date } %}
+                </div>
+                <div>
+                    {% include "composants/form_champ_date.html.twig" with { 'label': 'Fin', 'field': form.end_date } %}
+                </div>
+            </div>
 
-			<div class="grid grid-cols-2 gap-4">
-				{% include "composants/form_champ_select.html.twig" with { 'label' : 'Module', 'field' : form.module_id } %}
-				{% include "composants/form_champ_select.html.twig" with { 'label' : "Type d'intervention", 'field' : form.intervention_type_id } %}
-			</div>
+            <div class="grid grid-cols-2 gap-4">
+                {% include "composants/form_champ_select.html.twig" with { 'label' : 'Module', 'field' : form.module_id } %}
+                {% include "composants/form_champ_select.html.twig" with { 'label' : "Type d'intervention", 'field' : form.intervention_type_id } %}
+            </div>
 
-			{% include "composants/multi_select.html.twig" with { 'label': 'Intervenants', 'field' : form.courseInstructors } %}
+            {% include "composants/multi_select.html.twig" with { 'label': 'Intervenants', 'field' : form.courseInstructors } %}
+            {% include "composants/form_champ_switch.html.twig" with { 'label' : 'Intervention effectuée en visio', 'field' : form.remotely } %}
+        </div>
 
-			{% include "composants/form_champ_switch.html.twig" with { 'label' : 'Intervention effectuée en visio', 'field' : form.remotely } %}
-		</div>
+        {# Erreurs spécifiques #}
+        {% for error in form.courseInstructors.vars.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ error.message }}</p>
+        {% endfor %}
 
-		{# Affichage spécifique au champ #}
-		{% for error in form.courseInstructors.vars.errors %}
-			<p class="text-red-500 text-sm mt-1">{{ error.message }}</p>
-		{% endfor %}
+        {# Actions #}
+        <div class="flex gap-4 pt-6 w-full">
+            <div class="flex-1">
+                {% include "composants/button.html.twig" with { 
+                    'label': 'Retour', 
+                    'type': 'cancel', 
+                    'url': path('interventions'),
+                    'fullWidth': true 
+                } %}
+            </div>
 
+            <div class="flex-1">
+                {% include "composants/button.html.twig" with { 
+                    'label': 'Enregistrer', 
+                    'type': 'confirm', 
+                    'buttonType': 'submit',
+                    'fullWidth': true
+                } %}
+            </div>
+        </div>
 
-		<div class="flex gap-4 pt-6">
-			<a href="{{ path('interventions') }}" class="flex-1 bg-gray-100 text-center py-3 rounded-lg">Retour</a>
-		<button type="submit" class="w-full bg-[#2D4071] text-white py-3 rounded-lg font-medium">
-			Enregistrer les informations
-		</button>
-	</div>
-	{{ form_end(form) }}
-</section>{% endblock %}
+    {{ form_end(form) }} {# <--- C'est parfait ici #}
+</section>
+{% endblock %}
