@@ -16,98 +16,107 @@ use App\Repository\CoursePeriodRepository;
 
 class InterventionController extends AbstractController
 {
+    // InterventionController.php
+
     #[Route('/interventions', name: 'interventions', methods: ['GET', 'POST'])]
-    public function list(
-        EntityManagerInterface $em,
-        Request $request,
-        CourseRepository $courseRepo,
-        CoursePeriodRepository $periodRepo
-    ): Response {
-        $interventions = $courseRepo->findInterventions();
+    public function list(CourseRepository $courseRepo, Request $request): Response
+    {
+        $interventions = $courseRepo->findAll();
         $filterForm = $this->createForm(CourseFilterType::class);
         $filterForm->handleRequest($request);
 
-        $newCourse = new Course();
-        $addForm = $this->createForm(CourseType::class, $newCourse);
-        $addForm->handleRequest($request);
-        if ($addForm->isSubmitted()) {
-
-            if ($addForm->isValid()) {
-                $period = $periodRepo->findPeriodByDates($newCourse->getStartDate());
-
-                if (!$period) {
-                    $this->addFlash('error', 'Aucune période scolaire ne correspond à la date choisie.');
-                } else {
-                    $newCourse->setCoursePeriodId($period);
-                    try {
-                        $em->persist($newCourse);
-                        $instructors = $addForm->get('courseInstructors')->getData();
-
-                        foreach ($instructors as $instructor) {
-                            $courseInstructor = new CourseInstructor();
-                            $courseInstructor->setCourse($newCourse);
-                            $courseInstructor->setInstructor($instructor);
-                            $em->persist($courseInstructor);
-                        }
-                        $em->flush();
-                        $this->addFlash('success', 'Intervention ajoutée.');
-
-                        // On redirige vers la même page pour vider le formulaire et voir le nouvel élément
-                        return $this->redirectToRoute('interventions');
-                    } catch (\Exception $e) {
-                        $this->addFlash('error', 'Erreur : ' . $e->getMessage());
-                    }
-                }
-            }
-        }
+        // ... logique de filtrage si nécessaire ...
 
         return $this->render('intervention/list.html.twig', [
             'interventions' => $interventions,
             'form' => $filterForm->createView(),
-            'formAdd' => $addForm->createView(),
         ]);
     }
 
-    #[Route('/intervention', name: 'form_interventions')]
-    public function form(EntityManagerInterface $em, Request $request, CourseRepository $periodRepo): Response
+    #[Route('/interventions/add', name: 'intervention_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $em, CoursePeriodRepository $periodRepo): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $period = $periodRepo->findPeriodByDates($course->getStartDate());
 
-                if (!$period) {
-                    $this->addFlash('error', 'Aucune période scolaire ne correspond à la date de début choisie.');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $period = $periodRepo->findPeriodByDates($course->getStartDate());
 
-                    return $this->render('form_interventions.html.twig', ['form' => $form->createView()]);
-                }
-
-                $course->setCoursePeriodId($period);
-                try {
-                    $em->persist($course);
-                    $instructors = $form->get('courseInstructors')->getData();
-
-                    foreach ($instructors as $instructor) {
-                        $courseInstructor = new CourseInstructor();
-                        $courseInstructor->setCourse($course);
-                        $courseInstructor->setInstructor($instructor);
-                        $em->persist($courseInstructor);
-                    }
-                    $em->flush();
-                    $this->addFlash('success', 'Intervention ajoutée.');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de l\'intervention : ' . $e->getMessage());
-                }
+            if (!$period) {
+                $this->addFlash('error', 'Aucune période scolaire correspondante.');
             } else {
-                $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de l\'intervention.');
+                $course->setCoursePeriodId($period);
+                $em->persist($course);
+
+                // Gestion des intervenants (champ non-mappé)
+                $instructors = $form->get('courseInstructors')->getData();
+                foreach ($instructors as $instructor) {
+                    $ci = new CourseInstructor();
+                    $ci->setCourse($course)->setInstructor($instructor);
+                    $em->persist($ci);
+                }
+
+                $em->flush();
+                $this->addFlash('success', 'Intervention créée !');
+                return $this->redirectToRoute('interventions');
             }
         }
 
         return $this->render('intervention/form.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
+            'course' => $course
         ]);
+    }
+
+    #[Route('/interventions/{id}/edit', name: 'intervention_edit', methods: ['GET', 'POST'])]
+    public function edit(Course $course, Request $request, EntityManagerInterface $em): Response
+    {
+        $currentInstructors = $course->getCourseInstructors()->map(fn($ci) => $ci->getInstructor());
+
+        $form = $this->createForm(CourseType::class, $course);
+        $form->get('courseInstructors')->setData($currentInstructors);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newInstructors = $form->get('courseInstructors')->getData();
+
+            foreach ($course->getCourseInstructors() as $ci) {
+                if (!$newInstructors->contains($ci->getInstructor())) {
+                    $em->remove($ci);
+                }
+            }
+            $existingInstructors = $course->getCourseInstructors()->map(fn($ci) => $ci->getInstructor())->toArray();
+
+            foreach ($newInstructors as $instructor) {
+                if (!in_array($instructor, $existingInstructors, true)) {
+                    $ci = new CourseInstructor();
+                    $ci->setCourse($course)->setInstructor($instructor);
+                    $em->persist($ci);
+                }
+            }
+
+            $em->flush();
+            $this->addFlash('success', 'Fiche mise à jour.');
+            return $this->redirectToRoute('interventions');
+        }
+
+        return $this->render('intervention/form.html.twig', [
+            'course' => $course,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/interventions/{id}/delete', name: 'intervention_delete', methods: ['POST'])]
+    public function delete(Request $request, Course $course, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $course->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($course);
+            $entityManager->flush();
+            $this->addFlash('success', 'Intervention supprimée.');
+        }
+
+        return $this->redirectToRoute('interventions');
     }
 }

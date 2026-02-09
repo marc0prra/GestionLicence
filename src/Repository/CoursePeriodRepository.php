@@ -35,6 +35,18 @@ class CoursePeriodRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findPeriodByCourseDates(\DateTime $startDate, \DateTime $endDate): ?CoursePeriod
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.start_date <= :start')
+            ->andWhere('p.end_date >= :end')
+            ->setParameter('start', $startDate)
+            ->setParameter('end', $endDate)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
 //     * @return CoursePeriod[] Returns an array of CoursePeriod objects
 //     */

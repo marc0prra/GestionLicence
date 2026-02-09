@@ -14,6 +14,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Repository\ModuleRepository;
+use App\Validator\IntervenantHasModule;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 class CourseType extends AbstractType
 {
@@ -23,17 +27,14 @@ class CourseType extends AbstractType
             ->add('start_date', DateTimeType::class, [
                 'label' => 'Date de début - champ obligatoire',
                 'required' => true,
-                'widget' => 'single_text'
+                'widget' => 'single_text',
             ])
             ->add('end_date', DateTimeType::class, [
                 'label' => 'Date de fin - champ obligatoire',
                 'required' => true,
-                'widget' => 'single_text'
+                'widget' => 'single_text',
             ])
-            ->add('remotely', CheckboxType::class, [
-                'label' => 'Intervention effectuée en visio',
-                'required' => false,
-            ])
+
             ->add('title', TextType::class, [
                 'label' => 'Titre',
                 'required' => false,
@@ -64,6 +65,14 @@ class CourseType extends AbstractType
                 'attr' => [
                     'class' => 'flex-1 min-w-[150px] bg-transparent border-none outline-none text-sm cursor-pointer focus:ring-0 appearance-none',
                 ],
+                'constraints' => [
+                    new IntervenantHasModule(),
+                ],
+            ])
+
+            ->add('remotely', CheckboxType::class, [
+                'label' => 'Intervention effectuée en visio',
+                'required' => false,
             ])
         ;
     }

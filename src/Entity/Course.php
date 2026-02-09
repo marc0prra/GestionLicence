@@ -6,8 +6,13 @@ use App\Repository\CourseRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Validator\CourseDateLength;
+use App\Validator\CourseDatesWithinPeriod;
+use App\Validator as AssertSpe;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
+#[AssertSpe\IntervenantHasModule]
 class Course
 {
     #[ORM\Id]
@@ -16,9 +21,20 @@ class Course
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Renseignez une date de début.")]
+    #[Assert\Type("\DateTimeInterface")]
     private ?\DateTime $start_date = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Renseignez une date de fin.")]
+    #[Assert\Type("\DateTimeInterface")]
+    #[Assert\GreaterThan(
+        propertyPath: "start_date",
+        message: "La date de fin doit être postérieure à la date de début."
+    )]
+
+    #[CourseDateLength]
+    #[CourseDatesWithinPeriod]
     private ?\DateTime $end_date = null;
 
     #[ORM\Column]
@@ -58,7 +74,7 @@ class Course
         return $this->start_date;
     }
 
-    public function setStartDate(\DateTime $start_date): static
+    public function setStartDate(?\DateTime $start_date): static
     {
         $this->start_date = $start_date;
 
@@ -70,7 +86,7 @@ class Course
         return $this->end_date;
     }
 
-    public function setEndDate(\DateTime $end_date): static
+    public function setEndDate(?\DateTime $end_date): static
     {
         $this->end_date = $end_date;
 
