@@ -48,6 +48,7 @@ final class IntervenantHasModuleValidator extends ConstraintValidator
 
             if (!$isAssociated) {
                 $this->context->buildViolation($constraint->message)
+                    ->atPath('end_date')
                     ->addViolation();
             }
         }

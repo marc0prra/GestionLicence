@@ -8,9 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Validator\CourseDateLength;
 use App\Validator\CourseDatesWithinPeriod;
+use App\Validator as AssertSpe;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
+#[AssertSpe\IntervenantHasModule]
 class Course
 {
     #[ORM\Id]

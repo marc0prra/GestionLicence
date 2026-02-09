@@ -4,6 +4,8 @@
 		{{ field.vars.label|default("Intervenants - champ obligatoire") }}
 	</label>
 
+	<div class="text-red-500 text-sm mt-1">{{ form_errors(field) }}</div>
+
 	{# TRIGGER DU SELECT #}
 	<div data-multi-select-target="trigger" data-action="click->multi-select#open" class="flex items-center justify-between p-2 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer hover:border-zinc-400 min-h-[46px] relative transition-all">
 

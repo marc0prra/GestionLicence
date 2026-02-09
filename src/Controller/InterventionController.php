@@ -65,8 +65,9 @@ class InterventionController extends AbstractController
         }
 
         return $this->render('intervention/form.html.twig', [
-            'form' => $form->createView(),
-        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
+            'form' => $form,
+            'course' => $course
+        ]);
     }
 
     #[Route('/interventions/{id}/edit', name: 'intervention_edit', methods: ['GET', 'POST'])]
@@ -105,7 +106,7 @@ class InterventionController extends AbstractController
         return $this->render('intervention/form.html.twig', [
             'course' => $course,
             'form' => $form->createView(),
-        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
+        ]);
     }
     #[Route('/interventions/{id}/delete', name: 'intervention_delete', methods: ['POST'])]
     public function delete(Request $request, Course $course, EntityManagerInterface $entityManager): Response

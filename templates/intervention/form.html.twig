@@ -8,19 +8,19 @@
 
     {{ form_start(form, {'attr': {'id': 'course_form'}}) }}
         
-        <div class="text-red-500 mb-4">
+        {# <div class="text-red-500 mb-4">
             {{ form_errors(form) }}
-        </div>
+        </div> #}
 
         <div class="space-y-6">
-            {% include "composants/form_champ_text.html.twig" with { 'label' : 'Titre', 'field' : form.title } %}
+            {% include "composants/form_champ_text.html.twig" with { 'label' : 'Titre', 'field' : form.title, } %}
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    {% include "composants/form_champ_date.html.twig" with { 'label': 'Début', 'field': form.start_date } %}
+                    {% include "composants/form_champ_date.html.twig" with { 'label': 'Début', 'field': form.start_date, } %}
                 </div>
                 <div>
-                    {% include "composants/form_champ_date.html.twig" with { 'label': 'Fin', 'field': form.end_date } %}
+                    {% include "composants/form_champ_date.html.twig" with { 'label': 'Fin', 'field': form.end_date, } %}
                 </div>
             </div>
 
@@ -33,10 +33,6 @@
             {% include "composants/form_champ_switch.html.twig" with { 'label' : 'Intervention effectuée en visio', 'field' : form.remotely } %}
         </div>
 
-        {# Erreurs spécifiques #}
-        {% for error in form.courseInstructors.vars.errors %}
-            <p class="text-red-500 text-sm mt-1">{{ error.message }}</p>
-        {% endfor %}
 
         {# Actions #}
         <div class="flex gap-4 pt-6 w-full">
@@ -59,6 +55,6 @@
             </div>
         </div>
 
-    {{ form_end(form) }} {# <--- C'est parfait ici #}
+    {{ form_end(form) }}
 </section>
 {% endblock %}
