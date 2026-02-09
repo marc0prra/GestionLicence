@@ -16,4 +16,11 @@ class SchoolYearRepository extends ServiceEntityRepository
         parent::__construct($registry, SchoolYear::class);
     }
 
+    public function findByOrderDate() 
+    {
+        return $this->createQueryBuilder('s')
+        ->orderBy('s.start_date', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
 }

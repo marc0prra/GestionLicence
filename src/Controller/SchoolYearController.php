@@ -20,7 +20,7 @@ final class SchoolYearController extends AbstractController
     #[Route('/school_year', name: 'school_year', methods: ['GET'])]
     public function list(SchoolYearRepository $schoolYearRepository, Request $request, PaginatorInterface $paginator): Response
     {
-        $donnees = $schoolYearRepository->findAll();
+        $donnees = $schoolYearRepository->findByOrderDate();
 
         $schoolYear = $paginator->paginate(
             $donnees, // On lui passe les données
