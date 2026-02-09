@@ -7,61 +7,67 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    {{ parent() }} <span class="mx-1">></span> {{ instructor.user.firstName }} {{ instructor.user.lastName }} > Informations générales
+	{{ parent() }}
+	<span class="mx-1">></span>
+	{{ instructor.user.firstName }}
+	{{ instructor.user.lastName }}
+	> Informations générales
 {% endblock %}
 
 {% block body %}
-	<div
-		class="p-6 bg-white rounded-lg">
-		{# --- TITRE --- #}
-		<h1 class="font-bold text-[#1F384C] text-[28px] mb-4">
-			{{ instructor.user.firstName }}
-			{{ instructor.user.lastName }}
-		</h1>
+<section
+	class="w-full mr-auto">
+	{# --- TITRE --- #}
+	<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+		{{ instructor.user.firstName }}
+		{{ instructor.user.lastName }}
+	</h1>
 
-		{# --- SECTION MODULES ENSEIGNÉS --- #}
-		<div class="mb-6">
-			<h2 class="text-[#FFBD01] font-semibold text-[18px] mb-3">Modules enseignés</h2>
-			<div class="space-y-1 text-[14px] text-[#1F384C]">
-				{% for im in instructor.instructorModules %}
-					<p>
-						<strong>{{ im.module.name }}</strong>
-						:
-						{{ im.module.hoursCount }}h00
-						<span class="text-gray-500">(dont
-							{{ im.module.hoursCount }}
-							restantes pour cette année)</span>
-					</p>
-				{% else %}
-					<p class="text-gray-500">Aucun module assigné.</p>
-				{% endfor %}
-			</div>
+	{# --- SECTION MODULES ENSEIGNÉS --- #}
+	<div class="mb-6">
+		<h2 class="text-[#FFBD01] font-semibold text-[18px] mb-3">Modules enseignés</h2>
+		<div class="space-y-1 text-[14px] text-[#1F384C]">
+			{% for im in instructor.instructorModules %}
+				<p>
+					<strong>{{ im.module.name }}</strong>:
+					{{ im.module.hoursCount }}h00
+					<span class="text-gray-500">(dont
+						{{ im.module.hoursCount }}
+						restantes pour cette année)</span>
+				</p>
+			{% else %}
+				<p class="text-gray-500">Aucun module assigné.</p>
+			{% endfor %}
 		</div>
+	</div>
 
-		{# --- BOUTON EXPORT --- #}
-		<div class="mb-8">
-			{% include 'composants/button.html.twig' with 
+	{# --- BOUTON EXPORT --- #}
+	<div class="mb-8">
+		{% include 'composants/button.html.twig' with 
 			{
-				'label': 'Exporter le récapitulatif',
+				'label': 'Exporter le récapitulatif (format .xls)',
 				'url': path ('app_instructor_export'), 
 				'type': 'confirm', 
 				'icon': 'fa fa-file-excel-o'
         	} %}
-		</div>
+	</div>
 
-		<hr
-		class="border-gray-200 mb-6">
+	<hr
+	class="border-gray-200 mb-6">
 
-		{# --- ONGLETS --- #}
-		<div class="flex gap-2 mb-6">
-			<button type="button" class="py-2 px-6 rounded-lg font-medium text-sm bg-[#1F384C] text-white">
-				Informations générales
-			</button>
-			<button type="button" class="py-2 px-6 rounded-lg font-medium text-sm bg-[#F0F0F0] text-[#1F384C] hover:bg-gray-200 transition-colors">
-				Interventions
-			</button>
-		</div>
+	{# --- ONGLETS --- #}
+	<div class="flex gap-2 mb-6">
+		<button type="button" onclick="switchTab('general')" id="tab-general" class="py-2 px-6 rounded-lg font-medium text-sm bg-[#1F384C] text-white">
+			Informations générales
+		</button>
+		<button type="button" onclick="switchTab('interventions')" id="tab-interventions" class="py-2 px-6 rounded-lg font-medium text-sm bg-[#F0F0F0] text-[#1F384C] hover:bg-gray-200 transition-colors">
+			Interventions
+		</button>
+	</div>
 
+	{# --- CONTENU ONGLET INFORMATIONS GÉNÉRALES --- #}
+	<div
+		id="content-general">
 		{# --- TITRE SECTION FORMULAIRE --- #}
 		<h3 class="text-[#FFBD01] font-semibold text-[18px] mb-4">Informations générales</h3>
 
@@ -129,6 +135,130 @@
 		</div>
 
 		{{ form_end(form) }}
+	</div>
 
+	{# --- CONTENU ONGLET INTERVENTIONS --- #}
+	<div id="content-interventions" class="hidden">
+		<h3 class="text-[#FFBD01] font-semibold text-[18px] mb-4">Interventions</h3>
+
+		{# --- FILTRES --- #}
+		{{ form_start(interventionFilterForm, {'attr': {'class': 'flex flex-col lg:flex-row lg:items-end gap-3'}}) }}
+
+		<div class="flex flex-col w-full md:w-auto md:mr-4">
+			{% include "composants/form_champ_date.html.twig" with {
+				'label': 'Date de début',
+				'field': interventionFilterForm.start_date
+			} %}
+		</div>
+
+		<div class="flex flex-col w-full md:w-auto md:mr-4">
+			{% include "composants/form_champ_date.html.twig" with {
+				'label': 'Date de fin',
+				'field': interventionFilterForm.end_date
+			} %}
+		</div>
+
+		<div class="flex flex-col w-full md:w-auto md:mr-4">
+			{% include "composants/form_champ_text.html.twig" with {
+				'label': 'Module',
+				'field': interventionFilterForm.module_id
+			} %}
+		</div>
+
+		<div class="mt-2 md:mt-0">
+			{% include 'composants/button.html.twig' with {
+				label: 'Filtrer',
+				type: 'warning',
+			} %}
+		</div>
+
+		{{ form_end(interventionFilterForm) }}
+
+		<h1 class="font-medium text-[20px] text-[#1F384C] mt-6 mb-2">
+			{{ interventions|length }}
+			intervention{{ interventions|length > 1 ? 's' : ''}}
+			trouvée{{ interventions|length > 1 ? 's' : ''}}
+		</h1>
+
+		{% embed 'composants/table.html.twig' with {
+			headers: ['Date de l\'intervention', 'Module & titre', 'Type' , 'Intervenants', 'En visio', '']
+		} %}
+			{% block body %}
+				{# annees devient un tableau, donc il contient les valeurs name, start_date et end_date. Pour vérifier, faites un dump du tableau annees #}
+				{% for intervention in interventions %}
+					<tr>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.startDate|date('d/m/Y H\\hi') }} à {{ intervention.endDate|date('H\\hi') }}
+						</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.moduleId.name }}{{ intervention.title is not empty ? ' - ' ~ intervention.title : '' }}
+						</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ intervention.interventionTypeId.name}}
+						</td>
+						<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">
+		{% for ci in intervention.courseInstructors %}
+			{{ ci.instructor.user.firstName|slice(0, 1)|upper }}. {{ ci.instructor.user.lastName|upper }}
+			{% if not loop.last %},
+		{% endif %}
+	{% else %}
+	{% endfor %}
+</td>
+<td class="px-[25px] py-[20px] flex items-center gap-2">
+	{% if intervention.remotely %}
+		<img class="w-[16px] h-[16px]" src="{{ asset('img/cam_on.png') }}" alt="">
+	{% else %}
+		<img class="w-[16px] h-[16px]" src="{{ asset('img/cam_off.png') }}" alt="">
+	{% endif %}
+</td>
+{% else %}
+<tr>
+	<td colspan="3" class="px-[25px] py-[20px] text-[14px] text-center text-gray-500">Aucun résultat trouvé</td>
+</tr>{% endfor %}{% endblock %}{% endembed %}
+
+		{# --- PAGINATION --- #}
+		{% if maxPages > 1 %}
+			<div class="flex justify-center mt-8 gap-2">
+				{# Bouton Précédent #}
+				<a href="{{ path('app_instructor_show', {'id': instructor.id, 'page': currentPage - 1}|merge(app.request.query.all)) }}" 
+				   class="px-4 py-2 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 {% if currentPage <= 1 %}opacity-50 pointer-events-none{% endif %}">
+					Précédent
+				</a>
+
+				<span class="px-4 py-2 text-sm font-medium text-gray-700">
+					Page {{ currentPage }} / {{ maxPages }}
+				</span>
+
+				{# Bouton Suivant #}
+				<a href="{{ path('app_instructor_show', {'id': instructor.id, 'page': currentPage + 1}|merge(app.request.query.all)) }}" 
+				   class="px-4 py-2 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 {% if currentPage >= maxPages %}opacity-50 pointer-events-none{% endif %}">
+					Suivant
+				</a>
+			</div>
+		{% endif %}
+	</div>
+
+		{# --- SCRIPT TAB SWITCHING --- #}
+		<script>
+			function switchTab(tabName) {
+				// Hide all content sections
+				document.getElementById('content-general').classList.add('hidden');
+				document.getElementById('content-interventions').classList.add('hidden');
+				
+				// Remove active styles from all tabs
+				document.getElementById('tab-general').classList.remove('bg-[#1F384C]', 'text-white');
+				document.getElementById('tab-general').classList.add('bg-[#F0F0F0]', 'text-[#1F384C]');
+				document.getElementById('tab-interventions').classList.remove('bg-[#1F384C]', 'text-white');
+				document.getElementById('tab-interventions').classList.add('bg-[#F0F0F0]', 'text-[#1F384C]');
+				
+				// Show selected content and apply active styles
+				if (tabName === 'general') {
+					document.getElementById('content-general').classList.remove('hidden');
+					document.getElementById('tab-general').classList.remove('bg-[#F0F0F0]', 'text-[#1F384C]');
+					document.getElementById('tab-general').classList.add('bg-[#1F384C]', 'text-white');
+				} else if (tabName === 'interventions') {
+					document.getElementById('content-interventions').classList.remove('hidden');
+					document.getElementById('tab-interventions').classList.remove('bg-[#F0F0F0]', 'text-[#1F384C]');
+					document.getElementById('tab-interventions').classList.add('bg-[#1F384C]', 'text-white');
+				}
+			}
+		</script>
 	</div>
 {% endblock %}
