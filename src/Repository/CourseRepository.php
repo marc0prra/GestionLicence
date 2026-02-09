@@ -17,6 +17,7 @@ class CourseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Course::class);
     }
+
     public function findInterventions()
     {
         return $this->createQueryBuilder('c')
@@ -64,6 +65,22 @@ class CourseRepository extends ServiceEntityRepository
         $qb->orderBy('c.start_date', 'ASC');
 
         return $qb->getQuery()->getResult();
+    }
+
+    // Récupération des cours de la période active actuelle
+    public function getCoursBetween($start, $end) 
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.course_period_id', 'cp')
+            ->join('c.intervention_type_id', 'it')
+            ->join('c.module_id', 'm')
+            ->join('c.courseInstructors', 'ci')
+            ->join('ci.instructor', 'ins')
+            ->join('ins.user', 'u')
+            ->addSelect('it', 'm', 'ci', 'ins', 'u', 'cp')
+            ->where('CURRENT_DATE() BETWEEN cp.start_date AND cp.end_date')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
