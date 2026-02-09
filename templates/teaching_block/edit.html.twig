@@ -1,6 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'teaching_block/list.html.twig' %}
 
 {% block title %}Bloc d'enseignement
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} <span class="mx-1">></span> {{ teachingBlock.getCode() }}
 {% endblock %}
 
 {% block body %}

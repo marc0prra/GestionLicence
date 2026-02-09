@@ -107,4 +107,76 @@ class CourseRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByInstructorWithFilters(
+        int $instructorId,
+        ?\DateTime $startDate = null,
+        ?\DateTime $endDate = null,
+        ?Module $module = null,
+        int $page = 1,
+        int $limit = 10
+    ): array {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
+            ->leftJoin('c.intervention_type_id', 'it')
+            ->leftJoin('c.module_id', 'm')
+            ->leftJoin('c.courseInstructors', 'ci')
+            ->leftJoin('ci.instructor', 'ins')
+            ->leftJoin('ins.user', 'u')
+            ->where('ins.id = :instructorId')
+            ->setParameter('instructorId', $instructorId);
+
+        if ($startDate) {
+            $qb->andWhere('c.start_date >= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+
+        if ($endDate) {
+            $qb->andWhere('c.end_date <= :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        if ($module) {
+            $qb->andWhere('m.id = :moduleId')
+                ->setParameter('moduleId', $module->getId());
+        }
+
+        $qb->orderBy('c.start_date', 'DESC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function countByInstructorWithFilters(
+        int $instructorId,
+        ?\DateTime $startDate = null,
+        ?\DateTime $endDate = null,
+        ?Module $module = null
+    ): int {
+        $qb = $this->createQueryBuilder('c')
+            ->select('COUNT(DISTINCT c.id)')
+            ->leftJoin('c.courseInstructors', 'ci')
+            ->leftJoin('ci.instructor', 'ins')
+            ->leftJoin('c.module_id', 'm')
+            ->where('ins.id = :instructorId')
+            ->setParameter('instructorId', $instructorId);
+
+        if ($startDate) {
+            $qb->andWhere('c.start_date >= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+
+        if ($endDate) {
+            $qb->andWhere('c.end_date <= :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        if ($module) {
+            $qb->andWhere('m.id = :moduleId')
+                ->setParameter('moduleId', $module->getId());
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 }

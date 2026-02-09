@@ -1,7 +1,23 @@
-{% extends 'base.html.twig' %}
+{% extends 'module/modules.html.twig' %}
 
 {% block title %}
     {{ is_edit is defined and is_edit ? module.name : 'Nouveau Module' }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} 
+
+    {% if is_edit and module is defined %}
+        {% if module.teachingBlock %}
+            <span class="mx-1">></span> 
+            <span class="mx-1">{{ module.teachingBlock.name }}</span>
+        {% endif %}
+
+        <span class="mx-1">></span> 
+        <span class="mx-1">{{ module.name }}</span>
+    {% else %}
+        <span class="mx-1">></span> Nouveau Module
+    {% endif %}
 {% endblock %}
 
 {% block body %}

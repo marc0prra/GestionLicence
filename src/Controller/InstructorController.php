@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Instructor;
 use App\Entity\InstructorModule;
 use App\Form\Filter\InstructorFilterType;
+use App\Form\Filter\InstructorInterventionFilterType;
 use App\Form\InstructorType;
 use App\Repository\InstructorRepository;
+use App\Repository\CourseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -153,7 +155,7 @@ public function exportInstructors(InstructorRepository $repository): StreamedRes
 }
 
     #[Route('/instructors/{id}', name: 'app_instructor_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, Instructor $instructor, EntityManagerInterface $entityManager): Response
+    public function show(Request $request, Instructor $instructor, EntityManagerInterface $entityManager, CourseRepository $courseRepository): Response
     {
         $form = $this->createForm(InstructorType::class, $instructor);
         
@@ -218,9 +220,58 @@ public function exportInstructors(InstructorRepository $repository): StreamedRes
             }
             }
 
+        // Handle interventions tab
+        $interventionFilterForm = $this->createForm(InstructorInterventionFilterType::class);
+        $interventionFilterForm->handleRequest($request);
+        
+        // Récupération des filtres
+        $startDate = null;
+        $endDate = null;
+        $module = null;
+        
+        // Traitement des filtres
+        if ($interventionFilterForm->isSubmitted()) {
+            $filterData = $interventionFilterForm->getData();
+            $startDate = $filterData['start_date'] ?? null;
+            $endDate = $filterData['end_date'] ?? null;
+            $module = $filterData['module_id'] ?? null;
+        }
+        
+        // Pagination
+        $limit = 10;
+        $page = $request->query->getInt('page', 1);
+        if ($page < 1) $page = 1;
+        
+        // Récupération des interventions
+        $interventions = $courseRepository->findByInstructorWithFilters(
+            $instructor->getId(),
+            $startDate,
+            $endDate,
+            $module,
+            $page,
+            $limit
+        );
+        
+        // Calcul du nombre total d'interventions
+        $totalInterventions = $courseRepository->countByInstructorWithFilters(
+            $instructor->getId(),
+            $startDate,
+            $endDate,
+            $module
+        );
+        
+        // Calcul du nombre total de pages
+        $maxPages = ceil($totalInterventions / $limit);
+
+        // Affichage de la page
         return $this->render('instructor/show.html.twig', [
             'instructor' => $instructor,
             'form' => $form->createView(),
+            'interventionFilterForm' => $interventionFilterForm->createView(),
+            'interventions' => $interventions,
+            'currentPage' => $page,
+            'maxPages' => $maxPages,
+            'totalInterventions' => $totalInterventions,
         ]);
-    }
+    }   
 }

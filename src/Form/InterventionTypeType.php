@@ -42,9 +42,6 @@ class InterventionTypeType extends AbstractType
                     'pattern' => '#[0-9a-fA-F]{6}',
                     'title' => 'Code hexadécimal (ex: #6750A4)',
                 ],
-
-                // Ajout d'une aide pour le format attendu
-                'help' => 'Format hexadécimal (ex: #6750A4)',
                 'constraints' => [
                     new NotBlank(
                         message: 'Le code couleur est obligatoire.'

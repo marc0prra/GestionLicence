@@ -1,9 +1,13 @@
 {# templates/school_year/form.html.twig #}
-{% extends 'base.html.twig' %}
+{% extends 'school_year/list.html.twig' %}
 
 {% block title %}
 	{{ schoolYear.id ? 'Modifier' : 'Créer' }}
 	Promotion
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} <span class="mx-1">></span> Promotion {{ schoolYear.name }}
 {% endblock %}
 
 {% block body %}

@@ -1,7 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'school_year/form.html.twig' %}
 
-{% block title %}
-    {{ is_edit ? 'Modifier' : 'Ajouter' }} une semaine de cours
+{% block breadcrumb %}
+    {{ parent() }} 
+    
+    <span class="mx-1">></span> 
+    {{ is_edit ? 'Semaines de cours > Modifier' : 'Semaines de cours > Ajouter' }}
 {% endblock %}
 
 {% block body %}
