@@ -105,7 +105,7 @@ class InterventionController extends AbstractController
 
         return $this->render('intervention/form.html.twig', [
             'course' => $course,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
     #[Route('/interventions/{id}/delete', name: 'intervention_delete', methods: ['POST'])]
