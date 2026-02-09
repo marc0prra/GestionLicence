@@ -43,7 +43,7 @@ final class CalendarController extends AbstractController
         return $this->json($interventions);
     }
 
-    #[Route(path: '/calendar', name: 'calendar', methods:['GET'])]
+    #[Route(path: '/', name: 'calendar', methods:['GET'])]
     public function index():Response
     {
          return $this->render('calendar/index.html.twig');

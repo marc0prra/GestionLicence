@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class CoursePeriodController extends AbstractController
 {
-    // AJOUTER UNE SEMAINE
     #[Route(path: '/course_period/new/{schoolYearId}', name: 'app_course_period_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
@@ -23,7 +22,6 @@ final class CoursePeriodController extends AbstractController
     ): Response {
         $schoolYear = $schoolYearRepository->find($schoolYearId);
 
-        // Verifie si il y a une année scolaire correspondante
         if (!$schoolYear) {
             throw $this->createNotFoundException('Année scolaire introuvable');
         }
@@ -40,8 +38,7 @@ final class CoursePeriodController extends AbstractController
                     $entityManager->persist($coursePeriod);
                     $entityManager->flush();
 
-                    // Flash message 
-                    $this->addFlash('success', 'Semaine de cours ajoutée avec succès.');
+                    $this->addFlash('success', 'La semaine de cours a bien été ajoutée');
 
                     return $this->redirectToRoute('school_year_edit', ['id' => $schoolYearId]);
                 } catch (\Exception $exception) {
@@ -52,13 +49,12 @@ final class CoursePeriodController extends AbstractController
 
         return $this->render('course_period/form.html.twig', [
             'course_period' => $coursePeriod,
-            'form' => $form,
+            'form' => $form->createView(),
             'schoolYear' => $schoolYear,
             'is_edit' => false
         ]);
     }
 
-    // MODIFIER UNE SEMAINE
     #[Route(path: '/course_period/{id}/edit', name: 'app_course_period_edit', methods: ['GET', 'POST'])]
     public function edit(
         CoursePeriod $coursePeriod,
@@ -75,8 +71,7 @@ final class CoursePeriodController extends AbstractController
                 try {
                     $entityManager->flush();
 
-                    // Flash message 
-                    $this->addFlash('success', 'Semaine de cours modifiée avec succès.');
+                    $this->addFlash('success', 'La modification a bien été prise en compte');
 
                     return $this->redirectToRoute('school_year_edit', ['id' => $schoolYear->getId()]);
                 } catch (\Exception $exception) {
@@ -87,13 +82,12 @@ final class CoursePeriodController extends AbstractController
 
         return $this->render('course_period/form.html.twig', [
             'course_period' => $coursePeriod,
-            'form' => $form,
+            'form' => $form->createView(),
             'schoolYear' => $schoolYear,
             'is_edit' => true
         ]);
     }
 
-    // SUPPRIMER UNE SEMAINE 
     #[Route(path: '/course_period/{id}', name: 'app_course_period_delete', methods: ['POST'])]
     public function delete(
         Request $request,
@@ -102,16 +96,14 @@ final class CoursePeriodController extends AbstractController
     ): Response {
         $schoolYearId = $coursePeriod->getSchoolYearId()->getId();
 
-        // Vérification du token CSRF
         if ($this->isCsrfTokenValid('delete' . $coursePeriod->getId(), $request->request->get('_token'))) {
             try {
                 $entityManager->remove($coursePeriod);
                 $entityManager->flush();
 
-                // Flash message 
-                $this->addFlash('success', 'Semaine de cours supprimée.');
+                $this->addFlash('success', 'La semaine de cours a bien été supprimée');
             } catch (\Exception $exception) {
-                $this->addFlash('error', 'Une erreur est survenue lors de la suppression');
+                $this->addFlash('error', 'Impossible de supprimer cette semaine car des interventions y sont liées');
             }
         }
 
