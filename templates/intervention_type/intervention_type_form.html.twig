@@ -1,4 +1,4 @@
-{% extends 'interv.html.twig' %}
+{% extends 'intervention/list.html.twig' %}
 
 {% block title %}
 	{{ interventionType.id ? 'Modifier' : 'Créer' }}
@@ -6,22 +6,16 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    {{ parent() }} <span class="mx-1">></span> {{ intervention.name }}
+	{{ parent() }}
+	<span class="mx-1">></span>
+	{{ interventionType.name }}
 {% endblock %}
 
 {% block body %}
 <div
 	class="p-6 bg-white rounded-lg">
-
-	{# --- BREADCRUMB --- #}
-	<nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
-		<a href="{{ path('intervention_type') }}" class="hover:text-gray-700">Types d'intervention</a>
-		<span>›</span>
-		<span class="text-[#1F384C] font-medium">{{ interventionType.name|default('Nouveau') }}</span>
-	</nav>
-
 	{# --- TITRE --- #}
-	<h1 class="font-bold text-[#1F384C] text-[28px] mb-8">
+	<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
 		{{ interventionType.name|default('Nouveau type d\'intervention') }}
 	</h1>
 
