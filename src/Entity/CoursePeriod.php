@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CoursePeriodRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Validator as AppAssert;
 
 #[ORM\Entity(repositoryClass: CoursePeriodRepository::class)]
 class CoursePeriod
@@ -19,6 +20,7 @@ class CoursePeriod
     private ?SchoolYear $school_year_id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[AppAssert\CoursePeriodDateLimit]
     private ?\DateTime $start_date = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
