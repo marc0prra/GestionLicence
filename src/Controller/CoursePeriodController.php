@@ -84,7 +84,7 @@ final class CoursePeriodController extends AbstractController
 
         return $this->render('course_period/form.html.twig', [
             'course_period' => $coursePeriod,
-            'form' => $form->createView(),
+            'form' => $form,
             'schoolYear' => $schoolYear,
             'is_edit' => true
         ]);
