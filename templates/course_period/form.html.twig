@@ -1,110 +1,110 @@
 {% extends 'school_year/form.html.twig' %}
 
 {% block breadcrumb %}
-    {{ parent() }} 
-    
-    <span class="mx-1">></span> 
-    {{ is_edit ? 'Semaines de cours > Modifier' : 'Semaines de cours > Ajouter' }}
+	{{ parent() }}
+
+	<span class="mx-1">></span>
+	{{ is_edit ? 'Semaines de cours > Modifier' : 'Semaines de cours > Ajouter' }}
 {% endblock %}
 
 {% block body %}
-    <section class="w-full p-8 bg-white min-h-screen font-poppins">
+	<section class="w-full mr-auto">
 
-        <h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
-            Promotion {{ schoolYear.name }}
-        </h1>
+		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+			Promotion
+			{{ schoolYear.name }}
+		</h1>
 
-        {{ form_start(form, {'attr': {'class': 'w-full max-w-[800px]'}}) }}
+		{{ form_start(form, {'attr': {'class': 'w-full max-w-[800px]'}}) }}
 
-            {# 1. ANNÉE #}
-            <div class="mb-8 w-full">
-                {% include 'composants/form_champ_select.html.twig' with {
+		{# 1. ANNÉE #}
+		<div class="mb-8 w-full">
+			{% include 'composants/form_champ_select.html.twig' with {
                     'field': form.school_year_id,
                     'label': 'Année - champ obligatoire'
                 } %}
-            </div>
+		</div>
 
-            {# 2. DATES #}
-            <div class="flex flex-col md:flex-row w-full gap-6 mb-10">
-                <div class="w-full md:w-1/2"> 
-                    {% include 'composants/form_champ_date.html.twig' with {
+		{# 2. DATES #}
+		<div class="flex flex-col md:flex-row w-full gap-6 mb-10">
+			<div class="w-full md:w-1/2">
+				{% include 'composants/form_champ_date.html.twig' with {
                         'field': form.start_date,
                         'label': 'Date de début - champ obligatoire'
                     } %}
-                </div>
-                <div class="w-full md:w-1/2">
-                    {% include 'composants/form_champ_date.html.twig' with {
+			</div>
+			<div class="w-full md:w-1/2">
+				{% include 'composants/form_champ_date.html.twig' with {
                         'field': form.end_date,
                         'label': 'Date de fin - champ obligatoire'
                     } %}
-                </div>
-            </div>
+			</div>
+		</div>
 
-            {# 3. ACTIONS (Boutons) #}
-            <div class="flex flex-wrap items-center justify-start gap-4 mt-8">
-                
-                {# Bouton RETOUR #}
-                <div class="flex-1">
-                    {% include 'composants/button.html.twig' with {
+		{# 3. ACTIONS (Boutons) #}
+		<div
+			class="flex flex-wrap items-center justify-start gap-4 mt-8">
+
+			{# Bouton RETOUR #}
+			<div class="flex-1">
+				{% include 'composants/button.html.twig' with {
                         'label': 'Retour à la liste',
                         'type': 'cancel', 
                         'url': path('school_year_edit', {'id': schoolYear.id}),
                         'fullWidth': true
                     } %}
-                </div>
+			</div>
 
-                {# Bouton SUPPRIMER #}
-                {% if is_edit %}
-                    <div class="flex-1">
-                        {% include 'composants/button.html.twig' with {
+			{# Bouton SUPPRIMER #}
+			{% if is_edit %}
+				<div class="flex-1">
+					{% include 'composants/button.html.twig' with {
                             'label': 'Supprimer',
                             'type': 'delete',
                             'buttonType': 'button',
                             'fullWidth': true,
                             'onclick': "toggleDeletePeriodModal()"
                         } %}
-                    </div>
-                {% endif %}
+				</div>
+			{% endif %}
 
-                {# Bouton ENREGISTRER #}
-                <div class="flex-1">
-                    {% include 'composants/button.html.twig' with {
+			{# Bouton ENREGISTRER #}
+			<div class="flex-1">
+				{% include 'composants/button.html.twig' with {
                         'label': 'Enregistrer les informations',
                         'type': 'confirm',
                         'fullWidth': true
                     } %}
-                </div>
-            </div>
+			</div>
+		</div>
 
-        {{ form_end(form) }}
+		{{ form_end(form) }}
 
-    </section>
+	</section>
 
-    {# MODULE DE SUPPRESSION #}
-    {% if is_edit %}
-        {% include 'composants/pop_up.html.twig' with {
+	{# MODULE DE SUPPRESSION #}
+	{% if is_edit %}
+		{% include 'composants/pop_up.html.twig' with {
             'title': 'Supprimer la semaine de cours',
             'message': 'Vous vous apprêtez à supprimer la semaine de cours, cette action est irrévoquable.A noter qu’aucune intervention ne doit être liée à cette semaine de cours pour pouvoir la supprimer.',
             'id': 'modal-delete-period' 
         } %}
-        
-        {# Le formulaire caché pour la suppression #}
-        <form id="delete-period-form" 
-              method="post" 
-              action="{{ path('app_course_period_delete', {'id': course_period.id}) }}" 
-              class="hidden">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course_period.id) }}">
-        </form>
-        <script>
-            function toggleDeletePeriodModal() {
-                const modal = document.getElementById('modal-delete');
-                if(modal) modal.classList.toggle('hidden');
-            }
 
-            function confirmDelete() {
-                document.getElementById('delete-period-form').submit();
-            }
-        </script>
-    {% endif %}
+		{# Le formulaire caché pour la suppression #}
+		<form id="delete-period-form" method="post" action="{{ path('app_course_period_delete', {'id': course_period.id}) }}" class="hidden">
+			<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course_period.id) }}">
+		</form>
+		<script>
+			function toggleDeletePeriodModal() {
+				const modal = document.getElementById('modal-delete');
+				if (modal) 
+				modal.classList.toggle('hidden');
+			}
+
+			function confirmDelete() {
+			document.getElementById('delete-period-form').submit();
+			}
+		</script>
+	{% endif %}
 
 {% endblock %}
