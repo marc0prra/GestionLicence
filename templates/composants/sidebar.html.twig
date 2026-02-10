@@ -34,7 +34,7 @@
                     </a>
 
                     {# === INTERVENTIONS === #}
-                    {% set intervention_routes = ['interventions', 'form_interventions'] %}
+                    {% set intervention_routes = ['interventions', 'form_interventions', 'intervention_edit'] %}
                     
                     <a href="{{ path('interventions') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
                         {{ current_route in intervention_routes
@@ -93,7 +93,7 @@
                     </a>
 
                     {# === ANNEES SCOLAIRE === #}
-                    {% set school_year_routes = ['school_year', 'school_year_edit', 'app_course_period_new', 'app_course_period_edit'] %}
+                    {% set school_year_routes = ['school_year', 'school_year_edit', 'app_course_period_new', 'app_course_period_edit', 'school_year_add'] %}
 
                     <a href="{{ path('school_year') }}" class="js-sidebar-link flex items-center py-3 rounded transition-all duration-200 justify-center px-0 min-[750px]:justify-start min-[750px]:px-3
                         {{ current_route in school_year_routes

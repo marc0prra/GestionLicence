@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\InterventionType;
 use App\Form\Filter\InterventionTypeFilterType;
+use App\Form\InterventionTypeType;
 use App\Repository\InterventionTypeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response; 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Form\InterventionTypeType;
-use App\Entity\InterventionType;
-use Doctrine\ORM\EntityManagerInterface;
 
 final class InterventionTypeController extends AbstractController
 {
@@ -28,14 +28,14 @@ final class InterventionTypeController extends AbstractController
 
         return $this->render('intervention_type/list.html.twig', [
             'lesInterventions' => $interventionType,
-            'form' => $filterForm->createView()
+            'form' => $filterForm->createView(),
         ]);
     }
 
     #[Route('/intervention/type/fiche/{id}', name: 'intervention_type_fiche', defaults: ['id' => null], methods: ['GET', 'POST'])]
     public function fiche(Request $request, EntityManagerInterface $entityManager, ?InterventionType $interventionType = null): Response
     {
-        $isNew = $interventionType === null;
+        $isNew = null === $interventionType;
         if ($isNew) {
             $interventionType = new InterventionType();
         }
@@ -43,12 +43,13 @@ final class InterventionTypeController extends AbstractController
         $form = $this->createForm(InterventionTypeType::class, $interventionType);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()){
-            if($form->isValid()) {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
                 $entityManager->persist($interventionType);
                 $entityManager->flush();
 
                 $this->addFlash('success', $isNew ? 'Type d\'intervention créé avec succès.' : 'Type d\'intervention modifié avec succès.');
+
                 return $this->redirectToRoute('intervention_type');
             } else {
                 $this->addFlash('error', 'Le formulaire contient des erreurs. Veuillez vérifier les champs obligatoires.');

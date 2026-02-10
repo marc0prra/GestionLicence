@@ -2,16 +2,15 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\CourseInstructor;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\Entity\Course;
+use App\Entity\CourseInstructor;
 use App\Entity\Instructor;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 class CourseInstructorFixtures extends Fixture implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         // Tableau qui assigne un enseignant à un cours

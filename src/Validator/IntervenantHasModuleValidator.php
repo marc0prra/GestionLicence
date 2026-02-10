@@ -2,9 +2,8 @@
 
 namespace App\Validator;
 
-
-use App\Entity\Instructor;
 use App\Entity\CourseInstructor;
+use App\Entity\Instructor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -43,11 +42,15 @@ final class IntervenantHasModuleValidator extends ConstraintValidator
 
             $isAssociated = $instructor->getInstructorModules()->exists(function ($key, $instructorModule) use ($module) {
                 $linkedModule = $instructorModule->getModule();
+
                 return $linkedModule && $linkedModule->getId() === $module->getId();
             });
 
             if (!$isAssociated) {
+                $fullName = $instructor->getUser()->getFirstName().' '.$instructor->getUser()->getLastName();
+
                 $this->context->buildViolation($constraint->message)
+                    ->setParameter('{{ name }}', $fullName)
                     ->atPath('end_date')
                     ->addViolation();
             }

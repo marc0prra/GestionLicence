@@ -189,15 +189,12 @@ class UserFixtures extends Fixture
                 'password' => 'test16',
                 'reference_instructor' => self::USER_INSTRUCTOR_16,
             ],
-
         ];
-
-
     }
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < count(self::data()); $i++) {
+        for ($i = 0; $i < count(self::data()); ++$i) {
             $user = new User();
             $user->setEmail(self::data()[$i]['email']);
             $user->setRole(self::data()[$i]['role']);
@@ -210,7 +207,6 @@ class UserFixtures extends Fixture
             if (isset(self::data()[$i]['reference_instructor'])) {
                 $this->addReference(self::data()[$i]['reference_instructor'], $user);
             }
-
         }
 
         $manager->flush();

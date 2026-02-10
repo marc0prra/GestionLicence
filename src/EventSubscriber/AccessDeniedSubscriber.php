@@ -17,7 +17,7 @@ class AccessDeniedSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
     ) {
     }
 

@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\InterventionType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\InterventionType;
 
 class InterventionTypeFixtures extends Fixture
 {
@@ -22,38 +22,38 @@ class InterventionTypeFixtures extends Fixture
                 'name' => 'Autonomie',
                 'description' => 'Travail en autonomie',
                 'color' => '#10b981',
-                'reference' => self::INTERVENTION_AUTONOMIE
+                'reference' => self::INTERVENTION_AUTONOMIE,
             ],
             [
                 'name' => 'Conférence',
                 'description' => 'Conférence magistrale',
                 'color' => '#3b82f6',
-                'reference' => self::INTERVENTION_CONFERENCE
+                'reference' => self::INTERVENTION_CONFERENCE,
             ],
             [
                 'name' => 'Cours',
                 'description' => 'Cours théorique',
                 'color' => '#f59e0b',
-                'reference' => self::INTERVENTION_COURS
+                'reference' => self::INTERVENTION_COURS,
             ],
             [
                 'name' => 'Évaluation',
                 'description' => 'Contrôle des connaissances',
                 'color' => '#ef4444',
-                'reference' => self::INTERVENTION_EVALUATION
+                'reference' => self::INTERVENTION_EVALUATION,
             ],
             [
                 'name' => 'Soutenance',
                 'description' => 'Présentation de projet',
                 'color' => '#8b5cf6',
-                'reference' => self::INTERVENTION_SOUTENANCE
+                'reference' => self::INTERVENTION_SOUTENANCE,
             ],
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < count(self::data()); $i++) {
+        for ($i = 0; $i < count(self::data()); ++$i) {
             $interventionType = new InterventionType();
             $interventionType->setName(self::data()[$i]['name']);
             $interventionType->setDescription(self::data()[$i]['description']);

@@ -1,4 +1,4 @@
-{% extends 'intervention/list.html.twig' %}
+{% extends 'intervention_type/list.html.twig' %}
 
 {% block title %}
 	{{ interventionType.id ? 'Modifier' : 'Créer' }}
@@ -6,14 +6,14 @@
 {% endblock %}
 
 {% block breadcrumb %}
-	{{ parent() }}
-	<span class="mx-1">></span>
-	{{ interventionType.name }}
+    {{ parent() }} 
+    <span class="mx-1">></span> 
+    {{ interventionType.id ? 'Modifier' : 'Ajouter' }}
 {% endblock %}
 
 {% block body %}
 <div
-	class="p-6 bg-white rounded-lg">
+	class="w-full mr-auto">
 	{# --- TITRE --- #}
 	<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
 		{{ interventionType.name|default('Nouveau type d\'intervention') }}

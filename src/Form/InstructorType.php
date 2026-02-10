@@ -10,8 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class InstructorType extends AbstractType
 {
@@ -23,10 +23,10 @@ class InstructorType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Ex: Martins-Jacquelot'
+                    'placeholder' => 'Ex: Martins-Jacquelot',
                 ],
                 'constraints' => [
-                    new NotBlank(message: 'Le nom de famille est obligatoire.')
+                    new NotBlank(message: 'Le nom de famille est obligatoire.'),
                 ],
             ])
             ->add('firstName', TextType::class, [
@@ -34,10 +34,10 @@ class InstructorType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Ex: Jeff'
+                    'placeholder' => 'Ex: Jeff',
                 ],
                 'constraints' => [
-                    new NotBlank(message: 'Le prénom est obligatoire.')
+                    new NotBlank(message: 'Le prénom est obligatoire.'),
                 ],
             ])
             ->add('email', EmailType::class, [
@@ -45,18 +45,19 @@ class InstructorType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Ex: j.martins@mentalworks.fr'
+                    'placeholder' => 'Ex: j.martins@mentalworks.fr',
                 ],
                 'constraints' => [
                     new NotBlank(message: 'L\'email est obligatoire.'),
-                    new Email(message: 'Veuillez entrer une adresse email valide.')
+                    new Email(message: 'Veuillez entrer une adresse email valide.'),
                 ],
             ])
             ->add('modules', EntityType::class, [
                 'class' => Module::class,
-                'choice_label' => function(Module $module) {
+                'choice_label' => function (Module $module) {
                     $blockName = $module->getTeachingBlock() ? $module->getTeachingBlock()->getName() : '';
-                    return $module->getName() . ($blockName ? ' (' . $blockName . ')' : '');
+
+                    return $module->getName().($blockName ? ' ('.$blockName.')' : '');
                 },
                 'multiple' => true,
                 'expanded' => false,

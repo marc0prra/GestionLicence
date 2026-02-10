@@ -6,7 +6,6 @@ use App\Entity\Course;
 use App\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DateTime;
 
 /**
  * @extends ServiceEntityRepository<Course>
@@ -31,15 +30,10 @@ class CourseRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByFilters(?Datetime $date_start, ?Datetime $date_end, $module = null): array
+    public function findByFilters(?\DateTime $date_start, ?\DateTime $date_end, $module = null): array
     {
-
         $qb = $this->createQueryBuilder('c')
-            ->select('c.id', 'c.title', 'c.start_date', 'c.end_date', 'c.remotely')
-            ->addSelect('it.name as Type')
-            ->addSelect('m.name as Module')
-            ->addSelect('u.first_name', 'u.last_name')
-
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
             ->leftJoin('c.intervention_type_id', 'it')
             ->leftJoin('c.module_id', 'm')
             ->leftJoin('c.courseInstructors', 'ci')
@@ -54,7 +48,8 @@ class CourseRepository extends ServiceEntityRepository
         if ($date_end) {
             // On s'assure que la date de fin va jusqu'à 23:59:59 si c'est une date seule
             $qb->andWhere('c.end_date <= :de')
-                ->setParameter('de', $date_end);        }
+                ->setParameter('de', $date_end);
+        }
 
         if ($module) {
             $qb->andWhere('m.id = :module')
@@ -67,16 +62,16 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     // Récupération des cours de la période active actuelle
-    public function getCoursesForActivePeriod() 
+    public function getCoursesForActivePeriod()
     {
         return $this->createQueryBuilder('c')
-            ->select('c', 'it', 'm', 'ci', 'ins', 'u', 'cp')     
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u', 'cp')
             ->join('c.course_period_id', 'cp')
             ->join('c.intervention_type_id', 'it')
             ->join('c.module_id', 'm')
             ->join('c.courseInstructors', 'ci')
             ->join('ci.instructor', 'ins')
-            ->join('ins.user', 'u')   
+            ->join('ins.user', 'u')
             ->where('CURRENT_DATE() BETWEEN cp.start_date AND cp.end_date')
             ->getQuery()
             ->getResult();
@@ -109,29 +104,29 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     //    /**
-//     * @return Course[] Returns an array of Course objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //     * @return Course[] Returns an array of Course objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
     //    public function findOneBySomeField($value): ?Course
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
     public function findByInstructorWithFilters(
         int $instructorId,
@@ -139,7 +134,7 @@ class CourseRepository extends ServiceEntityRepository
         ?\DateTime $endDate = null,
         ?Module $module = null,
         int $page = 1,
-        int $limit = 10
+        int $limit = 10,
     ): array {
         $qb = $this->createQueryBuilder('c')
             ->select('c', 'it', 'm', 'ci', 'ins', 'u')
@@ -177,7 +172,7 @@ class CourseRepository extends ServiceEntityRepository
         int $instructorId,
         ?\DateTime $startDate = null,
         ?\DateTime $endDate = null,
-        ?Module $module = null
+        ?Module $module = null,
     ): int {
         $qb = $this->createQueryBuilder('c')
             ->select('COUNT(DISTINCT c.id)')

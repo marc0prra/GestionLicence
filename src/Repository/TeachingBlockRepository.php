@@ -25,12 +25,12 @@ class TeachingBlockRepository extends ServiceEntityRepository
             // LIKE permet de rechercher un nom qui contient le mot recherché
             // % permet de rechercher un nom qui commence par le mot recherché
             $filtre->andWhere('t.name LIKE :name')
-            ->setParameter('name', '%' . $name . '%');
+            ->setParameter('name', '%'.$name.'%');
         }
 
         if ($code) {
             $filtre->andWhere('t.code LIKE :code')
-            ->setParameter('code', '%' . $code . '%');
+            ->setParameter('code', '%'.$code.'%');
         }
 
         return $filtre->getQuery()->getResult();

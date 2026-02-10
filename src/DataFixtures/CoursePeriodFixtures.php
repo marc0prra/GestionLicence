@@ -2,12 +2,11 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use App\Entity\CoursePeriod;
 use App\Entity\SchoolYear;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
+use Doctrine\Persistence\ObjectManager;
 
 class CoursePeriodFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -34,14 +33,14 @@ class CoursePeriodFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < count(self::data()); $i++) {
+        for ($i = 0; $i < count(self::data()); ++$i) {
             $period = new CoursePeriod();
             $period->setStartDate(new \DateTime(self::data()[$i]['start_date']));
             $period->setEndDate(new \DateTime(self::data()[$i]['end_date']));
 
             $period->setSchoolYearId($this->getReference(self::data()[$i]['school_year'], SchoolYear::class));
 
-            $this->addReference('coursePeriod-' . ($i + 1), $period);
+            $this->addReference('coursePeriod-'.($i + 1), $period);
 
             $manager->persist($period);
         }
@@ -56,5 +55,3 @@ class CoursePeriodFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 }
-
-

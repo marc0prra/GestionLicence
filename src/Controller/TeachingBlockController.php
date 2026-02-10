@@ -2,22 +2,22 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\TeachingBlock;
 use App\Form\Filter\TeachingBlockFilterType;
 use App\Form\TeachingBlockType;
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\TeachingBlock;
 use App\Repository\TeachingBlockRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class TeachingBlockController extends AbstractController
 {
-    #[Route(path:'/teaching_block', name: 'teaching_block', methods: ['GET'])]
+    #[Route(path: '/teaching_block', name: 'teaching_block', methods: ['GET'])]
     public function list(Request $request, TeachingBlockRepository $teachingBlockRepository): Response
     {
-        // Initialisation de la classe 
+        // Initialisation de la classe
         $data = new TeachingBlock();
         // Création du formulaire
         $form = $this->createForm(TeachingBlockFilterType::class, $data);
@@ -25,11 +25,10 @@ final class TeachingBlockController extends AbstractController
         $form->handleRequest($request);
 
         // Gestion des filtres
-        if($form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             // Si le formulaire est soumis, on récupère les filtres
             $info = $teachingBlockRepository->findByFilters($data->getName(), $data->getCode());
-        } 
-        else {
+        } else {
             // Sinon, on récupère tous les blocs
             $info = $teachingBlockRepository->findAll();
         }
@@ -38,12 +37,12 @@ final class TeachingBlockController extends AbstractController
         return $this->render('teaching_block/list.html.twig', [
             // Données passées à la vue
             'info' => $info,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route(path:'/teaching_block/{id}/edit', name: 'teaching_block_edit', methods: ['GET', 'POST'])]
-    public function edit(TeachingBlock $teachingBlock, Request $request, EntityManagerInterface $entityManager) : Response 
+    #[Route(path: '/teaching_block/{id}/edit', name: 'teaching_block_edit', methods: ['GET', 'POST'])]
+    public function edit(TeachingBlock $teachingBlock, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TeachingBlockType::class, $teachingBlock);
         $form->handleRequest($request);

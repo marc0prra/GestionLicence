@@ -2,12 +2,12 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\InstructorModule;
 use App\Entity\Instructor;
+use App\Entity\InstructorModule;
 use App\Entity\Module; // Assure-toi du bon namespace
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 class InstructorModuleFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -15,7 +15,6 @@ class InstructorModuleFixtures extends Fixture implements DependentFixtureInterf
     {
         // Définir quel enseignant va sur quel module/sous-module
         $assignments = [
-
             'instructor-1' => [
                 ModuleFixtures::MODULE_DEVOPS_CYBER,
                 ModuleFixtures::MODULE_ENV_TRAVAIL,
@@ -86,7 +85,7 @@ class InstructorModuleFixtures extends Fixture implements DependentFixtureInterf
                 ModuleFixtures::MODULE_IP,
                 ModuleFixtures::MODULE_RSE,
             ],
-            
+
             'instructor-14' => [
                 ModuleFixtures::MODULE_DEVOPS,
                 ModuleFixtures::MODULE_DEVOPS_CYBER,
@@ -105,19 +104,19 @@ class InstructorModuleFixtures extends Fixture implements DependentFixtureInterf
         // On parcourt les assignements pour récupérer les enseignants
         foreach ($assignments as $instructorRef => $modulesRef) {
             $instructor = $this->getReference($instructorRef, Instructor::class);
-            
+
             // On parcourt les modules pour récupérer les modules
             foreach ($modulesRef as $moduleRef) {
                 $module = $this->getReference($moduleRef, Module::class);
-                
+
                 $instructorModule = new InstructorModule();
                 $instructorModule->setInstructor($instructor);
                 $instructorModule->setModule($module);
-                
+
                 $manager->persist($instructorModule);
             }
         }
-        
+
         $manager->flush();
     }
 

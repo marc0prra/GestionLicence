@@ -26,6 +26,7 @@ class CourseInstructor
     public function setCourse(?Course $course): self
     {
         $this->course = $course;
+
         return $this;
     }
 
@@ -37,6 +38,7 @@ class CourseInstructor
     public function setInstructor(?Instructor $instructor): self
     {
         $this->instructor = $instructor;
+
         return $this;
     }
 }

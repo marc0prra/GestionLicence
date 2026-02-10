@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Form\Filter;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class InterventionTypeFilterType extends AbstractType
 {
@@ -15,8 +16,8 @@ class InterventionTypeFilterType extends AbstractType
                 'label' => 'Nom',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Saisissez le nom'
-                ]
+                    'placeholder' => 'Saisissez le nom',
+                ],
             ]);
     }
 

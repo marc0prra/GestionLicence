@@ -1,7 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'school_year/list.html.twig' %}
 
 {% block title %}
 	Nouvelle promotion
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} <span class="mx-1">></span> Ajouter 
 {% endblock %}
 
 {% block body %}

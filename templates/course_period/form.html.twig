@@ -2,13 +2,12 @@
 
 {% block breadcrumb %}
     {{ parent() }} 
-    
     <span class="mx-1">></span> 
     {{ is_edit ? 'Semaines de cours > Modifier' : 'Semaines de cours > Ajouter' }}
 {% endblock %}
 
 {% block body %}
-    <section class="w-full p-8 bg-white min-h-screen font-poppins">
+    <section class="w-full mr-auto">
 
         <h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
             Promotion {{ schoolYear.name }}
@@ -71,7 +70,8 @@
                     {% include 'composants/button.html.twig' with {
                         'label': 'Enregistrer les informations',
                         'type': 'confirm',
-                        'fullWidth': true
+                        'fullWidth': true,
+                        'buttonType': 'submit'
                     } %}
                 </div>
             </div>
@@ -84,7 +84,7 @@
     {% if is_edit %}
         {% include 'composants/pop_up.html.twig' with {
             'title': 'Supprimer la semaine de cours',
-            'message': 'Vous vous apprêtez à supprimer la semaine de cours, cette action est irrévoquable.A noter qu’aucune intervention ne doit être liée à cette semaine de cours pour pouvoir la supprimer.',
+            'message': 'Vous vous apprêtez à supprimer la semaine de cours, cette action est irrévocable. À noter qu’aucune intervention ne doit être liée à cette semaine de cours pour pouvoir la supprimer.',
             'id': 'modal-delete-period' 
         } %}
         
@@ -95,9 +95,11 @@
               class="hidden">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ course_period.id) }}">
         </form>
+        
         <script>
             function toggleDeletePeriodModal() {
-                const modal = document.getElementById('modal-delete');
+                // CORRECTION ICI : on cible le bon ID 'modal-delete-period'
+                const modal = document.getElementById('modal-delete-period');
                 if(modal) modal.classList.toggle('hidden');
             }
 
