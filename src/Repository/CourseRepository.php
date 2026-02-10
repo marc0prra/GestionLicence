@@ -54,8 +54,7 @@ class CourseRepository extends ServiceEntityRepository
         if ($date_end) {
             // On s'assure que la date de fin va jusqu'à 23:59:59 si c'est une date seule
             $qb->andWhere('c.end_date <= :de')
-                ->setParameter('de', $date_end);
-        }
+                ->setParameter('de', $date_end);        }
 
         if ($module) {
             $qb->andWhere('m.id = :module')
@@ -68,17 +67,43 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     // Récupération des cours de la période active actuelle
-    public function getCoursBetween($start, $end) 
+    public function getCoursesForActivePeriod() 
     {
         return $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u', 'cp')     
             ->join('c.course_period_id', 'cp')
             ->join('c.intervention_type_id', 'it')
             ->join('c.module_id', 'm')
             ->join('c.courseInstructors', 'ci')
             ->join('ci.instructor', 'ins')
-            ->join('ins.user', 'u')
-            ->addSelect('it', 'm', 'ci', 'ins', 'u', 'cp')
+            ->join('ins.user', 'u')   
             ->where('CURRENT_DATE() BETWEEN cp.start_date AND cp.end_date')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Récupération des cours de la semaine actuelle
+    public function getCoursesForCurrentWeek()
+    {
+        // On définit le début et la fin de la semaine
+        $start = new \DateTime('monday this week');
+        // On ajoute 6 jours à la date de début pour obtenir la fin de la semaine
+        $end = new \DateTime('sunday this week');
+        // On met l'heure de fin à 23:59:59
+        $end->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
+            ->join('c.intervention_type_id', 'it')
+            ->join('c.module_id', 'm')
+            ->join('c.courseInstructors', 'ci')
+            ->join('ci.instructor', 'ins')
+            ->join('ins.user', 'u')
+            // On récupère les cours dont la date de début est comprise entre le début et la fin de la semaine
+            ->where('c.start_date BETWEEN :start AND :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->orderBy('c.start_date', 'ASC')
             ->getQuery()
             ->getResult();
     }

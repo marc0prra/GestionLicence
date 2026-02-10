@@ -4,7 +4,8 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <span class="mx-1">></span> Calendrier
+	<span class="mx-1">></span>
+	Calendrier
 {% endblock %}
 
 {% block body %}
@@ -41,6 +42,7 @@
 			{% include 'composants/button.html.twig' with {
 				label: 'Exporter le planning de la semaine (fichier .xls)',
 				type: 'confirm',
+				url: path('calendar_planning_period_export'),
 			} %}
 		</div>
 	</section>
