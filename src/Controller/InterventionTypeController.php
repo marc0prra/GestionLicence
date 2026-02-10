@@ -50,6 +50,8 @@ final class InterventionTypeController extends AbstractController
 
                 $this->addFlash('success', $isNew ? 'Type d\'intervention créé avec succès.' : 'Type d\'intervention modifié avec succès.');
                 return $this->redirectToRoute('intervention_type');
+            } else {
+                $this->addFlash('error', 'Le formulaire contient des erreurs. Veuillez vérifier les champs obligatoires.');
             }
         }
 

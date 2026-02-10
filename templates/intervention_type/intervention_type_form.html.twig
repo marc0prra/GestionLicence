@@ -40,14 +40,19 @@
 		{# Code couleur #}
 		<div class="flex-1">
 			<label class="block mb-2 text-sm font-medium text-[#1F384C]">
-				Code couleur (hexadécimal) - <span class="text-gray-500">champ obligatoire</span>
+				Couleur - <span class="text-gray-500">champ obligatoire</span>
 			</label>
-			{{ form_widget(form.color, {
-				'attr': {
-					'class': 'bg-[#F9FAFB] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3',
-					'placeholder': '#6750A4'
-				}
-			}) }}
+			<div class="flex items-center gap-3">
+				{{ form_widget(form.color, {
+					'attr': {
+						'class': 'w-[80px] h-[45px] bg-[#F9FAFB] px-2 py-1 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500',
+						'onchange': 'updateColorDisplay(this.value)'
+					}
+				}) }}
+				<span id="color-display" class="text-sm font-mono text-gray-700 bg-gray-100 px-3 py-2 rounded border border-gray-300">
+					{{ form.color.vars.value|default('#6750A4') }}
+				</span>
+			</div>
 			{{ form_errors(form.color) }}
 		</div>
 	</div>
@@ -106,6 +111,13 @@
     {% endif %}
 
     <script>
+    function updateColorDisplay(color) {
+        const displayElement = document.getElementById('color-display');
+        if (displayElement) {
+            displayElement.textContent = color.toUpperCase();
+        }
+    }
+
     function toggleModal() {
         const modal = document.getElementById('modal-delete');
         if (modal) {

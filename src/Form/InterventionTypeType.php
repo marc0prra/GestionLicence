@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\InterventionType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,15 +33,12 @@ class InterventionTypeType extends AbstractType
                 ],
             ])
 
-            // 2. Le champ COULEUR (avec la validation Hexadécimale)
-            ->add('color', TextType::class, [
+            // 2. Le champ COULEUR (avec sélecteur de couleur)
+            ->add('color', ColorType::class, [
                 'label' => 'Code couleur',
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'Ex: #6750A4',
-                    'class' => "w-full max-w-[395px] bg-[#F9FAFB] px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500",
-                    'pattern' => '#[0-9a-fA-F]{6}',
-                    'title' => 'Code hexadécimal (ex: #6750A4)',
+                    'class' => "w-full max-w-[100px] h-[45px] bg-[#F9FAFB] px-2 py-1 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500",
                 ],
                 'constraints' => [
                     new NotBlank(

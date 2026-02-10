@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\User;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -94,8 +93,10 @@ class InstructorController extends AbstractController
 
             $this->addFlash('success', 'L\'enseignant a été créé avec succès.');
             return $this->redirectToRoute('app_instructor_show', ['id' => $instructor->getId()]);
+            } else {
+                $this->addFlash('error', 'Le formulaire contient des erreurs. Veuillez vérifier les champs obligatoires.');
             }
-            }
+        }
 
         return $this->render('instructor/new.html.twig', [
             'form' => $form->createView(),
