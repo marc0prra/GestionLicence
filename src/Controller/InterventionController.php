@@ -69,7 +69,8 @@ class InterventionController extends AbstractController
 
         return $this->render('intervention/form.html.twig', [
             'form' => $form,
-            'course' => $course
+            'course' => $course,
+            'is_edit' => false
         ]);
     }
 

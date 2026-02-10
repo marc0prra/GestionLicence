@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 final class IntervenantHasModule extends Constraint
 {
     public string $moduleField = 'module_id';
-    public string $message = 'L\'intervenant n\'est pas rattaché à ce module';
+    public string $message = 'L\'intervenant "{{ name }}" n\'est pas rattaché à ce module';
 
     public function getTargets(): string
     {

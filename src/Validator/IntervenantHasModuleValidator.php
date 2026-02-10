@@ -47,7 +47,10 @@ final class IntervenantHasModuleValidator extends ConstraintValidator
             });
 
             if (!$isAssociated) {
+                $fullName = $instructor->getUser()->getFirstName() . ' ' . $instructor->getUser()->getLastName();
+
                 $this->context->buildViolation($constraint->message)
+                    ->setParameter('{{ name }}', $fullName)
                     ->atPath('end_date')
                     ->addViolation();
             }

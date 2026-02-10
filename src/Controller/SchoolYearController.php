@@ -57,8 +57,8 @@ final class SchoolYearController extends AbstractController
                         $startYear = (int) $matches[1];
                         $endYear = (int) $matches[2];
 
-                        $schoolYear->setStartDate(new \DateTime("$startYear-09-01"));
-                        $schoolYear->setEndDate(new \DateTime("$endYear-08-31"));
+                        $schoolYear->setStartDate(new \DateTime("$startYear-08-01"));
+                        $schoolYear->setEndDate(new \DateTime("$endYear-07-31"));
                     }
 
                     $em->flush();
