@@ -12,14 +12,18 @@
 {% block body %}
 
 <section class="w-full mr-auto">
-    <div class="flex flex-col sm:flex-row sm:items-center items-start justify-between">
-        <h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
-            Interventions
-        </h1>
-        <a href="{{ path('intervention_new') }}">
-            {% include 'composants/button.html.twig' with { label: 'Ajouter une nouvelle intervention', type: 'confirm' } %}
-        </a>
-    </div>
+	<div class="flex flex-col sm:flex-row sm:items-center items-start justify-between">
+		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+			Interventions
+		</h1>
+		<a href="{{ path('intervention_new') }}">
+			{% include 'composants/button.html.twig' with { label: 'Ajouter une nouvelle intervention', type: 'confirm' } %}
+		</a>
+	</div>
+	<div class="mt-[40px]">
+		<p class="text-[#FFBD01] font-medium text-[20px] pb-[10px]">
+			Filtres
+		</p>
 
     <div class="mt-[40px]">
         <p class="text-[#FFBD01] font-medium text-[20px] pb-[10px]">
