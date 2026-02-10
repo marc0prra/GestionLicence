@@ -25,7 +25,10 @@ class InterventionController extends AbstractController
         $filterForm = $this->createForm(CourseFilterType::class);
         $filterForm->handleRequest($request);
 
-        // ... logique de filtrage si nécessaire ...
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $data = $filterForm->getData();
+            $interventions = $courseRepo->findByFilters($data['start_date'], $data['end_date'], $data['module_id']);
+        }
 
         return $this->render('intervention/list.html.twig', [
             'interventions' => $interventions,
@@ -106,15 +109,26 @@ class InterventionController extends AbstractController
         return $this->render('intervention/form.html.twig', [
             'course' => $course,
             'form' => $form,
+            'is_edit' => true
         ]);
     }
-    #[Route('/interventions/{id}/delete', name: 'intervention_delete', methods: ['POST'])]
-    public function delete(Request $request, Course $course, EntityManagerInterface $entityManager): Response
-    {
+
+    #[Route(path: '/interventions/{id}', name: 'interventions_delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        Course $course,
+        EntityManagerInterface $entityManager
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $course->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($course);
-            $entityManager->flush();
-            $this->addFlash('success', 'Intervention supprimée.');
+            try {
+                $entityManager->remove($course);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Le cours a bien été supprimé.');
+            } catch (\Exception $exception) {
+
+                $this->addFlash('error', 'Impossible de supprimer ce cours.');
+            }
         }
 
         return $this->redirectToRoute('interventions');

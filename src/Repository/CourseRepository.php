@@ -35,11 +35,7 @@ class CourseRepository extends ServiceEntityRepository
     {
 
         $qb = $this->createQueryBuilder('c')
-            ->select('c.id', 'c.title', 'c.start_date', 'c.end_date', 'c.remotely')
-            ->addSelect('it.name as Type')
-            ->addSelect('m.name as Module')
-            ->addSelect('u.first_name', 'u.last_name')
-
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
             ->leftJoin('c.intervention_type_id', 'it')
             ->leftJoin('c.module_id', 'm')
             ->leftJoin('c.courseInstructors', 'ci')
@@ -68,7 +64,7 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     // Récupération des cours de la période active actuelle
-    public function getCoursBetween($start, $end) 
+    public function getCoursBetween($start, $end)
     {
         return $this->createQueryBuilder('c')
             ->join('c.course_period_id', 'cp')
