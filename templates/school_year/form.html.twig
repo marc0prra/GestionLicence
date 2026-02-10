@@ -7,7 +7,10 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    {{ parent() }} <span class="mx-1">></span> Promotion {{ schoolYear.name }}
+	{{ parent() }}
+	<span class="mx-1">></span>
+	Promotion
+	{{ schoolYear.name }}
 {% endblock %}
 
 {% block body %}
@@ -64,11 +67,11 @@
 	{{ form_end(form) }}
 </section>
 
-<h2 class="text-[#FFBD01] text-[20px] font-medium">
+<h2 class="text-[#FFBD01] text-[20px] font-medium pt-[50px]">
 	Semaines de cours
 </h2>
 <p class="text-[#1F384C] font-poppins font-medium text-[16px] leading-[23px] tracking-[0.5px]">Les semaines de cours permettent de contrôler l’ajout des interventions. Une intervention a lieu uniquement 
-								pendant les semaines de cours.
+										pendant les semaines de cours.
 </p>
 
 <section>

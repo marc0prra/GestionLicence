@@ -1,4 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'intervention/list.html.twig' %}
+
+{% block title %}
+    {{ form.vars.value.id ? 'Modifier' : 'Créer' }} une intervention
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} 
+    <span class="mx-1">></span> 
+    {{ form.vars.value.id ? 'Modifier' : 'Ajouter' }}
+{% endblock %}
 
 {% block body %}
 	<section class="max-w-[800px] mx-auto bg-white p-8 rounded-[20px] shadow-sm mt-10">
