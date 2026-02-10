@@ -33,7 +33,7 @@ final class CoursePeriodController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            if (!$form->isValid()) {
+            if ($form->isValid()) {
                 try {
                     $entityManager->persist($coursePeriod);
                     $entityManager->flush();
@@ -44,6 +44,8 @@ final class CoursePeriodController extends AbstractController
                 } catch (\Exception $exception) {
                     $this->addFlash('error', 'Le formulaire est invalide ou une erreur est survenue');
                 }
+            }else  {
+                $this->addFlash('error', 'Le formulaire est invalide');
             }
         }
 
