@@ -65,9 +65,24 @@ final class InterventionTypeController extends AbstractController
     public function delete(Request $request, InterventionType $interventionType, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $interventionType->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($interventionType);
-            $entityManager->flush();
-            $this->addFlash('success', 'Type d\'intervention supprimé avec succès.');
+            // Vérifier si le type d'intervention est utilisé par des cours
+            $courseCount = $entityManager->getRepository(\App\Entity\Course::class)
+                ->count(['intervention_type_id' => $interventionType]);
+            
+            if ($courseCount > 0) {
+                $this->addFlash('error', 
+                    'Impossible de supprimer ce type d\'intervention car il est utilisé par ' . $courseCount . ' cours. ' .
+                    'Veuillez d\'abord modifier ou supprimer les cours concernés.'
+                );
+            } else {
+                try {
+                    $entityManager->remove($interventionType);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Type d\'intervention supprimé avec succès.');
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Une erreur est survenue lors de la suppression : ' . $e->getMessage());
+                }
+            }
         }
 
         return $this->redirectToRoute('intervention_type');
