@@ -238,17 +238,17 @@
 		{# --- SCRIPT TAB SWITCHING --- #}
 		<script>
 			function switchTab(tabName) {
-				// Hide all content sections
+				// Masquer tous les contenus
 				document.getElementById('content-general').classList.add('hidden');
 				document.getElementById('content-interventions').classList.add('hidden');
 				
-				// Remove active styles from all tabs
+				// Retirer les styles actifs de tous les onglets
 				document.getElementById('tab-general').classList.remove('bg-[#1F384C]', 'text-white');
 				document.getElementById('tab-general').classList.add('bg-[#F0F0F0]', 'text-[#1F384C]');
 				document.getElementById('tab-interventions').classList.remove('bg-[#1F384C]', 'text-white');
 				document.getElementById('tab-interventions').classList.add('bg-[#F0F0F0]', 'text-[#1F384C]');
 				
-				// Show selected content and apply active styles
+				// Afficher le contenu sélectionné et appliquer les styles actifs
 				if (tabName === 'general') {
 					document.getElementById('content-general').classList.remove('hidden');
 					document.getElementById('tab-general').classList.remove('bg-[#F0F0F0]', 'text-[#1F384C]');
