@@ -49,7 +49,7 @@ class UserTypeAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // Remplacez l'exception par ceci (redirection vers la page d'accueil) :
-        return new RedirectResponse($this->urlGenerator->generate('calendar')); 
+        return new RedirectResponse($this->urlGenerator->generate('calendar'));
     }
 
     protected function getLoginUrl(Request $request): string

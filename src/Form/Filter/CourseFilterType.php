@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Form\Filter;
 
+use App\Entity\Module;
+use App\Repository\ModuleRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use App\Repository\ModuleRepository;
-use App\Entity\Module;
 
 class CourseFilterType extends AbstractType
 {
@@ -17,12 +18,12 @@ class CourseFilterType extends AbstractType
             ->add('start_date', DateTimeType::class, [
                 'label' => 'Date de début - champ obligatoire',
                 'required' => false,
-                'widget' => 'single_text'
+                'widget' => 'single_text',
             ])
             ->add('end_date', DateTimeType::class, [
                 'label' => 'Date de fin - champ obligatoire',
                 'required' => false,
-                'widget' => 'single_text'
+                'widget' => 'single_text',
             ])
             ->add('module_id', EntityType::class, [
                 'class' => Module::class,
@@ -32,7 +33,7 @@ class CourseFilterType extends AbstractType
                 'group_by' => 'parent.teachingBlock.name',
                 'choice_label' => 'displayForSelect',
                 'placeholder' => 'Sélectionnez le module',
-                'required' => false
+                'required' => false,
             ]);
     }
 
@@ -41,7 +42,7 @@ class CourseFilterType extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
             'method' => 'GET',
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
     }
 }

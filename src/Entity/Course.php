@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\CourseRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Validator as AssertSpe;
 use App\Validator\CourseDateLength;
 use App\Validator\CourseDatesWithinPeriod;
-use App\Validator as AssertSpe;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
@@ -21,18 +21,17 @@ class Course
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Renseignez une date de début.")]
+    #[Assert\NotBlank(message: 'Renseignez une date de début.')]
     #[Assert\Type("\DateTimeInterface")]
     private ?\DateTime $start_date = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Renseignez une date de fin.")]
+    #[Assert\NotBlank(message: 'Renseignez une date de fin.')]
     #[Assert\Type("\DateTimeInterface")]
     #[Assert\GreaterThan(
-        propertyPath: "start_date",
-        message: "La date de fin doit être postérieure à la date de début."
+        propertyPath: 'start_date',
+        message: 'La date de fin doit être postérieure à la date de début.'
     )]
-
     #[CourseDateLength]
     #[CourseDatesWithinPeriod]
     private ?\DateTime $end_date = null;
@@ -63,7 +62,7 @@ class Course
         $this->courseInstructors = new ArrayCollection();
     }
 
-    //Méthodes de classe
+    // Méthodes de classe
     public function getId(): ?int
     {
         return $this->id;

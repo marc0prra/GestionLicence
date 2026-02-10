@@ -19,7 +19,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
-    #[ORM\Column(length: 255, unique: true)] 
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -67,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRole(string $role): static
     {
         $this->role = $role;
+
         return $this;
     }
 
@@ -78,6 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -89,6 +91,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(?string $last_name): static
     {
         $this->last_name = $last_name;
+
         return $this;
     }
 
@@ -100,6 +103,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstName(?string $first_name): static
     {
         $this->first_name = $first_name;
+
         return $this;
     }
 
@@ -111,6 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -125,6 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $instructor->setUser($this);
         }
         $this->instructor = $instructor;
+
         return $this;
     }
 }

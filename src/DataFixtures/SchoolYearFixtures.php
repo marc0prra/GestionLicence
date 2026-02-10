@@ -99,9 +99,10 @@ class SchoolYearFixtures extends Fixture
             ],
         ];
     }
+
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < count(self::data()); $i++) {
+        for ($i = 0; $i < count(self::data()); ++$i) {
             $entity = new SchoolYear();
             $entity->setName(self::data()[$i]['name']);
             $entity->setStartDate(new \DateTime(self::data()[$i]['start_date']));

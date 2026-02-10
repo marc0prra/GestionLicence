@@ -26,6 +26,7 @@ class InstructorModule
     public function setInstructor(?Instructor $instructor): static
     {
         $this->instructor = $instructor;
+
         return $this;
     }
 
@@ -37,6 +38,7 @@ class InstructorModule
     public function setModule(?Module $module): static
     {
         $this->module = $module;
+
         return $this;
     }
 }

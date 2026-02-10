@@ -26,14 +26,15 @@ final class CourseDateLengthValidator extends ConstraintValidator
 
         $interval = $start_date->diff($end_date);
 
-        if ($interval->invert === 1) {
-            $this->context->buildViolation("La date de fin ne peut pas être antérieure au début.")
+        if (1 === $interval->invert) {
+            $this->context->buildViolation('La date de fin ne peut pas être antérieure au début.')
                 ->atPath($constraint->endField)
                 ->addViolation();
+
             return;
         }
 
-        if ($interval->days > 0 || $interval->h > 4 || ($interval->h === 4 && $interval->i > 0)) {
+        if ($interval->days > 0 || $interval->h > 4 || (4 === $interval->h && $interval->i > 0)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath($constraint->endField)
                 ->addViolation();

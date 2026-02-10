@@ -3,9 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\CoursePeriodRepository;
+use App\Validator as AppAssert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Validator as AppAssert;
 
 #[ORM\Entity(repositoryClass: CoursePeriodRepository::class)]
 class CoursePeriod

@@ -18,7 +18,7 @@ final class CoursePeriodController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         SchoolYearRepository $schoolYearRepository,
-        int $schoolYearId
+        int $schoolYearId,
     ): Response {
         $schoolYear = $schoolYearRepository->find($schoolYearId);
 
@@ -44,16 +44,16 @@ final class CoursePeriodController extends AbstractController
                 } catch (\Exception $exception) {
                     $this->addFlash('error', 'Le formulaire est invalide ou une erreur est survenue');
                 }
-            }else  {
+            } else {
                 $this->addFlash('error', 'Le formulaire est invalide');
             }
         }
 
         return $this->render('course_period/form.html.twig', [
             'course_period' => $coursePeriod,
-            'form' => $form->createView(),
+            'form' => $form,
             'schoolYear' => $schoolYear,
-            'is_edit' => false
+            'is_edit' => false,
         ]);
     }
 
@@ -61,7 +61,7 @@ final class CoursePeriodController extends AbstractController
     public function edit(
         CoursePeriod $coursePeriod,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Response {
         $schoolYear = $coursePeriod->getSchoolYearId();
 
@@ -86,7 +86,7 @@ final class CoursePeriodController extends AbstractController
             'course_period' => $coursePeriod,
             'form' => $form,
             'schoolYear' => $schoolYear,
-            'is_edit' => true
+            'is_edit' => true,
         ]);
     }
 
@@ -94,11 +94,11 @@ final class CoursePeriodController extends AbstractController
     public function delete(
         Request $request,
         CoursePeriod $coursePeriod,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Response {
         $schoolYearId = $coursePeriod->getSchoolYearId()->getId();
 
-        if ($this->isCsrfTokenValid('delete' . $coursePeriod->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$coursePeriod->getId(), $request->request->get('_token'))) {
             try {
                 $entityManager->remove($coursePeriod);
                 $entityManager->flush();

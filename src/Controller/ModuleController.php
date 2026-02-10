@@ -2,16 +2,14 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Module;
 use App\Form\ModuleType;
-use App\Repository\ModuleRepository;
-use PhpParser\Node\Expr\AssignOp\Mod;
-use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TeachingBlockRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ModuleController extends AbstractController
 {
@@ -48,18 +46,19 @@ class ModuleController extends AbstractController
         }
         // Créer le formulaire avec le bloc d'enseignement actuel si disponible
         $form = $this->createForm(ModuleType::class, $module, [
-            'bloc_actuel' => $blocTrouve
+            'bloc_actuel' => $blocTrouve,
         ]);
 
         // Gérer la soumission du formulaire
         $form->handleRequest($request);
 
         // Si le formulaire est soumis et valide, enregistrer le nouveau module
-        if ($form->isSubmitted() ) {
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em->persist($module);
                 $em->flush();
                 $this->addFlash('success', 'Module créé avec succès.');
+
                 return $this->redirectToRoute('module_index');
             }
         }
@@ -67,7 +66,7 @@ class ModuleController extends AbstractController
         // Rendre la vue du formulaire de création de module
         return $this->render('module/form_module.html.twig', [
             'form' => $form->createView(),
-            'is_edit' => false
+            'is_edit' => false,
         ]);
     }
 
@@ -77,33 +76,34 @@ class ModuleController extends AbstractController
     {
         // Créer le formulaire avec le bloc d'enseignement actuel du module
         $form = $this->createForm(ModuleType::class, $module, [
-            'bloc_actuel' => $module->getTeachingBlock()
+            'bloc_actuel' => $module->getTeachingBlock(),
         ]);
 
         $form->handleRequest($request);
         // Si le formulaire est soumis et valide, enregistrer les modifications du module
-        if ($form->isSubmitted() ) {
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                    $em->persist($module);
+                $em->persist($module);
                 $em->flush();
                 $this->addFlash('success', 'Module modifié avec succès.');
-
 
                 return $this->redirectToRoute('app_module_edit', ['id' => $module->getId()]);
             }
         }
+
         // Rendre la vue du formulaire d'édition de module
         return $this->render('module/form_module.html.twig', [
             'form' => $form->createView(),
             'module' => $module,
-            'is_edit' => true
+            'is_edit' => true,
         ]);
     }
+
     #[Route('/modules/{id}/delete', name: 'app_module_delete', methods: ['POST'])]
     public function delete(Module $module, Request $request, EntityManagerInterface $em): Response
     {
         // Vérification de sécurité CSRF
-        if ($this->isCsrfTokenValid('delete' . $module->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$module->getId(), $request->request->get('_token'))) {
             // Tentative de suppression du module
             try {
                 $em->remove($module);
@@ -113,6 +113,7 @@ class ModuleController extends AbstractController
                 $this->addFlash('error', 'Impossible de supprimer ce module car il est utilisé ailleurs.');
             }
         }
+
         // Redirection vers la liste des modules
         return $this->redirectToRoute('module_index');
     }

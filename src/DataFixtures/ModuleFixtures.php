@@ -5,8 +5,8 @@ namespace App\DataFixtures;
 use App\Entity\Module;
 use App\Entity\TeachingBlock;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 class ModuleFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -267,7 +267,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                                 'reference' => self::MODULE_UI_UX_PROJET,
                             ],
                         ],
-                    ]
+                    ],
                 ],
             ],
 
@@ -394,7 +394,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         // Modules principaux
-        for ($i = 0; $i < count(self::data()); $i++) {
+        for ($i = 0; $i < count(self::data()); ++$i) {
             $module = new Module();
             $module->setCode(self::data()[$i]['code']);
             $module->setName(self::data()[$i]['name']);
@@ -408,7 +408,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
 
             // Modules secondaires
             if (isset(self::data()[$i]['children'])) {
-                for ($j = 0; $j < count(self::data()[$i]['children']); $j++) {
+                for ($j = 0; $j < count(self::data()[$i]['children']); ++$j) {
                     $subModule = new Module();
                     $subModule->setCode(self::data()[$i]['children'][$j]['code']);
                     $subModule->setName(self::data()[$i]['children'][$j]['name']);
@@ -424,7 +424,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
 
                     // Modules tiers
                     if (isset(self::data()[$i]['children'][$j]['children2'])) {
-                        for ($k = 0; $k < count(self::data()[$i]['children'][$j]['children2']); $k++) {
+                        for ($k = 0; $k < count(self::data()[$i]['children'][$j]['children2']); ++$k) {
                             $subSubModule = new Module();
                             $subSubModule->setCode(self::data()[$i]['children'][$j]['children2'][$k]['code']);
                             $subSubModule->setName(self::data()[$i]['children'][$j]['children2'][$k]['name']);

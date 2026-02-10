@@ -4,16 +4,14 @@ namespace App\Controller;
 
 use App\Entity\SchoolYear;
 use App\Form\SchoolYearType;
-use App\Repository\SchoolYearRepository;
 use App\Repository\CoursePeriodRepository;
+use App\Repository\SchoolYearRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Knp\Component\Pager\PaginatorInterface;
-use App\Entity\CoursePeriod;
-use App\Form\CoursePeriodType;
 
 final class SchoolYearController extends AbstractController
 {
@@ -29,10 +27,9 @@ final class SchoolYearController extends AbstractController
         );
 
         return $this->render('school_year/list.html.twig', [
-            'dataSchoolYear' => $schoolYear
+            'dataSchoolYear' => $schoolYear,
         ]);
     }
-
 
     #[Route('/school_year/{id}/edit', name: 'school_year_edit', methods: ['GET', 'POST'])]
     public function oneYear(SchoolYear $schoolYear, Request $request, EntityManagerInterface $em, CoursePeriodRepository $coursePeriodrepository): Response
@@ -42,7 +39,7 @@ final class SchoolYearController extends AbstractController
         if ($schoolYear->getStartDate() && $schoolYear->getEndDate()) {
             $startYear = $schoolYear->getStartDate()->format('Y');
             $endYear = $schoolYear->getEndDate()->format('Y');
-            $currentSaison = $startYear . '/' . $endYear;
+            $currentSaison = $startYear.'/'.$endYear;
         }
 
         $form = $this->createForm(SchoolYearType::class, $schoolYear);
@@ -63,8 +60,9 @@ final class SchoolYearController extends AbstractController
 
                     $em->flush();
                     $this->addFlash('success', 'Modifications enregistrées !');
+
                     return $this->redirectToRoute('school_year_edit', [
-                        'id' => $schoolYear->getId()
+                        'id' => $schoolYear->getId(),
                     ]);
                 } catch (\Exception $e) {
                     $this->addFlash('error', 'Erreur lors de la sauvegarde.');
@@ -104,6 +102,7 @@ final class SchoolYearController extends AbstractController
                     $em->persist($year);
                     $em->flush();
                     $this->addFlash('success', 'Année scolaire ajoutée !');
+
                     return $this->redirectToRoute('school_year');
                 } catch (\Exception $e) {
                     $this->addFlash('error', 'Erreur lors de lajout.');
@@ -119,7 +118,7 @@ final class SchoolYearController extends AbstractController
     #[Route('/school_year/{id}/delete', name: 'school_year_delete', methods: ['POST'])]
     public function delete(SchoolYear $schoolYear, Request $request, EntityManagerInterface $em): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $schoolYear->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$schoolYear->getId(), $request->request->get('_token'))) {
             try {
                 $em->remove($schoolYear);
                 $em->flush();

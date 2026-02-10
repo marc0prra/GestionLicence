@@ -44,6 +44,7 @@ class Instructor
     public function setUser(User $user): static
     {
         $this->user = $user;
+
         return $this;
     }
 
@@ -61,6 +62,7 @@ class Instructor
             $this->instructorModules->add($instructorModule);
             $instructorModule->setInstructor($this);
         }
+
         return $this;
     }
 
@@ -71,6 +73,7 @@ class Instructor
                 $instructorModule->setInstructor(null);
             }
         }
+
         return $this;
     }
 
@@ -88,6 +91,7 @@ class Instructor
             $this->courseInstructors->add($courseInstructor);
             $courseInstructor->setInstructor($this);
         }
+
         return $this;
     }
 
@@ -98,6 +102,7 @@ class Instructor
                 $courseInstructor->setInstructor(null);
             }
         }
+
         return $this;
     }
 
@@ -105,7 +110,8 @@ class Instructor
     {
         $firstName = $this->user->getFirstName();
         $LastName = $this->user->getLastName();
-        return $firstName . ' ' . $LastName;
+
+        return $firstName.' '.$LastName;
     }
 
     // Retourne la liste des noms des modules enseignés sous forme de string
@@ -117,6 +123,7 @@ class Instructor
                 $names[] = $InstruModule->getModule()->getName();
             }
         }
+
         return empty($names) ? 'Aucun module' : implode(', ', $names);
     }
 
@@ -130,6 +137,7 @@ class Instructor
                 $total += $module->getHoursCount();
             }
         }
+
         return $total;
     }
 }

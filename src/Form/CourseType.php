@@ -3,21 +3,18 @@
 namespace App\Form;
 
 use App\Entity\Course;
+use App\Entity\Instructor;
 use App\Entity\InterventionType;
 use App\Entity\Module;
-use App\Entity\Instructor;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Repository\ModuleRepository;
 use App\Validator\IntervenantHasModule;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CourseType extends AbstractType
 {
@@ -39,8 +36,8 @@ class CourseType extends AbstractType
                 'label' => 'Titre',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Saisissez un titre sur l\'intervention'
-                ]
+                    'placeholder' => 'Saisissez un titre sur l\'intervention',
+                ],
             ])
             ->add('intervention_type_id', EntityType::class, [
                 'class' => InterventionType::class,
@@ -52,7 +49,7 @@ class CourseType extends AbstractType
                     return $er->queryForSelect();
                 },
                 'group_by' => 'parent.teachingBlock.name',
-                'choice_label' => 'displayForSelect'
+                'choice_label' => 'displayForSelect',
             ])
 
             ->add('courseInstructors', EntityType::class, [

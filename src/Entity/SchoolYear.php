@@ -19,7 +19,7 @@ class SchoolYear
 
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\NotBlank]
-    #[Assert\Regex(pattern: "/^\d{4}$/", message: "Format YYYY requis")]
+    #[Assert\Regex(pattern: "/^\d{4}$/", message: 'Format YYYY requis')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

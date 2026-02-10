@@ -67,6 +67,7 @@ class Module
     public function setCode(?string $code): static
     {
         $this->code = $code;
+
         return $this;
     }
 
@@ -183,10 +184,11 @@ class Module
         $module = null !== $parentModule ? $parentModule : $this;
 
         if (null !== $module->parent) {
-            $displayname .= $module->displayForSelect($module->parent) . ' / ';
+            $displayname .= $module->displayForSelect($module->parent).' / ';
         }
 
         $displayname .= $module->name;
+
         return $displayname;
     }
 }

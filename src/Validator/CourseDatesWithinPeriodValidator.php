@@ -2,16 +2,17 @@
 
 namespace App\Validator;
 
+use App\Repository\CoursePeriodRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use App\Repository\CoursePeriodRepository;
 
 final class CourseDatesWithinPeriodValidator extends ConstraintValidator
 {
     public function __construct(
-        private CoursePeriodRepository $coursePeriodRepository
+        private CoursePeriodRepository $coursePeriodRepository,
     ) {
     }
+
     public function validate(mixed $value, Constraint $constraint): void
     {
         /* @var CourseDatesWithinPeriod $constraint */

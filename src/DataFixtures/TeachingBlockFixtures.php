@@ -22,36 +22,35 @@ class TeachingBlockFixtures extends Fixture
                 'name' => 'Piloter',
                 'description' => 'Piloter un projet informatique',
                 'hours_count' => 85.5,
-                'reference' => self::TEACHING_BLOCK_B1
+                'reference' => self::TEACHING_BLOCK_B1,
             ],
             [
                 'code' => 'B2',
                 'name' => 'Coordonner',
                 'description' => 'Coordonner une equipe projet',
                 'hours_count' => 105,
-                'reference' => self::TEACHING_BLOCK_B2
-
+                'reference' => self::TEACHING_BLOCK_B2,
             ],
             [
                 'code' => 'B3',
                 'name' => 'Superviser',
                 'description' => 'Superviser la mise en oeuvre d\'un projet informatique',
                 'hours_count' => 14,
-                'reference' => self::TEACHING_BLOCK_B3
+                'reference' => self::TEACHING_BLOCK_B3,
             ],
             [
                 'code' => 'B4',
                 'name' => 'Coordonner',
                 'description' => 'Coordonner le cycle de vide des applications',
                 'hours_count' => 297.5,
-                'reference' => self::TEACHING_BLOCK_B4
+                'reference' => self::TEACHING_BLOCK_B4,
             ],
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < count($this->data()); $i++) {
+        for ($i = 0; $i < count($this->data()); ++$i) {
             $teachingBlock = new TeachingBlock();
             $teachingBlock->setCode(self::data()[$i]['code']);
             $teachingBlock->setName(self::data()[$i]['name']);
@@ -66,5 +65,3 @@ class TeachingBlockFixtures extends Fixture
         $manager->flush();
     }
 }
-
-
