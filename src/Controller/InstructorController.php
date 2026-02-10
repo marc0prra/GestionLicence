@@ -96,6 +96,10 @@ class InstructorController extends AbstractController
                 $this->addFlash('success', 'L\'enseignant a été créé avec succès.');
 
                 return $this->redirectToRoute('app_instructor_show', ['id' => $instructor->getId()]);
+            $this->addFlash('success', 'L\'enseignant a été créé avec succès.');
+            return $this->redirectToRoute('app_instructor_show', ['id' => $instructor->getId()]);
+            } else {
+                $this->addFlash('error', 'Le formulaire contient des erreurs. Veuillez vérifier les champs obligatoires.');
             }
         }
 

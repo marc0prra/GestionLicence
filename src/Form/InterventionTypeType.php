@@ -31,8 +31,8 @@ class InterventionTypeType extends AbstractType
                 ],
             ])
 
-            // 2. Le champ COULEUR (avec la validation Hexadécimale)
-            ->add('color', TextType::class, [
+            // 2. Le champ COULEUR (avec sélecteur de couleur)
+            ->add('color', ColorType::class, [
                 'label' => 'Code couleur',
                 'required' => true,
                 'attr' => [
