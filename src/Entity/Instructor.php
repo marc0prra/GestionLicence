@@ -25,10 +25,14 @@ class Instructor
     #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: CourseInstructor::class, orphanRemoval: true)]
     private Collection $courseInstructors;
 
+    #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: Unaivibility::class)]
+    private Collection $unaivibilities;
+
     public function __construct()
     {
         $this->instructorModules = new ArrayCollection();
         $this->courseInstructors = new ArrayCollection();
+        $this->unaivibilities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,6 +81,21 @@ class Instructor
         return $this;
     }
 
+    public function getUnaivibility(): Collection 
+    {
+        return $this->unaivibilities;
+    }
+
+    public function addUnaivibility(Unaivibility $unaivibility): static
+    {
+        if (!$this->unaivibilities->contains($unaivibility)) {
+            $this->unaivibilities->add($unaivibility);
+            $unaivibility->setInstructor($this);
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, CourseInstructor>
      */
@@ -104,6 +123,11 @@ class Instructor
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->displayName();
     }
 
     public function displayName(): string

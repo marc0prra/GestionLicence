@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Indisponibilités
+{% endblock %}
+
+{% block breadcrumb %}
+	<span class="mx-1">></span>
+	Indisponibilités
+{% endblock %}
+
+{% block body %}
+
+	<section class="w-full mr-auto">
+		<div>
+			<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+				Indisponibilités
+			</h1>
+			{% include 'composants/button.html.twig' with {
+            label: 'Ajouter une indisponibilité',
+            type: 'confirm',
+            url: path('unaivibility_new', {'id': instructor.id}),
+        } %}
+		</div>
+
+		<hr class="mt-[20px] text-[#FFBD01]">
+
+		<div class="mt-[20px]">
+
+			{% embed 'composants/table.html.twig' with {
+			headers: ['Date de début', 'Date de fin', 'Motif', 'Actions']
+		} %}
+				{% block body %}
+					{% for u in unaivibility %}
+						<tr>
+							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ u.getStartDate()|date('d/m/Y à H:i') }}</td>
+							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ u.getEndDate()|date('d/m/Y à H:i') }}</td>
+							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">{{ u.getReason() }}</td>
+							<td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">
+								<a href="{{ path('unaivibility_edit', {'id': u.getId()}) }}" class="text-blue-500 hover:underline">Éditer</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="3" class="px-[25px] py-[20px] text-[14px] text-center text-gray-500">Aucun résultat trouvé</td>
+						</tr>
+					{% endfor %}
+				{% endblock %}
+			{% endembed %}
+		</div>
+	</section>
+
+{% endblock %}

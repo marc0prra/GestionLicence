@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Instructor;
 use App\Entity\InstructorModule;
+use App\Entity\Unaivibility;
 use App\Entity\User;
 use App\Form\Filter\InstructorFilterType;
 use App\Form\Filter\InstructorInterventionFilterType;
 use App\Form\InstructorType;
+use App\Form\UnaivibilityType;
 use App\Repository\CourseRepository;
 use App\Repository\InstructorRepository;
+use App\Repository\UnaivibilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -281,6 +284,89 @@ class InstructorController extends AbstractController
             'currentPage' => $page,
             'maxPages' => $maxPages,
             'totalInterventions' => $totalInterventions,
+        ]);
+    }
+
+    #[Route('/instructors/{id}/unaivibility', name: 'app_instructor_unaivibility', methods: ['GET'])]
+    public function listUnaivibilities(UnaivibilityRepository $unaivibilityRepository, Instructor $instructor): Response
+    {
+        $unaivibility = $unaivibilityRepository->findBy([
+            'instructor' => $instructor,
+        ]);
+
+        return $this->render('unaivibility/index.html.twig', [
+            'unaivibility' => $unaivibility,
+            'instructor' => $instructor,
+        ]);
+    }
+
+    #[Route('/instructor/{id}/new_unaivibility', name: 'unaivibility_new')]
+    public function newUnaivibility(Request $request, EntityManagerInterface $entityManager, Instructor $instructor): Response 
+    {
+        $unaivibility = new Unaivibility();
+        $unaivibility->setInstructor($instructor);
+        $form = $this->createForm(UnaivibilityType::class, $unaivibility);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                try {
+
+                    $entityManager->persist($unaivibility);
+
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'L\'indisponibilité a été enregistrée avec succès.');
+
+                    return $this->redirectToRoute('app_instructor_unaivibility', [
+                        'id' => $unaivibility->getInstructor()->getId(),
+                    ]);
+
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', 'Une erreur s\'est produite lors de l\'enregistrement.');
+                }
+            }
+            else {
+                $this->addFlash('error', 'Le formulaire contient des erreurs.');
+            }
+        }
+
+        return $this->render('unaivibility/new.html.twig', [
+            'form' => $form,
+            'unaivibility' => $unaivibility,
+        ]);
+    }
+
+    #[Route('/instructors/{id}/edit', name: 'unaivibility_edit', methods: ['GET', 'POST'])]
+    public function editUnaivibility(Request $request, EntityManagerInterface $entityManager, Unaivibility $unaivibility): Response 
+    {
+        $form = $this->createForm(UnaivibilityType::class, $unaivibility);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                try {
+
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'Le formulaire est valide');
+
+                    return $this->redirectToRoute('unaivibility_edit', [
+                        'id' => $unaivibility->getId(),
+                    ]);
+
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', 'Le formulaire est invalide');
+                }
+            }
+            else {
+                $this->addFlash('error', 'Une erreur est survenue.');
+            }
+        }
+
+        return $this->render('unaivibility/edit.html.twig', [
+            'form' => $form,
+            'unaivibility' => $unaivibility,
         ]);
     }
 }
