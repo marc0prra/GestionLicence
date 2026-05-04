@@ -25,10 +25,17 @@ class Instructor
     #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: CourseInstructor::class, orphanRemoval: true)]
     private Collection $courseInstructors;
 
+    /**
+     * @var Collection<int, Indisponible>
+     */
+    #[ORM\OneToMany(targetEntity: Indisponible::class, mappedBy: 'instructor')]
+    private Collection $y;
+
     public function __construct()
     {
         $this->instructorModules = new ArrayCollection();
         $this->courseInstructors = new ArrayCollection();
+        $this->y = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,5 +146,35 @@ class Instructor
         }
 
         return $total;
+    }
+
+    /**
+     * @return Collection<int, Indisponible>
+     */
+    public function getY(): Collection
+    {
+        return $this->y;
+    }
+
+    public function addY(Indisponible $y): static
+    {
+        if (!$this->y->contains($y)) {
+            $this->y->add($y);
+            $y->setInstructor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeY(Indisponible $y): static
+    {
+        if ($this->y->removeElement($y)) {
+            // set the owning side to null (unless already changed)
+            if ($y->getInstructor() === $this) {
+                $y->setInstructor(null);
+            }
+        }
+
+        return $this;
     }
 }

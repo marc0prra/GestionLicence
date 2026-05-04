@@ -8,6 +8,7 @@ use App\Form\CourseType;
 use App\Form\Filter\CourseFilterType;
 use App\Repository\CoursePeriodRepository;
 use App\Repository\CourseRepository;
+use App\Repository\IndisponibleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,33 +38,47 @@ class InterventionController extends AbstractController
     }
 
     #[Route('/interventions/add', name: 'intervention_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em, CoursePeriodRepository $periodRepo): Response
+    public function new(Request $request, EntityManagerInterface $em, CoursePeriodRepository $periodRepo, IndisponibleRepository $indispo): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $start = $course->getStartDate();
+            $end = $course->getEndDate();
             $period = $periodRepo->findPeriodByDates($course->getStartDate());
 
             if (!$period) {
                 $this->addFlash('error', 'Aucune période scolaire correspondante.');
             } else {
-                $course->setCoursePeriodId($period);
-                $em->persist($course);
-
-                // Gestion des intervenants (champ non-mappé)
                 $instructors = $form->get('courseInstructors')->getData();
+                $indisponible = false;
+
                 foreach ($instructors as $instructor) {
-                    $ci = new CourseInstructor();
-                    $ci->setCourse($course)->setInstructor($instructor);
-                    $em->persist($ci);
+                    $returnCount = $indispo->findIndisponibleByInstructorAndDate($instructor->getId(), $start, $end);
+
+                    if ($returnCount > 0) {
+                        $indisponible = true;
+                        //message d'erreur
+                    }
                 }
 
-                $em->flush();
-                $this->addFlash('success', 'Intervention créée !');
+                if (!$indisponible) {
+                    $course->setCoursePeriodId($period);
+                    $em->persist($course);
 
-                return $this->redirectToRoute('interventions');
+                    foreach ($instructors as $instructor) {
+                        $ci = new CourseInstructor();
+                        $ci->setCourse($course)->setInstructor($instructor);
+                        $em->persist($ci);
+                    }
+
+                    $em->flush();
+                    $this->addFlash('success', 'Intervention créée !');
+
+                    return $this->redirectToRoute('interventions');
+                }
             }
         }
 
@@ -77,7 +92,7 @@ class InterventionController extends AbstractController
     #[Route('/interventions/{id}/edit', name: 'intervention_edit', methods: ['GET', 'POST'])]
     public function edit(Course $course, Request $request, EntityManagerInterface $em): Response
     {
-        $currentInstructors = $course->getCourseInstructors()->map(fn ($ci) => $ci->getInstructor());
+        $currentInstructors = $course->getCourseInstructors()->map(fn($ci) => $ci->getInstructor());
 
         $form = $this->createForm(CourseType::class, $course);
         $form->get('courseInstructors')->setData($currentInstructors);
@@ -92,7 +107,7 @@ class InterventionController extends AbstractController
                     $em->remove($ci);
                 }
             }
-            $existingInstructors = $course->getCourseInstructors()->map(fn ($ci) => $ci->getInstructor())->toArray();
+            $existingInstructors = $course->getCourseInstructors()->map(fn($ci) => $ci->getInstructor())->toArray();
 
             foreach ($newInstructors as $instructor) {
                 if (!in_array($instructor, $existingInstructors, true)) {
@@ -121,7 +136,7 @@ class InterventionController extends AbstractController
         Course $course,
         EntityManagerInterface $entityManager,
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$course->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $course->getId(), $request->request->get('_token'))) {
             try {
                 $entityManager->remove($course);
                 $entityManager->flush();
