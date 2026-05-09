@@ -8,6 +8,7 @@ use App\Form\CourseType;
 use App\Form\Filter\CourseFilterType;
 use App\Repository\CoursePeriodRepository;
 use App\Repository\CourseRepository;
+use App\Repository\UnaivibilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,33 +38,48 @@ class InterventionController extends AbstractController
     }
 
     #[Route('/interventions/add', name: 'intervention_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em, CoursePeriodRepository $periodRepo): Response
+    public function new(Request $request, EntityManagerInterface $em, CoursePeriodRepository $periodRepo,UnaivibilityRepository $unaivibilityRepository): Response
     {
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $start = $course->getStartDate();
+            $end = $course->getEndDate();
             $period = $periodRepo->findPeriodByDates($course->getStartDate());
 
             if (!$period) {
                 $this->addFlash('error', 'Aucune période scolaire correspondante.');
             } else {
-                $course->setCoursePeriodId($period);
-                $em->persist($course);
-
-                // Gestion des intervenants (champ non-mappé)
                 $instructors = $form->get('courseInstructors')->getData();
-                foreach ($instructors as $instructor) {
-                    $ci = new CourseInstructor();
-                    $ci->setCourse($course)->setInstructor($instructor);
-                    $em->persist($ci);
+                $indisponible = false;
+
+                foreach($instructors as $instructor) {
+                    $count = $unaivibilityRepository->findIndisponibilite($instructor->getId(), $start, $end);
+
+                    if($count > 0) {
+                        $indisponible = true; 
+                        $this->addFlash('error', 'Impossible d\'ajouter une intervention.');
+                    }
                 }
 
-                $em->flush();
-                $this->addFlash('success', 'Intervention créée !');
+                if (!$indisponible) {
+                    $course->setCoursePeriodId($period);
+                    $em->persist($course);
 
-                return $this->redirectToRoute('interventions');
+                    // Gestion des intervenants (champ non-mappé)
+                    foreach ($instructors as $instructor) {
+                        $ci = new CourseInstructor();
+                        $ci->setCourse($course)->setInstructor($instructor);
+                        $em->persist($ci);
+                    }
+
+                    $em->flush();
+                    $this->addFlash('success', 'Intervention créée !');
+
+                    return $this->redirectToRoute('interventions');
+                }
             }
         }
 

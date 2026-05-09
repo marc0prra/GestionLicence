@@ -288,11 +288,16 @@ class InstructorController extends AbstractController
     }
 
     #[Route('/instructors/{id}/unaivibility', name: 'app_instructor_unaivibility', methods: ['GET'])]
-    public function listUnaivibilities(UnaivibilityRepository $unaivibilityRepository, Instructor $instructor): Response
+    public function listUnaivibilities(UnaivibilityRepository $unaivibilityRepository, ?Instructor $instructor): Response
     {
+        if(!$instructor) {
+            throw $this->createNotFoundException('Cet utilisateur n\'existe pas.');
+        }
+
         $unaivibility = $unaivibilityRepository->findBy([
             'instructor' => $instructor,
         ]);
+     
 
         return $this->render('unaivibility/index.html.twig', [
             'unaivibility' => $unaivibility,
@@ -301,8 +306,12 @@ class InstructorController extends AbstractController
     }
 
     #[Route('/instructor/{id}/new_unaivibility', name: 'unaivibility_new')]
-    public function newUnaivibility(Request $request, EntityManagerInterface $entityManager, Instructor $instructor): Response 
+    public function newUnaivibility(Request $request, EntityManagerInterface $entityManager, ?Instructor $instructor): Response 
     {
+        if(!$instructor) {
+            throw $this->createNotFoundException('Cet utilisateur n\'existe pas.');
+        }
+
         $unaivibility = new Unaivibility();
         $unaivibility->setInstructor($instructor);
         $form = $this->createForm(UnaivibilityType::class, $unaivibility);
@@ -337,7 +346,7 @@ class InstructorController extends AbstractController
         ]);
     }
 
-    #[Route('/instructors/{id}/edit', name: 'unaivibility_edit', methods: ['GET', 'POST'])]
+    #[Route('/instructors/{id}/edit_unaivibility', name: 'unaivibility_edit', methods: ['GET', 'POST'])]
     public function editUnaivibility(Request $request, EntityManagerInterface $entityManager, Unaivibility $unaivibility): Response 
     {
         $form = $this->createForm(UnaivibilityType::class, $unaivibility);

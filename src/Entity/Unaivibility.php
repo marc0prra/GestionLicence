@@ -24,7 +24,7 @@ class Unaivibility
     #[Assert\GreaterThan(propertyPath: 'startDate', message: 'La date de fin doit être supérieur à la date de début.')]
     private \DateTime $endDate;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true, length: 255)]
     private ?string $reason  = null;
 
     #[ORM\ManyToOne(targetEntity: Instructor::class, inversedBy: 'unaivibilities')]
