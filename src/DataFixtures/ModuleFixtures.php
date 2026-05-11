@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Module;
 use App\Entity\TeachingBlock;
+use App\Entity\Semester;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -62,6 +63,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 63,
                 'capstone_project' => true,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B1,
+                'semester' => SemesterFixtures::SEMESTER_3,
                 'reference' => self::MODULE_AGILE,
             ],
             [
@@ -71,6 +73,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 21,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B1,
+                'semester' => SemesterFixtures::SEMESTER_2,
                 'reference' => self::MODULE_LEGAL,
                 'children' => [
                     [
@@ -115,6 +118,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 3.5,
                 'capstone_project' => true,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B1,
+                'semester' => SemesterFixtures::SEMESTER_1,
                 'reference' => self::MODULE_ECO,
             ],
 
@@ -126,6 +130,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 17.5,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B2,
+                'semester' => SemesterFixtures::SEMESTER_3,
                 'reference' => self::MODULE_ANGLAIS,
             ],
 
@@ -136,6 +141,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 28,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B2,
+                'semester' => SemesterFixtures::SEMESTER_3,
                 'reference' => self::MODULE_COMMUNICATION,
             ],
 
@@ -146,6 +152,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 56,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B2,
+                'semester' => SemesterFixtures::SEMESTER_2,
                 'reference' => self::MODULE_DEVOPS,
                 'children' => [
                     [
@@ -198,6 +205,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 3.5,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B2,
+                'semester' => SemesterFixtures::SEMESTER_1,
                 'reference' => self::MODULE_REX,
                 'children' => [
                     [
@@ -219,6 +227,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 3.5,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B3,
+                'semester' => SemesterFixtures::SEMESTER_1,
                 'reference' => self::MODULE_RCRA,
                 'children' => [
                     [
@@ -240,6 +249,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 59,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B4,
+                'semester' => SemesterFixtures::SEMESTER_2,
                 'reference' => self::MODULE_ERGO,
                 'children' => [
                     [
@@ -278,6 +288,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 10.5,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B4,
+                'semester' => SemesterFixtures::SEMESTER_1,
                 'reference' => self::MODULE_ARCHI_DATA,
                 'children' => [
                     [
@@ -316,6 +327,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 126,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B4,
+                'semester' => SemesterFixtures::SEMESTER_3,
                 'reference' => self::MODULE_FRONT,
                 'children' => [
                     [
@@ -360,6 +372,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                 'hours_count' => 112,
                 'capstone_project' => false,
                 'teaching_block' => TeachingBlockFixtures::TEACHING_BLOCK_B4,
+                'semester' => SemesterFixtures::SEMESTER_1,
                 'reference' => self::MODULE_BACK,
                 'children' => [
                     [
@@ -403,6 +416,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
             $module->setCapstoneProject(self::data()[$i]['capstone_project']);
 
             $module->setTeachingBlock($this->getReference(self::data()[$i]['teaching_block'], TeachingBlock::class));
+            $module->setSemester($this->getReference(self::data()[$i]['semester'], Semester::class));
 
             $this->addReference(self::data()[$i]['reference'], $module);
 
@@ -416,6 +430,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                     $subModule->setHoursCount(self::data()[$i]['children'][$j]['hours_count']);
                     $subModule->setCapstoneProject(self::data()[$i]['children'][$j]['capstone_project']);
                     $subModule->setTeachingBlock($module->getTeachingBlock());
+                    $subModule->setSemester($module->getSemester());
                     $subModule->setParent($module);
 
                     $this->addReference(self::data()[$i]['children'][$j]['reference'], $subModule);
@@ -432,6 +447,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                             $subSubModule->setHoursCount(self::data()[$i]['children'][$j]['children2'][$k]['hours_count']);
                             $subSubModule->setCapstoneProject(self::data()[$i]['children'][$j]['children2'][$k]['capstone_project']);
                             $subSubModule->setTeachingBlock($subModule->getTeachingBlock());
+                            $subSubModule->setSemester($subModule->getSemester());
                             $subSubModule->setParent($subModule);
 
                             $this->addReference(self::data()[$i]['children'][$j]['children2'][$k]['reference'], $subSubModule);
@@ -451,6 +467,7 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             TeachingBlockFixtures::class,
+            SemesterFixtures::class,
         ];
     }
 }

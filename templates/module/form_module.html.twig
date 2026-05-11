@@ -1,64 +1,66 @@
 {% extends 'module/modules.html.twig' %}
 
 {% block title %}
-    {{ is_edit is defined and is_edit ? module.name : 'Nouveau Module' }}
+	{{ is_edit is defined and is_edit ? module.name : 'Nouveau Module' }}
 {% endblock %}
 
 {% block breadcrumb %}
-    {{ parent() }} 
+	{{ parent() }}
 
-    {% if is_edit and module is defined %}
-        {% if module.teachingBlock %}
-            <span class="mx-1">></span> 
-            <span class="mx-1">{{ module.teachingBlock.name }}</span>
-        {% endif %}
+	{% if is_edit and module is defined %}
+		{% if module.teachingBlock %}
+			<span class="mx-1">></span>
+			<span class="mx-1">{{ module.teachingBlock.name }}</span>
+		{% endif %}
 
-        <span class="mx-1">></span> 
-        <span class="mx-1">{{ module.name }}</span>
-    {% else %}
-        <span class="mx-1">></span> Nouveau Module
-    {% endif %}
+		<span class="mx-1">></span>
+		<span class="mx-1">{{ module.name }}</span>
+	{% else %}
+		<span class="mx-1">></span>
+		Nouveau Module
+	{% endif %}
 {% endblock %}
 
 {% block body %}
-<div class="w-full mr-auto">
-    
-    {# --- TITRE --- #}
-    <h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
-        {{ is_edit is defined and is_edit ? module.name : 'Nouveau Module' }}
-    </h1>
+	<div
+		class="w-full mr-auto">
 
-    {{ form_start(form) }}
+		{# --- TITRE --- #}
+		<h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+			{{ is_edit is defined and is_edit ? module.name : 'Nouveau Module' }}
+		</h1>
 
-    {# BLOC ENSEIGNEMENT #}
-    <div class="mb-6">
-        {{ form_label(form.teachingBlock, 'Bloc enseignement', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-        {{ form_widget(form.teachingBlock, {
+		{{ form_start(form) }}
+
+		{# BLOC ENSEIGNEMENT #}
+		<div class="mb-6">
+			{{ form_label(form.teachingBlock, 'Bloc enseignement', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+			{{ form_widget(form.teachingBlock, {
         }) }}
-        {{ form_errors(form.teachingBlock) }}
-    </div>
+			{{ form_errors(form.teachingBlock) }}
+		</div>
 
-    {# CODE & NOM #}
-    <div class="flex md:flex-row flex-col gap-3 mt-4 mb-4">
-        <div class=" w-full max-w-[386px]">
-            {% include "composants/form_champ_text.html.twig" with {
+		{# CODE & NOM #}
+		<div class="flex md:flex-row flex-col gap-3 mt-4 mb-4">
+			<div class=" w-full max-w-[386px]">
+				{% include "composants/form_champ_text.html.twig" with {
                 'label': 'Code du bloc - champ obligatoire',
                 'field': form.code,
             } %}
-        </div>
+			</div>
 
-        <div class=" w-full max-w-[387px]">
-            {% include "composants/form_champ_text.html.twig" with {
+			<div class=" w-full max-w-[387px]">
+				{% include "composants/form_champ_text.html.twig" with {
                 'label': 'Code du bloc - champ obligatoire',
                 'field': form.name,
             } %}
-        </div>
-    </div>
+			</div>
+		</div>
 
-    {# HEURES & PARENT #}
-    <div class="flex md:flex-row flex-col gap-3 mt-4 ">
-        <div class=" w-full max-w-[387px]">
-            {% include "composants/form_champ_text.html.twig" with {
+		{# HEURES & PARENT #}
+		<div class="flex md:flex-row flex-col gap-3 mt-4 ">
+			<div class=" w-full max-w-[387px]">
+				{% include "composants/form_champ_text.html.twig" with {
                 'label': 'Nombre d\'heures - champ obligatoire',
                 'field': form.hoursCount
             } %}
@@ -71,6 +73,17 @@
             {{ form_errors(form.parent) }}
         </div>
     </div>
+
+    {# SEMESTRE #}
+    {% include "composants/multi_select.html.twig" with { 'label': 'Intervenants', 'field' : form.semester } %}
+<div class="mb-6">
+    {{ form_label(form.semester, 'Semestre', {
+    }) }}
+
+    {{ form_widget(form.semester) }}
+
+    {{ form_errors(form.semester) }}
+</div>
 
     {# DESCRIPTION #}
     <div class="mb-6">
@@ -104,51 +117,48 @@
             </a>
 
             {% if is_edit|default(false) or true %}
-                <button type="button" 
-                        onclick="toggleModal()" 
-                        class="text-white bg-[#ff0000] hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                    Supprimer
-                </button>
-            {% endif %}
+				<button type="button" onclick="toggleModal()" class="text-white bg-[#ff0000] hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+					Supprimer
+				</button>
+			{% endif %}
 
-            {# POP-UP #}
-            {% if is_edit|default(false) or true %}
-                {% include 'composants/pop_up.html.twig' with {
+			{# POP-UP #}
+			{% if is_edit|default(false) or true %}
+				{% include 'composants/pop_up.html.twig' with {
                     'title': 'Supprimer le module',
                     'message': "Vous vous apprêtez à supprimer le module,  cette action est irrévoquable. A noter qu’aucune intervention 
                     ne doit être liée à ce module pour pouvoir le supprimer.",
                 } %}
-            {% endif %}
+			{% endif %}
 
-            {# BOUTON ENREGISTRER #}
-            <button type="confirm" class="text-white bg-[#1e293b] hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                Enregistrer les informations
-            </button>
-        </div>
-    </div>
+			{# BOUTON ENREGISTRER #}
+			<button type="confirm" class="text-white bg-[#1e293b] hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+				Enregistrer les informations
+			</button>
+		</div>
+	</div>
 
-    {{ form_end(form) }}
+	{{ form_end(form) }}
 
-    {% if is_edit and module is defined and module.id is not null %}
-        <form id="delete-form" action="{{ path('app_module_delete', {'id': module.id}) }}" method="post" style="display: none;">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ module.id) }}">
-        </form>
-    {% endif %}
+	{% if is_edit and module is defined and module.id is not null %}
+		<form id="delete-form" action="{{ path('app_module_delete', {'id': module.id}) }}" method="post" style="display: none;">
+			<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ module.id) }}">
+		</form>
+	{% endif %}
 
-    <script>
-    function toggleModal() {
-        const modal = document.getElementById('modal-delete');
-        if (modal) {
-            modal.classList.toggle('hidden');
-        }
-    }
+	<script>
+		function toggleModal() {
+const modal = document.getElementById('modal-delete');
+if (modal) {
+modal.classList.toggle('hidden');
+}
+}
 
-    function confirmDelete() {
-        const form = document.getElementById('delete-form');
-        if (form) {
-            form.submit();
-        }
-    }
-    </script>
-</div>
-{% endblock %}
+function confirmDelete() {
+const form = document.getElementById('delete-form');
+if (form) {
+form.submit();
+}
+}
+	</script>
+</div>{% endblock %}
