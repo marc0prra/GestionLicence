@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
+
 class SchoolYearType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
