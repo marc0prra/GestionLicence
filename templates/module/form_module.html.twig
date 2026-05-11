@@ -1,0 +1,154 @@
+{% extends 'module/modules.html.twig' %}
+
+{% block title %}
+    {{ is_edit is defined and is_edit ? module.name : 'Nouveau Module' }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }} 
+
+    {% if is_edit and module is defined %}
+        {% if module.teachingBlock %}
+            <span class="mx-1">></span> 
+            <span class="mx-1">{{ module.teachingBlock.name }}</span>
+        {% endif %}
+
+        <span class="mx-1">></span> 
+        <span class="mx-1">{{ module.name }}</span>
+    {% else %}
+        <span class="mx-1">></span> Nouveau Module
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="w-full mr-auto">
+    
+    {# --- TITRE --- #}
+    <h1 class="font-medium text-[#1F384C] text-[26px] mb-[10px]">
+        {{ is_edit is defined and is_edit ? module.name : 'Nouveau Module' }}
+    </h1>
+
+    {{ form_start(form) }}
+
+    {# BLOC ENSEIGNEMENT #}
+    <div class="mb-6">
+        {{ form_label(form.teachingBlock, 'Bloc enseignement', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.teachingBlock, {
+        }) }}
+        {{ form_errors(form.teachingBlock) }}
+    </div>
+
+    {# CODE & NOM #}
+    <div class="flex md:flex-row flex-col gap-3 mt-4 mb-4">
+        <div class=" w-full max-w-[386px]">
+            {% include "composants/form_champ_text.html.twig" with {
+                'label': 'Code du bloc - champ obligatoire',
+                'field': form.code,
+            } %}
+        </div>
+
+        <div class=" w-full max-w-[387px]">
+            {% include "composants/form_champ_text.html.twig" with {
+                'label': 'Code du bloc - champ obligatoire',
+                'field': form.name,
+            } %}
+        </div>
+    </div>
+
+    {# HEURES & PARENT #}
+    <div class="flex md:flex-row flex-col gap-3 mt-4 ">
+        <div class=" w-full max-w-[387px]">
+            {% include "composants/form_champ_text.html.twig" with {
+                'label': 'Nombre d\'heures - champ obligatoire',
+                'field': form.hoursCount
+            } %}
+        </div>
+
+        <div class=" w-full max-w-[387px]">
+            {{ form_label(form.parent, 'Parent', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+            {{ form_widget(form.parent, {
+            }) }}
+            {{ form_errors(form.parent) }}
+        </div>
+    </div>
+
+    {# DESCRIPTION #}
+    <div class="mb-6">
+        {{ form_label(form.description, 'Description - champ obligatoire', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+        {{ form_widget(form.description, {
+        }) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    {# SWITCH #}
+    <div class="mb-8">
+        <label class="inline-flex items-center cursor-pointer">
+            {{ form_widget(form.capstoneProject, {'attr': {'class': 'sr-only peer'}}) }}
+
+            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0f3460]"></div>
+            
+            <span class="ms-3 text-sm font-medium text-gray-900">Module effectué sur le projet fil rouge</span>
+        </label>
+        {{ form_errors(form.capstoneProject) }}
+    </div>
+
+    {# BOUTONS D'ACTION #}
+    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+    
+        <div class="flex gap-3">
+
+            {# BOUTON RETOUR #}
+            <a href="{{ path('module_index') }}" 
+                class="inline-block bg-gray-100 hover:bg-gray-200 text-black font-medium py-3 px-8 rounded-xl transition-colors">
+                Retour à la liste
+            </a>
+
+            {% if is_edit|default(false) or true %}
+                <button type="button" 
+                        onclick="toggleModal()" 
+                        class="text-white bg-[#ff0000] hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    Supprimer
+                </button>
+            {% endif %}
+
+            {# POP-UP #}
+            {% if is_edit|default(false) or true %}
+                {% include 'composants/pop_up.html.twig' with {
+                    'title': 'Supprimer le module',
+                    'message': "Vous vous apprêtez à supprimer le module,  cette action est irrévoquable. A noter qu’aucune intervention 
+                    ne doit être liée à ce module pour pouvoir le supprimer.",
+                } %}
+            {% endif %}
+
+            {# BOUTON ENREGISTRER #}
+            <button type="confirm" class="text-white bg-[#1e293b] hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                Enregistrer les informations
+            </button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+    {% if is_edit and module is defined and module.id is not null %}
+        <form id="delete-form" action="{{ path('app_module_delete', {'id': module.id}) }}" method="post" style="display: none;">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ module.id) }}">
+        </form>
+    {% endif %}
+
+    <script>
+    function toggleModal() {
+        const modal = document.getElementById('modal-delete');
+        if (modal) {
+            modal.classList.toggle('hidden');
+        }
+    }
+
+    function confirmDelete() {
+        const form = document.getElementById('delete-form');
+        if (form) {
+            form.submit();
+        }
+    }
+    </script>
+</div>
+{% endblock %}

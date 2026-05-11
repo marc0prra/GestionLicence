@@ -1,0 +1,14 @@
+<div>
+	<label for="{{ field.vars.id }}" class="block text-base font-normal text-black mb-2">
+		{{label|default("Module") }}
+		- champ obligatoire
+	</label>
+
+	{{ form_widget(field, {
+			'attr': {
+				'class': 'w-full h-[46px] px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800'
+			}
+		}) }}
+
+	{{ form_errors(field) }}
+</div>

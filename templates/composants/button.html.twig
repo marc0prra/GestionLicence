@@ -1,0 +1,38 @@
+{# 
+    Paramètres :
+    - label : Le texte du bouton
+    - type  : 'confirm', 'cancel', 'warning', 'danger' (Défaut: confirm)
+    - url   : (Optionnel) Si défini, devient un lien <a>, sinon <button>
+    - icon  : (Optionnel) Classe icône (ex: 'bi bi-check')
+    - buttonType : (Optionnel) Type HTML du bouton: 'submit' ou 'button' (Défaut: submit)
+    - dataAction : (Optionnel) Attribut data-action pour le ciblage JS
+#}
+
+{# 1. Définition des styles spécifiques pour chaque bouton (Couleur + Couleur Texte) #}
+{% set styles = {
+    'confirm': 'bg-[#2C416E] text-white',
+    'cancel':  'bg-[#F0F0F0] text-black',
+    'warning': 'bg-[#FFBD01] text-black',
+    'danger':  'bg-[#FF0004] text-white',
+    'delete':  'bg-[#FF0004] text-white'
+} %}
+
+{# 2. Sélection du style (par défaut 'confirm' si le type est inconnu) #}
+{% set current_style = styles[type|default('confirm')]|default(styles.confirm) %}
+
+{# 3. Les styles communs à TOUS les boutons (Padding, Hauteur, Arrondi, Flex) #}
+{% set width_class = fullWidth|default(false) ? 'w-full' : 'w-auto px-6' %}
+{% set common_classes = 'h-[44px] text-[16px] rounded-[8px] inline-flex items-center justify-center text-center font-medium transition-opacity hover:opacity-90 cursor-pointer ' ~ width_class %}
+
+{# 4. Le rendu HTML #}
+{% if url is defined %}
+    <a href="{{ url }}" class="{{ common_classes }} {{ current_style }}">
+        {% if icon is defined %}<i class="{{ icon }}"></i>{% endif %}
+        {{ label }}
+    </a>
+{% else %}
+    <button type="{{ buttonType|default('submit') }}" class="{{ common_classes }} {{ current_style }}" {% if dataAction is defined %}data-action="{{ dataAction }}"{% endif %} {% if onclick is defined %}onclick="{{ onclick }}"{% endif %}>
+        {% if icon is defined %}<i class="{{ icon }}"></i>{% endif %}
+        {{ label }}
+    </button>
+{% endif %} 

@@ -1,0 +1,202 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Course;
+use App\Entity\Module;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<Course>
+ */
+class CourseRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Course::class);
+    }
+
+    public function findInterventions()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
+            ->leftJoin('c.interventionType', 'it')
+            ->leftJoin('c.module', 'm')
+            ->leftJoin('c.courseInstructors', 'ci')
+            ->leftJoin('ci.instructor', 'ins')
+            ->leftJoin('ins.user', 'u')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByFilters(?\DateTime $date_start, ?\DateTime $date_end, $module = null): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
+            ->leftJoin('c.interventionType', 'it')
+            ->leftJoin('c.module', 'm')
+            ->leftJoin('c.courseInstructors', 'ci')
+            ->leftJoin('ci.instructor', 'ins')
+            ->leftJoin('ins.user', 'u');
+
+        if ($date_start) {
+            $qb->andWhere('c.startDate >= :ds')
+                ->setParameter('ds', $date_start);
+        }
+
+        if ($date_end) {
+            // On s'assure que la date de fin va jusqu'à 23:59:59 si c'est une date seule
+            $qb->andWhere('c.endDate <= :de')
+                ->setParameter('de', $date_end);
+        }
+
+        if ($module) {
+            $qb->andWhere('m.id = :module')
+                ->setParameter('module', $module);
+        }
+
+        $qb->orderBy('c.startDate', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // Récupération des cours de la période active actuelle
+    public function getCoursesForActivePeriod()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u', 'cp')
+            ->join('c.coursePeriod', 'cp')
+            ->join('c.interventionType', 'it')
+            ->join('c.module', 'm')
+            ->join('c.courseInstructors', 'ci')
+            ->join('ci.instructor', 'ins')
+            ->join('ins.user', 'u')
+            ->where('CURRENT_DATE() BETWEEN cp.startDate AND cp.endDate')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Récupération des cours de la semaine actuelle
+    public function getCoursesForCurrentWeek()
+    {
+        // On définit le début et la fin de la semaine
+        $start = new \DateTime('monday this week');
+        // On ajoute 6 jours à la date de début pour obtenir la fin de la semaine
+        $end = new \DateTime('sunday this week');
+        // On met l'heure de fin à 23:59:59
+        $end->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
+            ->join('c.interventionType', 'it')
+            ->join('c.module', 'm')
+            ->join('c.courseInstructors', 'ci')
+            ->join('ci.instructor', 'ins')
+            ->join('ins.user', 'u')
+            // On récupère les cours dont la date de début est comprise entre le début et la fin de la semaine
+            ->where('c.startDate BETWEEN :start AND :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->orderBy('c.startDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    //    /**
+    //     * @return Course[] Returns an array of Course objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Course
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function findByInstructorWithFilters(
+        int $instructorId,
+        ?\DateTime $startDate = null,
+        ?\DateTime $endDate = null,
+        ?Module $module = null,
+        int $page = 1,
+        int $limit = 10,
+    ): array {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c', 'it', 'm', 'ci', 'ins', 'u')
+            ->leftJoin('c.interventionType', 'it')
+            ->leftJoin('c.module', 'm')
+            ->leftJoin('c.courseInstructors', 'ci')
+            ->leftJoin('ci.instructor', 'ins')
+            ->leftJoin('ins.user', 'u')
+            ->where('ins.id = :instructorId')
+            ->setParameter('instructorId', $instructorId);
+
+        if ($startDate) {
+            $qb->andWhere('c.startDate >= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+
+        if ($endDate) {
+            $qb->andWhere('c.endDate <= :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        if ($module) {
+            $qb->andWhere('m.id = :moduleId')
+                ->setParameter('moduleId', $module->getId());
+        }
+
+        $qb->orderBy('c.startDate', 'DESC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function countByInstructorWithFilters(
+        int $instructorId,
+        ?\DateTime $startDate = null,
+        ?\DateTime $endDate = null,
+        ?Module $module = null,
+    ): int {
+        $qb = $this->createQueryBuilder('c')
+            ->select('COUNT(DISTINCT c.id)')
+            ->leftJoin('c.courseInstructors', 'ci')
+            ->leftJoin('ci.instructor', 'ins')
+            ->leftJoin('c.module', 'm')
+            ->where('ins.id = :instructorId')
+            ->setParameter('instructorId', $instructorId);
+
+        if ($startDate) {
+            $qb->andWhere('c.startDate >= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+
+        if ($endDate) {
+            $qb->andWhere('c.endDate <= :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        if ($module) {
+            $qb->andWhere('m.id = :moduleId')
+                ->setParameter('moduleId', $module->getId());
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+}
