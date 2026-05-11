@@ -68,7 +68,7 @@ final class InterventionTypeController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $interventionType->getId(), $request->request->get('_token'))) {
             // Vérifier si le type d'intervention est utilisé par des cours
             $courseCount = $entityManager->getRepository(\App\Entity\Course::class)
-                ->count(['intervention_type_id' => $interventionType]);
+                ->count(['interventionType' => $interventionType]);
             
             if ($courseCount > 0) {
                 $this->addFlash('error', 

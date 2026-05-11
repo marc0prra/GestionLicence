@@ -19,7 +19,7 @@ class SchoolYearRepository extends ServiceEntityRepository
     public function findByOrderDate()
     {
         return $this->createQueryBuilder('s')
-        ->orderBy('s.start_date', 'DESC')
+        ->orderBy('s.startDate', 'DESC')
         ->getQuery()
         ->getResult();
     }

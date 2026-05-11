@@ -24,15 +24,15 @@ class InstructorRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('i')
             ->join('i.user', 'u')
             ->addSelect('u')
-            ->orderBy('u.last_name', 'ASC');
+            ->orderBy('u.lastName', 'ASC');
 
         // Application des filtres
         if (!empty($filters['lastName'])) {
-            $query->andWhere('u.last_name LIKE :lname')
+            $query->andWhere('u.lastName LIKE :lname')
                ->setParameter('lname', '%'.$filters['lastName'].'%');
         }
         if (!empty($filters['firstName'])) {
-            $query->andWhere('u.first_name LIKE :fname')
+            $query->andWhere('u.firstName LIKE :fname')
                ->setParameter('fname', '%'.$filters['firstName'].'%');
         }
         if (!empty($filters['email'])) {
@@ -57,11 +57,11 @@ class InstructorRepository extends ServiceEntityRepository
             ->join('i.user', 'u');
 
         if (!empty($filters['lastName'])) {
-            $query->andWhere('u.last_name LIKE :lname')
+            $query->andWhere('u.lastName LIKE :lname')
                ->setParameter('lname', '%'.$filters['lastName'].'%');
         }
         if (!empty($filters['firstName'])) {
-            $query->andWhere('u.first_name LIKE :fname')
+            $query->andWhere('u.firstName LIKE :fname')
                ->setParameter('fname', '%'.$filters['firstName'].'%');
         }
         if (!empty($filters['email'])) {

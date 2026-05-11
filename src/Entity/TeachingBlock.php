@@ -26,7 +26,7 @@ class TeachingBlock
     private ?string $description = null;
 
     #[ORM\Column()]
-    private ?int $hours_count = null;
+    private ?int $hoursCount = null;
 
     #[ORM\OneToMany(mappedBy: 'teachingBlock', targetEntity: Module::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $modules;
@@ -79,12 +79,12 @@ class TeachingBlock
 
     public function getHoursCount(): ?int
     {
-        return $this->hours_count;
+        return $this->hoursCount;
     }
 
-    public function setHoursCount(?int $hours_count): static
+    public function setHoursCount(?int $hoursCount): static
     {
-        $this->hours_count = $hours_count;
+        $this->hoursCount = $hoursCount;
 
         return $this;
     }

@@ -19,7 +19,7 @@ class CoursePeriodRepository extends ServiceEntityRepository
     public function findBySchoolYear($schoolYearId)
     {
         return $this->createQueryBuilder('cp')
-            ->where('cp.school_year_id = :schoolYearId')
+            ->where('cp.schoolYear = :schoolYearId')
             ->setParameter('schoolYearId', $schoolYearId)
             ->getQuery()
             ->getResult();
@@ -28,7 +28,7 @@ class CoursePeriodRepository extends ServiceEntityRepository
     public function findPeriodByDates(\DateTimeInterface $startDate): ?CoursePeriod
     {
         return $this->createQueryBuilder('cp')
-            ->where(':date BETWEEN cp.start_date AND cp.end_date')
+            ->where(':date BETWEEN cp.startDate AND cp.endDate')
             ->setParameter('date', $startDate)
             ->setMaxResults(1) // On en prend une seule au cas où
             ->getQuery()
@@ -38,8 +38,8 @@ class CoursePeriodRepository extends ServiceEntityRepository
     public function findPeriodByCourseDates(\DateTime $startDate, \DateTime $endDate): ?CoursePeriod
     {
         return $this->createQueryBuilder('p')
-            ->where('p.start_date <= :start')
-            ->andWhere('p.end_date >= :end')
+            ->where('p.startDate <= :start')
+            ->andWhere('p.endDate >= :end')
             ->setParameter('start', $startDate)
             ->setParameter('end', $endDate)
             ->setMaxResults(1)
@@ -47,28 +47,28 @@ class CoursePeriodRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    //    /**
-    //     * @return CoursePeriod[] Returns an array of CoursePeriod objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+//    /**
+//     * @return CoursePeriod[] Returns an array of CoursePeriod objects
+//     */
+//    public function findByExampleField($value): array
+//    {
+//        return $this->createQueryBuilder('c')
+//            ->andWhere('c.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('c.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
 
-    //    public function findOneBySomeField($value): ?CoursePeriod
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+//    public function findOneBySomeField($value): ?CoursePeriod
+//    {
+//        return $this->createQueryBuilder('c')
+//            ->andWhere('c.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
 }

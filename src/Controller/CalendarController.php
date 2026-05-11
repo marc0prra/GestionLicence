@@ -38,9 +38,9 @@ final class CalendarController extends AbstractController
                 'end' => $course->getEndDate()->format('Y-m-d\TH:i:s'),
                 'title' => $course->getTitle(),
                 'remotely' => $course->isRemotely(),
-                'module' => $course->getModuleId()->getName(),
-                'type' => $course->getInterventionTypeId()->getName(),
-                'color' => $course->getInterventionTypeId()->getColor(),
+                'module' => $course->getModule()->getName(),
+                'type' => $course->getInterventionType()->getName(),
+                'color' => $course->getInterventionType()->getColor(),
                 'instructors' => $instructors,
             ];
         }
@@ -76,11 +76,11 @@ final class CalendarController extends AbstractController
         $row = 2;
         foreach ($courses as $course) {
             $sheet->setCellValue('A'.$row, $course->getTitle());
-            $sheet->setCellValue('B'.$row, $course->getInterventionTypeId()->getName());
+            $sheet->setCellValue('B'.$row, $course->getInterventionType()->getName());
             $sheet->setCellValue('C'.$row, $course->getStartDate()->format('Y-m-d\TH:i:s'));
             $sheet->setCellValue('D'.$row, $course->getEndDate()->format('Y-m-d\TH:i:s'));
             $sheet->setCellValue('E'.$row, $course->isRemotely());
-            $sheet->setCellValue('F'.$row, $course->getModuleId()->getName());
+            $sheet->setCellValue('F'.$row, $course->getModule()->getName());
             $instructorNames = [];
             foreach ($course->getCourseInstructors() as $courseInstructor) {
                 $instructorNames[] = $courseInstructor->getInstructor()->getUser()->getLastName().' '.$courseInstructor->getInstructor()->getUser()->getFirstName();
@@ -132,11 +132,11 @@ final class CalendarController extends AbstractController
         $row = 2;
         foreach ($courses as $course) {
             $sheet->setCellValue('A'.$row, $course->getTitle());
-            $sheet->setCellValue('B'.$row, $course->getInterventionTypeId()->getName());
+            $sheet->setCellValue('B'.$row, $course->getInterventionType()->getName());
             $sheet->setCellValue('C'.$row, $course->getStartDate()->format('Y-m-d\TH:i:s'));
             $sheet->setCellValue('D'.$row, $course->getEndDate()->format('Y-m-d\TH:i:s'));
             $sheet->setCellValue('E'.$row, $course->isRemotely());
-            $sheet->setCellValue('F'.$row, $course->getModuleId()->getName());
+            $sheet->setCellValue('F'.$row, $course->getModule()->getName());
             $instructorNames = [];
             foreach ($course->getCourseInstructors() as $courseInstructor) {
                 $instructorNames[] = $courseInstructor->getInstructor()->getUser()->getLastName().' '.$courseInstructor->getInstructor()->getUser()->getFirstName();

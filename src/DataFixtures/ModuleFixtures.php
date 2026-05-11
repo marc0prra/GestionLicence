@@ -80,32 +80,32 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'name' => 'RGPD',
                         'code' => 'LEGAL_RGPD',
                         'description' => 'Règlementation données',
-                        'hours_count' => 7,
-                        'capstone_project' => false,
+                        'hoursCount' => 7,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_RGP,
                     ],
                     [
                         'name' => 'Propriété intellectuelle',
                         'code' => 'LEGAL_IP',
                         'description' => 'Droits d\'auteur',
-                        'hours_count' => 7,
-                        'capstone_project' => false,
+                        'hoursCount' => 7,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_IP,
                     ],
                     [
                         'name' => 'RSE',
                         'code' => 'LEGAL_RSE',
                         'description' => 'Respect des enjeux environnementaux',
-                        'hours_count' => 7,
-                        'capstone_project' => false,
+                        'hoursCount' => 7,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_RSE,
                     ],
                     [
                         'name' => 'Accessibilité',
                         'code' => 'LEGAL_ACCESSIBILITE',
                         'description' => 'Accessibilité numérique',
-                        'hours_count' => 7,
-                        'capstone_project' => false,
+                        'hoursCount' => 7,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_ACCESSIBILITE,
                     ],
                 ],
@@ -159,40 +159,40 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'name' => 'Environnement de travail',
                         'code' => 'DEVOPS_ENV_TRAVAIL',
                         'description' => 'Configuration environnement dev',
-                        'hours_count' => 7,
-                        'capstone_project' => false,
+                        'hoursCount' => 7,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_ENV_TRAVAIL,
                     ],
                     [
                         'name' => 'Environnement de production',
                         'code' => 'DEVOPS_ENV_PROD',
                         'description' => 'Configuration environnement prod',
-                        'hours_count' => 7,
-                        'capstone_project' => false,
+                        'hoursCount' => 7,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_ENV_PROD,
                     ],
                     [
                         'name' => 'Docker',
                         'code' => 'DEVOPS_DOCKER',
                         'description' => 'Conteneurisation',
-                        'hours_count' => 14,
-                        'capstone_project' => false,
+                        'hoursCount' => 14,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_DOCKER,
                     ],
                     [
                         'name' => 'Git',
                         'code' => 'DEVOPS_GIT',
                         'description' => 'Gestion de versions',
-                        'hours_count' => 7,
-                        'capstone_project' => true,
+                        'hoursCount' => 7,
+                        'capstoneProject' => true,
                         'reference' => self::MODULE_GIT,
                     ],
                     [
                         'name' => 'Devops/Cyber',
                         'code' => 'DEVOPS_CYBER',
                         'description' => 'DevOps et Cybersécurité',
-                        'hours_count' => 21,
-                        'capstone_project' => false,
+                        'hoursCount' => 21,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_DEVOPS_CYBER,
                     ],
                 ],
@@ -212,8 +212,8 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'name' => 'Conférence',
                         'code' => 'REX_CONF',
                         'description' => 'Conférence professionnelle',
-                        'hours_count' => 3.5,
-                        'capstone_project' => false,
+                        'hoursCount' => 3.5,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_CONFERENCE,
                     ],
                 ],
@@ -234,8 +234,8 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'name' => 'Conférence',
                         'code' => 'REX_CONF',
                         'description' => 'Conférence professionnelle',
-                        'hours_count' => 3.5,
-                        'capstone_project' => true,
+                        'hoursCount' => 3.5,
+                        'capstoneProject' => true,
                         'reference' => self::MODULE_CONFERENCE_RCRA,
                     ],
                 ],
@@ -256,24 +256,24 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'name' => 'User Expérience / User Interface',
                         'code' => 'ERGO_UX_UI',
                         'description' => 'User Expérience / User Interface',
-                        'hours_count' => 21,
-                        'capstone_project' => false,
+                        'hoursCount' => 21,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_UX_UI,
                         'children2' => [
                             [
                                 'name' => 'Les fondamentaux de l\'UX',
                                 'code' => 'ERGO_UX_FOND',
                                 'description' => 'Fondamentaux User Experience',
-                                'hours_count' => 21,
-                                'capstone_project' => false,
+                                'hoursCount' => 21,
+                                'capstoneProject' => false,
                                 'reference' => self::MODULE_UX_FONDAMENTAUX,
                             ],
                             [
                                 'name' => 'L\'UI et l\'UX en mode projet',
                                 'code' => 'ERGO_UI_UX',
                                 'description' => 'UI/UX en mode projet',
-                                'hours_count' => 28,
-                                'capstone_project' => true,
+                                'hoursCount' => 28,
+                                'capstoneProject' => true,
                                 'reference' => self::MODULE_UI_UX_PROJET,
                             ],
                         ],
@@ -295,24 +295,24 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'name' => 'Structurer et mettre en place une architecture de base de données',
                         'code' => 'ARCHI_STRUCT',
                         'description' => 'Architecture BDD',
-                        'hours_count' => 7,
-                        'capstone_project' => true,
+                        'hoursCount' => 7,
+                        'capstoneProject' => true,
                         'reference' => self::MODULE_ARCHI_BDD,
                     ],
                     [
                         'name' => 'Monitorer une base de données + performance',
                         'code' => 'ARCHI_MONITOR',
                         'description' => 'Monitoring et performance BDD',
-                        'hours_count' => 3.5,
-                        'capstone_project' => true,
+                        'hoursCount' => 3.5,
+                        'capstoneProject' => true,
                         'reference' => self::MODULE_MONITORING_BDD,
                         'children2' => [
                             [
                                 'name' => 'L\'UI et l\'UX en mode projet',
                                 'code' => 'ERGO_UI_UX',
                                 'description' => 'UI/UX en mode projet',
-                                'hours_count' => 28,
-                                'capstone_project' => true,
+                                'hoursCount' => 28,
+                                'capstoneProject' => true,
                                 'reference' => self::MODULE_UI_UX_PROJET_2,
                             ],
                         ],
@@ -334,32 +334,32 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'name' => 'Tailwind CSS',
                         'code' => 'FRONT_TAILWIND',
                         'description' => 'Framework CSS',
-                        'hours_count' => 14,
-                        'capstone_project' => false,
+                        'hoursCount' => 14,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_TAILWIND,
                     ],
                     [
                         'name' => 'Javascript',
                         'code' => 'FRONT_JS',
                         'description' => 'Langage Javascript',
-                        'hours_count' => 35,
-                        'capstone_project' => false,
+                        'hoursCount' => 35,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_JAVASCRIPT,
                     ],
                     [
                         'name' => 'React',
                         'code' => 'FRONT_REACT',
                         'description' => 'Librairie React',
-                        'hours_count' => 49,
-                        'capstone_project' => true,
+                        'hoursCount' => 49,
+                        'capstoneProject' => true,
                         'reference' => self::MODULE_REACT,
                     ],
                     [
                         'name' => 'NextJS',
                         'code' => 'FRONT_NEXT',
                         'description' => 'Framework React',
-                        'hours_count' => 28,
-                        'capstone_project' => false,
+                        'hoursCount' => 28,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_NEXT,
                     ],
                 ],
@@ -379,24 +379,24 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                         'name' => 'Mise à niveau de PHP',
                         'code' => 'BACK_PHP_NIV',
                         'description' => 'Fondamentaux PHP',
-                        'hours_count' => 21,
-                        'capstone_project' => false,
+                        'hoursCount' => 21,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_PHP_NIVEAU,
                     ],
                     [
                         'name' => 'PHP Objet',
                         'code' => 'BACK_PHP_OBJ',
                         'description' => 'Programmation orientée objet PHP',
-                        'hours_count' => 28,
-                        'capstone_project' => false,
+                        'hoursCount' => 28,
+                        'capstoneProject' => false,
                         'reference' => self::MODULE_PHP_OBJET,
                     ],
                     [
                         'name' => 'Symfony',
                         'code' => 'BACK_SYMFONY',
                         'description' => 'Framework Symfony',
-                        'hours_count' => 63,
-                        'capstone_project' => true,
+                        'hoursCount' => 63,
+                        'capstoneProject' => true,
                         'reference' => self::MODULE_SYMFONY,
                     ],
                 ],
@@ -412,8 +412,8 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
             $module->setCode(self::data()[$i]['code']);
             $module->setName(self::data()[$i]['name']);
             $module->setDescription(self::data()[$i]['description']);
-            $module->setHoursCount(self::data()[$i]['hours_count']);
-            $module->setCapstoneProject(self::data()[$i]['capstone_project']);
+            $module->setHoursCount(self::data()[$i]['hoursCount']);
+            $module->setCapstoneProject(self::data()[$i]['capstoneProject']);
 
             $module->setTeachingBlock($this->getReference(self::data()[$i]['teaching_block'], TeachingBlock::class));
             $module->setSemester($this->getReference(self::data()[$i]['semester'], Semester::class));
@@ -427,8 +427,8 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                     $subModule->setCode(self::data()[$i]['children'][$j]['code']);
                     $subModule->setName(self::data()[$i]['children'][$j]['name']);
                     $subModule->setDescription(self::data()[$i]['children'][$j]['description']);
-                    $subModule->setHoursCount(self::data()[$i]['children'][$j]['hours_count']);
-                    $subModule->setCapstoneProject(self::data()[$i]['children'][$j]['capstone_project']);
+                    $subModule->setHoursCount(self::data()[$i]['children'][$j]['hoursCount']);
+                    $subModule->setCapstoneProject(self::data()[$i]['children'][$j]['capstoneProject']);
                     $subModule->setTeachingBlock($module->getTeachingBlock());
                     $subModule->setSemester($module->getSemester());
                     $subModule->setParent($module);
@@ -444,8 +444,8 @@ class ModuleFixtures extends Fixture implements DependentFixtureInterface
                             $subSubModule->setCode(self::data()[$i]['children'][$j]['children2'][$k]['code']);
                             $subSubModule->setName(self::data()[$i]['children'][$j]['children2'][$k]['name']);
                             $subSubModule->setDescription(self::data()[$i]['children'][$j]['children2'][$k]['description']);
-                            $subSubModule->setHoursCount(self::data()[$i]['children'][$j]['children2'][$k]['hours_count']);
-                            $subSubModule->setCapstoneProject(self::data()[$i]['children'][$j]['children2'][$k]['capstone_project']);
+                            $subSubModule->setHoursCount(self::data()[$i]['children'][$j]['children2'][$k]['hoursCount']);
+                            $subSubModule->setCapstoneProject(self::data()[$i]['children'][$j]['children2'][$k]['capstoneProject']);
                             $subSubModule->setTeachingBlock($subModule->getTeachingBlock());
                             $subSubModule->setSemester($subModule->getSemester());
                             $subSubModule->setParent($subModule);

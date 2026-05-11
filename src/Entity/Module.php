@@ -19,9 +19,6 @@ class Module
     #[ORM\Column(length: 50)]
     private ?string $code = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $parent_id = null;
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -29,10 +26,10 @@ class Module
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?int $hours_count = null;
+    private ?int $hoursCount = null;
 
     #[ORM\Column]
-    private ?bool $capstone_project = null;
+    private ?bool $capstoneProject = null;
 
     #[ORM\ManyToOne(targetEntity: TeachingBlock::class, inversedBy: 'modules')]
     #[ORM\JoinColumn(nullable: false)]
@@ -101,24 +98,24 @@ class Module
 
     public function getHoursCount(): ?int
     {
-        return $this->hours_count;
+        return $this->hoursCount;
     }
 
-    public function setHoursCount(int $hours_count): static
+    public function setHoursCount(int $hoursCount): static
     {
-        $this->hours_count = $hours_count;
+        $this->hoursCount = $hoursCount;
 
         return $this;
     }
 
     public function isCapstoneProject(): ?bool
     {
-        return $this->capstone_project;
+        return $this->capstoneProject;
     }
 
-    public function setCapstoneProject(bool $capstone_project): static
+    public function setCapstoneProject(bool $capstoneProject): static
     {
-        $this->capstone_project = $capstone_project;
+        $this->capstoneProject = $capstoneProject;
 
         return $this;
     }

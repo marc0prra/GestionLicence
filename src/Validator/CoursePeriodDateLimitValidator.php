@@ -22,7 +22,7 @@ final class CoursePeriodDateLimitValidator extends ConstraintValidator
 
         $start = $entity->getStartDate();
         $end = $entity->getEndDate();
-        $schoolYear = $entity->getSchoolYearId();
+        $schoolYear = $entity->getSchoolYear();
 
         if (!$start || !$end || !$schoolYear) {
             return;
@@ -37,13 +37,13 @@ final class CoursePeriodDateLimitValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{year_start}}', (string) ($yearReference - 1))
                 ->setParameter('{{year_end}}', (string) ($yearReference + 1))
-                ->atPath('start_date')
+                ->atPath('startDate')
                 ->addViolation();
         }
 
         if ($end <= $start) {
             $this->context->buildViolation('La date de fin doit être supérieure à la date de début.')
-               ->atPath('end_date')
+               ->atPath('endDate')
                ->addViolation();
         }
     }

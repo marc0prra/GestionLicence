@@ -62,6 +62,9 @@ final class TeachingBlockController extends AbstractController
                     $this->addFlash('error', 'Le formulaire est invalide');
                 }
             }
+            else {
+                $this->addFlash('error', "Une erreur est survenue. Veuillez réessayer.");
+            }
         }
 
         return $this->render('teaching_block/edit.html.twig', [

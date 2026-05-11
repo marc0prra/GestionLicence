@@ -52,21 +52,8 @@ class InterventionController extends AbstractController
             if (!$period) {
                 $this->addFlash('error', 'Aucune période scolaire correspondante.');
             } else {
-                $instructors = $form->get('courseInstructors')->getData();
-                $indisponible = false;
-
-                foreach($instructors as $instructor) {
-                    $count = $unaivibilityRepository->findIndisponibilite($instructor->getId(), $start, $end);
-
-                    if($count > 0) {
-                        $indisponible = true; 
-                        $this->addFlash('error', 'Impossible d\'ajouter une intervention.');
-                    }
-                }
-
-                if (!$indisponible) {
-                    $course->setCoursePeriodId($period);
-                    $em->persist($course);
+                $course->setCoursePeriodId($period);
+                $em->persist($course);
 
                     // Gestion des intervenants (champ non-mappé)
                     foreach ($instructors as $instructor) {

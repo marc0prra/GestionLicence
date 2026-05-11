@@ -57,7 +57,7 @@ class TeachingBlockType extends AbstractType
                     ),
                 ],
             ])
-            ->add('hours_count', IntegerType::class, [
+            ->add('hoursCount', IntegerType::class, [
                 'label' => 'Nombre d\'heures - champ obligatoire',
                 'required' => true,
                 'attr' => [

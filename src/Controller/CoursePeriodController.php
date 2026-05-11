@@ -27,7 +27,7 @@ final class CoursePeriodController extends AbstractController
         }
 
         $coursePeriod = new CoursePeriod();
-        $coursePeriod->setSchoolYearId($schoolYear);
+        $coursePeriod->setSchoolYear($schoolYear);
 
         $form = $this->createForm(CoursePeriodType::class, $coursePeriod);
         $form->handleRequest($request);
@@ -63,7 +63,7 @@ final class CoursePeriodController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
     ): Response {
-        $schoolYear = $coursePeriod->getSchoolYearId();
+        $schoolYear = $coursePeriod->getSchoolYear();
 
         $form = $this->createForm(CoursePeriodType::class, $coursePeriod);
         $form->handleRequest($request);
@@ -96,7 +96,7 @@ final class CoursePeriodController extends AbstractController
         CoursePeriod $coursePeriod,
         EntityManagerInterface $entityManager,
     ): Response {
-        $schoolYearId = $coursePeriod->getSchoolYearId()->getId();
+        $schoolYearId = $coursePeriod->getSchoolYear()->getId();
 
         if ($this->isCsrfTokenValid('delete'.$coursePeriod->getId(), $request->request->get('_token'))) {
             try {

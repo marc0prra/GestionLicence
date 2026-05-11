@@ -21,8 +21,8 @@ class CourseRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->select('c', 'it', 'm', 'ci', 'ins', 'u')
-            ->leftJoin('c.intervention_type_id', 'it')
-            ->leftJoin('c.module_id', 'm')
+            ->leftJoin('c.interventionType', 'it')
+            ->leftJoin('c.module', 'm')
             ->leftJoin('c.courseInstructors', 'ci')
             ->leftJoin('ci.instructor', 'ins')
             ->leftJoin('ins.user', 'u')
@@ -34,20 +34,20 @@ class CourseRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c', 'it', 'm', 'ci', 'ins', 'u')
-            ->leftJoin('c.intervention_type_id', 'it')
-            ->leftJoin('c.module_id', 'm')
+            ->leftJoin('c.interventionType', 'it')
+            ->leftJoin('c.module', 'm')
             ->leftJoin('c.courseInstructors', 'ci')
             ->leftJoin('ci.instructor', 'ins')
             ->leftJoin('ins.user', 'u');
 
         if ($date_start) {
-            $qb->andWhere('c.start_date >= :ds')
+            $qb->andWhere('c.startDate >= :ds')
                 ->setParameter('ds', $date_start);
         }
 
         if ($date_end) {
             // On s'assure que la date de fin va jusqu'à 23:59:59 si c'est une date seule
-            $qb->andWhere('c.end_date <= :de')
+            $qb->andWhere('c.endDate <= :de')
                 ->setParameter('de', $date_end);
         }
 
@@ -56,7 +56,7 @@ class CourseRepository extends ServiceEntityRepository
                 ->setParameter('module', $module);
         }
 
-        $qb->orderBy('c.start_date', 'ASC');
+        $qb->orderBy('c.startDate', 'ASC');
 
         return $qb->getQuery()->getResult();
     }
@@ -66,13 +66,13 @@ class CourseRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->select('c', 'it', 'm', 'ci', 'ins', 'u', 'cp')
-            ->join('c.course_period_id', 'cp')
-            ->join('c.intervention_type_id', 'it')
-            ->join('c.module_id', 'm')
+            ->join('c.coursePeriod', 'cp')
+            ->join('c.interventionType', 'it')
+            ->join('c.module', 'm')
             ->join('c.courseInstructors', 'ci')
             ->join('ci.instructor', 'ins')
             ->join('ins.user', 'u')
-            ->where('CURRENT_DATE() BETWEEN cp.start_date AND cp.end_date')
+            ->where('CURRENT_DATE() BETWEEN cp.startDate AND cp.endDate')
             ->getQuery()
             ->getResult();
     }
@@ -89,16 +89,16 @@ class CourseRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('c')
             ->select('c', 'it', 'm', 'ci', 'ins', 'u')
-            ->join('c.intervention_type_id', 'it')
-            ->join('c.module_id', 'm')
+            ->join('c.interventionType', 'it')
+            ->join('c.module', 'm')
             ->join('c.courseInstructors', 'ci')
             ->join('ci.instructor', 'ins')
             ->join('ins.user', 'u')
             // On récupère les cours dont la date de début est comprise entre le début et la fin de la semaine
-            ->where('c.start_date BETWEEN :start AND :end')
+            ->where('c.startDate BETWEEN :start AND :end')
             ->setParameter('start', $start)
             ->setParameter('end', $end)
-            ->orderBy('c.start_date', 'ASC')
+            ->orderBy('c.startDate', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -138,8 +138,8 @@ class CourseRepository extends ServiceEntityRepository
     ): array {
         $qb = $this->createQueryBuilder('c')
             ->select('c', 'it', 'm', 'ci', 'ins', 'u')
-            ->leftJoin('c.intervention_type_id', 'it')
-            ->leftJoin('c.module_id', 'm')
+            ->leftJoin('c.interventionType', 'it')
+            ->leftJoin('c.module', 'm')
             ->leftJoin('c.courseInstructors', 'ci')
             ->leftJoin('ci.instructor', 'ins')
             ->leftJoin('ins.user', 'u')
@@ -147,12 +147,12 @@ class CourseRepository extends ServiceEntityRepository
             ->setParameter('instructorId', $instructorId);
 
         if ($startDate) {
-            $qb->andWhere('c.start_date >= :startDate')
+            $qb->andWhere('c.startDate >= :startDate')
                 ->setParameter('startDate', $startDate);
         }
 
         if ($endDate) {
-            $qb->andWhere('c.end_date <= :endDate')
+            $qb->andWhere('c.endDate <= :endDate')
                 ->setParameter('endDate', $endDate);
         }
 
@@ -161,7 +161,7 @@ class CourseRepository extends ServiceEntityRepository
                 ->setParameter('moduleId', $module->getId());
         }
 
-        $qb->orderBy('c.start_date', 'DESC')
+        $qb->orderBy('c.startDate', 'DESC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit);
 
@@ -178,17 +178,17 @@ class CourseRepository extends ServiceEntityRepository
             ->select('COUNT(DISTINCT c.id)')
             ->leftJoin('c.courseInstructors', 'ci')
             ->leftJoin('ci.instructor', 'ins')
-            ->leftJoin('c.module_id', 'm')
+            ->leftJoin('c.module', 'm')
             ->where('ins.id = :instructorId')
             ->setParameter('instructorId', $instructorId);
 
         if ($startDate) {
-            $qb->andWhere('c.start_date >= :startDate')
+            $qb->andWhere('c.startDate >= :startDate')
                 ->setParameter('startDate', $startDate);
         }
 
         if ($endDate) {
-            $qb->andWhere('c.end_date <= :endDate')
+            $qb->andWhere('c.endDate <= :endDate')
                 ->setParameter('endDate', $endDate);
         }
 

@@ -17,52 +17,52 @@ class CoursePeriod
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?SchoolYear $school_year_id = null;
+    private ?SchoolYear $schoolYear = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[AppAssert\CoursePeriodDateLimit]
-    private ?\DateTime $start_date = null;
+    private ?\DateTime $startDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $end_date = null;
+    private ?\DateTime $endDate = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSchoolYearId(): ?SchoolYear
+    public function getSchoolYear(): ?SchoolYear
     {
-        return $this->school_year_id;
+        return $this->schoolYear;
     }
 
-    public function setSchoolYearId(?SchoolYear $school_year_id): static
+    public function setSchoolYear(?SchoolYear $schoolYear): static
     {
-        $this->school_year_id = $school_year_id;
+        $this->schoolYear = $schoolYear;
 
         return $this;
     }
 
     public function getStartDate(): ?\DateTime
     {
-        return $this->start_date;
+        return $this->startDate;
     }
 
-    public function setStartDate(\DateTime $start_date): static
+    public function setStartDate(\DateTime $startDate): static
     {
-        $this->start_date = $start_date;
+        $this->startDate = $startDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTime
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(\DateTime $end_date): static
+    public function setEndDate(\DateTime $endDate): static
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }

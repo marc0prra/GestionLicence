@@ -29,8 +29,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
         return [
             // Lundi 24 Novembre
             [
-                'date_début' => '2025-11-24 08:30:00',
-                'date_fin' => '2025-11-24 12:00:00',
+                'startDate' => '2025-11-24 08:30:00',
+                'endDate' => '2025-11-24 12:00:00',
                 'remotely' => true, // Icône caméra présente
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
@@ -38,8 +38,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
                 'course' => self::COURSE_1,
             ],
             [
-                'date_début' => '2025-11-24 13:30:00',
-                'date_fin' => '2025-11-24 17:00:00',
+                'startDate' => '2025-11-24 13:30:00',
+                'endDate' => '2025-11-24 17:00:00',
                 'remotely' => false,
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
@@ -49,8 +49,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
 
             // Mardi 25 Novembre
             [
-                'date_début' => '2025-11-25 08:30:00',
-                'date_fin' => '2025-11-25 12:00:00',
+                'startDate' => '2025-11-25 08:30:00',
+                'endDate' => '2025-11-25 12:00:00',
                 'remotely' => false,
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_AUTONOMIE,
@@ -58,8 +58,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
                 'course' => self::COURSE_3,
             ],
             [
-                'date_début' => '2025-11-25 13:30:00',
-                'date_fin' => '2025-11-25 17:00:00',
+                'startDate' => '2025-11-25 13:30:00',
+                'endDate' => '2025-11-25 17:00:00',
                 'remotely' => false,
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_SOUTENANCE,
@@ -69,8 +69,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
 
             // Mercredi 26 Novembre
             [
-                'date_début' => '2025-11-26 08:30:00',
-                'date_fin' => '2025-11-26 12:00:00',
+                'startDate' => '2025-11-26 08:30:00',
+                'endDate' => '2025-11-26 12:00:00',
                 'remotely' => true, // Icône caméra présente
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
@@ -78,8 +78,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
                 'course' => self::COURSE_5,
             ],
             [
-                'date_début' => '2025-11-26 13:30:00',
-                'date_fin' => '2025-11-26 17:00:00',
+                'startDate' => '2025-11-26 13:30:00',
+                'endDate' => '2025-11-26 17:00:00',
                 'remotely' => false,
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_AUTONOMIE,
@@ -89,8 +89,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
 
             // Jeudi 27 Novembre
             [
-                'date_début' => '2025-11-27 08:30:00',
-                'date_fin' => '2025-11-27 12:00:00',
+                'startDate' => '2025-11-27 08:30:00',
+                'endDate' => '2025-11-27 12:00:00',
                 'remotely' => false,
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
@@ -98,8 +98,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
                 'course' => self::COURSE_7,
             ],
             [
-                'date_début' => '2025-11-27 13:30:00',
-                'date_fin' => '2025-11-27 17:00:00',
+                'startDate' => '2025-11-27 13:30:00',
+                'endDate' => '2025-11-27 17:00:00',
                 'remotely' => false,
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_EVALUATION,
@@ -109,8 +109,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
 
             // Vendredi 28 Novembre
             [
-                'date_début' => '2025-11-28 08:30:00',
-                'date_fin' => '2025-11-28 12:00:00',
+                'startDate' => '2025-11-28 08:30:00',
+                'endDate' => '2025-11-28 12:00:00',
                 'remotely' => false,
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_CONFERENCE,
@@ -118,8 +118,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
                 'course' => self::COURSE_9,
             ],
             [
-                'date_début' => '2025-11-28 13:30:00',
-                'date_fin' => '2025-11-28 17:00:00',
+                'startDate' => '2025-11-28 13:30:00',
+                'endDate' => '2025-11-28 17:00:00',
                 'remotely' => false,
                 'title' => '',
                 'interventionType' => InterventionTypeFixtures::INTERVENTION_COURS,
@@ -133,14 +133,14 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
     {
         for ($i = 0; $i < count(self::data()); ++$i) {
             $course = new Course();
-            $course->setStartDate(new \DateTime(self::data()[$i]['date_début']));
-            $course->setEndDate(new \DateTime(self::data()[$i]['date_fin']));
+            $course->setStartDate(new \DateTime(self::data()[$i]['startDate']));
+            $course->setEndDate(new \DateTime(self::data()[$i]['endDate']));
             $course->setRemotely(self::data()[$i]['remotely']);
             $course->setTitle(self::data()[$i]['title']);
 
-            $course->setInterventionTypeId($this->getReference(self::data()[$i]['interventionType'], InterventionType::class));
-            $course->setModuleId($this->getReference(self::data()[$i]['module'], Module::class));
-            $course->setCoursePeriodId($this->getReference('coursePeriod-'.rand(1, 3), CoursePeriod::class));
+            $course->setInterventionType($this->getReference(self::data()[$i]['interventionType'], InterventionType::class));
+            $course->setModule($this->getReference(self::data()[$i]['module'], Module::class));
+            $course->setCoursePeriod($this->getReference('coursePeriod-'.rand(1, 3), CoursePeriod::class));
 
             $this->addReference(self::data()[$i]['course'], $course);
 

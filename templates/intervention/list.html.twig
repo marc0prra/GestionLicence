@@ -78,13 +78,13 @@
 
                     {# 2. Module & Titre #}
                     <td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">
-                        {{ intervention.ModuleId.name }}
+                        {{ intervention.module.name }}
                         {{ intervention.title is not empty ? ' - ' ~ intervention.title : '' }}
                     </td>
 
                     {# 3. Type d'intervention #}
                     <td class="px-[25px] py-[20px] text-[#1F384C] text-[14px] font-medium">
-                        {{ intervention.interventionTypeId.name }}
+                        {{ intervention.interventionType.name }}
                     </td>
 
                     {# 4. Intervenants (Liste propre) #}

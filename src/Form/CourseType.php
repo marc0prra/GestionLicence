@@ -39,11 +39,11 @@ class CourseType extends AbstractType
                     'placeholder' => 'Saisissez un titre sur l\'intervention',
                 ],
             ])
-            ->add('intervention_type_id', EntityType::class, [
+            ->add('interventionType', EntityType::class, [
                 'class' => InterventionType::class,
                 'choice_label' => 'name',
             ])
-            ->add('module_id', EntityType::class, [
+            ->add('module', EntityType::class, [
                 'class' => Module::class,
                 'query_builder' => function (ModuleRepository $er) {
                     return $er->queryForSelect();

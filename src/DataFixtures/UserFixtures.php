@@ -52,7 +52,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Jeff-Jacquelot',
                 'lastName' => 'Martins',
                 'password' => 'test1',
-                'reference_instructor' => self::USER_INSTRUCTOR_1,
+                'referenceInstructor' => self::USER_INSTRUCTOR_1,
             ],
 
             [
@@ -61,7 +61,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Nicolas',
                 'lastName' => 'Pineau',
                 'password' => 'test2',
-                'reference_instructor' => self::USER_INSTRUCTOR_2,
+                'referenceInstructor' => self::USER_INSTRUCTOR_2,
             ],
 
             [
@@ -70,7 +70,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Hugo',
                 'lastName' => 'Knorr',
                 'password' => 'test3',
-                'reference_instructor' => self::USER_INSTRUCTOR_3,
+                'referenceInstructor' => self::USER_INSTRUCTOR_3,
             ],
 
             [
@@ -79,7 +79,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Virginie',
                 'lastName' => 'Hougron',
                 'password' => 'test4',
-                'reference_instructor' => self::USER_INSTRUCTOR_4,
+                'referenceInstructor' => self::USER_INSTRUCTOR_4,
             ],
 
             [
@@ -88,7 +88,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Sonia',
                 'lastName' => 'Aracil',
                 'password' => 'test5',
-                'reference_instructor' => self::USER_INSTRUCTOR_5,
+                'referenceInstructor' => self::USER_INSTRUCTOR_5,
             ],
 
             [
@@ -97,7 +97,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Christopher',
                 'lastName' => 'Espargeliere',
                 'password' => 'test6',
-                'reference_instructor' => self::USER_INSTRUCTOR_6,
+                'referenceInstructor' => self::USER_INSTRUCTOR_6,
             ],
 
             [
@@ -106,7 +106,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Dominique',
                 'lastName' => 'Aste',
                 'password' => 'test7',
-                'reference_instructor' => self::USER_INSTRUCTOR_7,
+                'referenceInstructor' => self::USER_INSTRUCTOR_7,
             ],
 
             [
@@ -115,7 +115,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Charles',
                 'lastName' => 'Haller',
                 'password' => 'test8',
-                'reference_instructor' => self::USER_INSTRUCTOR_8,
+                'referenceInstructor' => self::USER_INSTRUCTOR_8,
             ],
 
             [
@@ -124,7 +124,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Olivier',
                 'lastName' => 'Salesse',
                 'password' => 'test9',
-                'reference_instructor' => self::USER_INSTRUCTOR_9,
+                'referenceInstructor' => self::USER_INSTRUCTOR_9,
             ],
 
             [
@@ -133,7 +133,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Mikaël',
                 'lastName' => 'Idasiak',
                 'password' => 'test10',
-                'reference_instructor' => self::USER_INSTRUCTOR_10,
+                'referenceInstructor' => self::USER_INSTRUCTOR_10,
             ],
 
             [
@@ -142,7 +142,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Nicolas',
                 'lastName' => 'Castro',
                 'password' => 'test11',
-                'reference_instructor' => self::USER_INSTRUCTOR_11,
+                'referenceInstructor' => self::USER_INSTRUCTOR_11,
             ],
 
             [
@@ -151,7 +151,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Gaël',
                 'lastName' => 'Daniel',
                 'password' => 'test12',
-                'reference_instructor' => self::USER_INSTRUCTOR_12,
+                'referenceInstructor' => self::USER_INSTRUCTOR_12,
             ],
 
             [
@@ -160,7 +160,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Nicolas',
                 'lastName' => 'Driancourt',
                 'password' => 'test13',
-                'reference_instructor' => self::USER_INSTRUCTOR_13,
+                'referenceInstructor' => self::USER_INSTRUCTOR_13,
             ],
 
             [
@@ -169,7 +169,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Maxime',
                 'lastName' => 'Delsaux',
                 'password' => 'test14',
-                'reference_instructor' => self::USER_INSTRUCTOR_14,
+                'referenceInstructor' => self::USER_INSTRUCTOR_14,
             ],
 
             [
@@ -178,7 +178,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Brigitte',
                 'lastName' => 'Esquenet',
                 'password' => 'test15',
-                'reference_instructor' => self::USER_INSTRUCTOR_15,
+                'referenceInstructor' => self::USER_INSTRUCTOR_15,
             ],
 
             [
@@ -187,7 +187,7 @@ class UserFixtures extends Fixture
                 'firstName' => 'Cyril',
                 'lastName' => 'Pereira',
                 'password' => 'test16',
-                'reference_instructor' => self::USER_INSTRUCTOR_16,
+                'referenceInstructor' => self::USER_INSTRUCTOR_16,
             ],
         ];
     }
@@ -204,8 +204,8 @@ class UserFixtures extends Fixture
 
             $manager->persist($user);
 
-            if (isset(self::data()[$i]['reference_instructor'])) {
-                $this->addReference(self::data()[$i]['reference_instructor'], $user);
+            if (isset(self::data()[$i]['referenceInstructor'])) {
+                $this->addReference(self::data()[$i]['referenceInstructor'], $user);
             }
         }
 

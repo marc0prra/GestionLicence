@@ -23,18 +23,18 @@ class Course
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Renseignez une date de début.')]
     #[Assert\Type("\DateTimeInterface")]
-    private ?\DateTime $start_date = null;
+    private ?\DateTime $startDate = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Renseignez une date de fin.')]
     #[Assert\Type("\DateTimeInterface")]
     #[Assert\GreaterThan(
-        propertyPath: 'start_date',
+        propertyPath: 'startDate',
         message: 'La date de fin doit être postérieure à la date de début.'
     )]
     #[CourseDateLength]
     #[CourseDatesWithinPeriod]
-    private ?\DateTime $end_date = null;
+    private ?\DateTime $endDate = null;
 
     #[ORM\Column]
     private ?bool $remotely = null;
@@ -44,15 +44,15 @@ class Course
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CoursePeriod $course_period_id = null;
+    private ?CoursePeriod $coursePeriod = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?InterventionType $intervention_type_id = null;
+    private ?InterventionType $interventionType = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Module $module_id = null;
+    private ?Module $module = null;
 
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: CourseInstructor::class, cascade: ['persist', 'remove'])]
     private Collection $courseInstructors;
@@ -70,60 +70,60 @@ class Course
 
     public function getStartDate(): ?\DateTime
     {
-        return $this->start_date;
+        return $this->startDate;
     }
 
-    public function setStartDate(?\DateTime $start_date): static
+    public function setStartDate(?\DateTime $startDate): static
     {
-        $this->start_date = $start_date;
+        $this->startDate = $startDate;
 
         return $this;
     }
 
     public function getEndDate(): ?\DateTime
     {
-        return $this->end_date;
+        return $this->endDate;
     }
 
-    public function setEndDate(?\DateTime $end_date): static
+    public function setEndDate(?\DateTime $endDate): static
     {
-        $this->end_date = $end_date;
+        $this->endDate = $endDate;
 
         return $this;
     }
 
-    public function getCoursePeriodId(): ?CoursePeriod
+    public function getCoursePeriod(): ?CoursePeriod
     {
-        return $this->course_period_id;
+        return $this->coursePeriod;
     }
 
-    public function setCoursePeriodId(?CoursePeriod $course_period_id): static
+    public function setCoursePeriod(?CoursePeriod $coursePeriod): static
     {
-        $this->course_period_id = $course_period_id;
+        $this->coursePeriod = $coursePeriod;
 
         return $this;
     }
 
-    public function getInterventionTypeId(): ?InterventionType
+    public function getInterventionType(): ?InterventionType
     {
-        return $this->intervention_type_id;
+        return $this->interventionType;
     }
 
-    public function setInterventionTypeId(?InterventionType $intervention_type_id): static
+    public function setInterventionType(?InterventionType $interventionType): static
     {
-        $this->intervention_type_id = $intervention_type_id;
+        $this->interventionType = $interventionType;
 
         return $this;
     }
 
-    public function getModuleId(): ?Module
+    public function getModule(): ?Module
     {
-        return $this->module_id;
+        return $this->module;
     }
 
-    public function setModuleId(?Module $module_id): static
+    public function setModule(?Module $module): static
     {
-        $this->module_id = $module_id;
+        $this->module = $module;
 
         return $this;
     }
