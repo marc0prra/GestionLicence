@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Module;
+use App\Form\Filter\ModuleFilterType;
 use App\Form\ModuleType;
 use App\Repository\TeachingBlockRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,14 +16,23 @@ class ModuleController extends AbstractController
 {
     // Route pour afficher la liste des modules
     #[Route('/modules', name: 'module_index')]
-    public function index(TeachingBlockRepository $teachingBlockRepository): Response
+    public function index(Request $request, TeachingBlockRepository $teachingBlockRepository): Response
     {
+        // Création du formulaire de filtre (méthode GET, sans CSRF)
+        $filterForm = $this->createForm(ModuleFilterType::class);
+        $filterForm->handleRequest($request);
+
+        // Récupère l'entité Semester sélectionnée (ou null si "Tous les semestres")
+        $selectedSemester = $filterForm->get('semester')->getData();
+
         // Récupérer tous les blocs d'enseignement avec leurs modules
         $blocks = $teachingBlockRepository->findAll();
 
-        // Rendre la vue avec les blocs et leurs modules
+        // Rendre la vue avec les blocs, le formulaire de filtre et la sélection courante
         return $this->render('module/modules.html.twig', [
             'blocks' => $blocks,
+            'filterForm' => $filterForm->createView(),
+            'selectedSemester' => $selectedSemester,
         ]);
     }
 

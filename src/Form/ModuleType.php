@@ -3,9 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Module;
+use App\Entity\Semester;
 use App\Entity\TeachingBlock;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\Semester;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -14,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-
 
 class ModuleType extends AbstractType
 {
@@ -26,7 +25,7 @@ class ModuleType extends AbstractType
             ->add('teachingBlock', EntityType::class, [
                 'class' => TeachingBlock::class,
                 'choice_label' => function (TeachingBlock $bloc) {
-                    return $bloc->getCode() . ' - ' . $bloc->getDescription();
+                    return $bloc->getCode().' - '.$bloc->getDescription();
                 },
                 'label' => 'Bloc enseignement',
                 'disabled' => true,
@@ -67,6 +66,21 @@ class ModuleType extends AbstractType
                     'class' => 'w-full max-w-[395px] bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5',
                 ],
             ])
+            ->add('semester', EntityType::class, [
+                'class' => Semester::class,
+                'choice_label' => 'label',
+                'label' => 'Semestre',
+                'required' => true,
+                'placeholder' => 'Sélectionnez un semestre',
+                'attr' => [
+                    'class' => 'w-full max-w-[395px] bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5',
+                ],
+                'constraints' => [
+                    new NotBlank(
+                        message: 'Le semestre est obligatoire'
+                    ),
+                ],
+            ])
             ->add('parent', EntityType::class, [
                 'class' => Module::class,
                 'label' => 'Parent',
@@ -90,13 +104,6 @@ class ModuleType extends AbstractType
                         message: 'La description du module est obligatoire'
                     ),
                 ],
-            ])
-
-            ->add('semester', EntityType::class, [
-                'class' => Semester::class,
-                'choice_label' => 'libelle',
-                'label' => 'Semestre',
-                'required' => true,
             ])
             ->add('capstoneProject', CheckboxType::class, [
                 'label' => 'Module effectué sur le projet fil rouge',

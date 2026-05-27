@@ -15,13 +15,10 @@ class Semester
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $libelle = null;
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $label = null;
 
-    /**
-     * @var Collection<int, Module>
-     */
-    #[ORM\OneToMany(targetEntity: Module::class, mappedBy: 'semester')]
+    #[ORM\OneToMany(mappedBy: 'semester', targetEntity: Module::class)]
     private Collection $modules;
 
     public function __construct()
@@ -34,21 +31,14 @@ class Semester
         return $this->id;
     }
 
-    public function setId(int $id): static
+    public function getLabel(): ?string
     {
-        $this->id = $id;
-
-        return $this;
+        return $this->label;
     }
 
-    public function getLibelle(): ?string
+    public function setLabel(string $label): static
     {
-        return $this->libelle;
-    }
-
-    public function setLibelle(string $libelle): static
-    {
-        $this->libelle = $libelle;
+        $this->label = $label;
 
         return $this;
     }
@@ -74,12 +64,16 @@ class Semester
     public function removeModule(Module $module): static
     {
         if ($this->modules->removeElement($module)) {
-            // set the owning side to null (unless already changed)
             if ($module->getSemester() === $this) {
                 $module->setSemester(null);
             }
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->label ?? '';
     }
 }

@@ -45,7 +45,7 @@ class Module
     #[ORM\OneToMany(mappedBy: 'module', targetEntity: InstructorModule::class, cascade: ['persist', 'remove'])]
     private Collection $instructorModules;
 
-    #[ORM\ManyToOne(inversedBy: 'modules')]
+    #[ORM\ManyToOne(targetEntity: Semester::class, inversedBy: 'modules')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Semester $semester = null;
 
@@ -175,6 +175,18 @@ class Module
         return $this;
     }
 
+    public function getSemester(): ?Semester
+    {
+        return $this->semester;
+    }
+
+    public function setSemester(?Semester $semester): static
+    {
+        $this->semester = $semester;
+
+        return $this;
+    }
+
     public function displayForSelect(?Module $parentModule = null): string
     {
         // displayname initialisé vide
@@ -191,17 +203,5 @@ class Module
         $displayname .= $module->name;
 
         return $displayname;
-    }
-
-    public function getSemester(): ?Semester
-    {
-        return $this->semester;
-    }
-
-    public function setSemester(?Semester $semester): static
-    {
-        $this->semester = $semester;
-
-        return $this;
     }
 }

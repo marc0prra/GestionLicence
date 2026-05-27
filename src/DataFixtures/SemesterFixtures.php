@@ -8,27 +8,25 @@ use Doctrine\Persistence\ObjectManager;
 
 class SemesterFixtures extends Fixture
 {
-    // Constantes pour les années d'écoles (utilisées comme références dans les fixtures)
-    public const SEMESTER_1 = 'semester_1';
-
-    public const SEMESTER_2 = 'semester_2';
-
-    public const SEMESTER_3 = 'semester_3';
+    // Constantes pour les semestres (utilisées comme références dans les fixtures)
+    public const SEMESTER_1 = 'semester-1';
+    public const SEMESTER_2 = 'semester-2';
+    public const SEMESTER_3 = 'semester-3';
 
     public static function data(): array
     {
         return [
             [
-                'libelle' => 'Semestre 1',
-                'reference_semester' => self::SEMESTER_1,
+                'label' => 'Semestre 1',
+                'reference' => self::SEMESTER_1,
             ],
             [
-                'libelle' => 'Semestre 2',
-                'reference_semester' => self::SEMESTER_2,
+                'label' => 'Semestre 2',
+                'reference' => self::SEMESTER_2,
             ],
             [
-                'libelle' => 'Semestre 3',
-                'reference_semester' => self::SEMESTER_3,
+                'label' => 'Semestre 3',
+                'reference' => self::SEMESTER_3,
             ],
         ];
     }
@@ -36,13 +34,14 @@ class SemesterFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < count(self::data()); ++$i) {
-            $entity = new Semester();
-            $entity->setLibelle(self::data()[$i]['libelle']);
+            $semester = new Semester();
+            $semester->setLabel(self::data()[$i]['label']);
 
-            $manager->persist($entity);
+            $this->addReference(self::data()[$i]['reference'], $semester);
 
-            $this->addReference(self::data()[$i]['reference_semester'], $entity);
+            $manager->persist($semester);
         }
+
         $manager->flush();
     }
 }
